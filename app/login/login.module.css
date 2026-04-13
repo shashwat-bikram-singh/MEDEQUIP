@@ -1,0 +1,50 @@
+.loginPage { display: flex; min-height: 100vh; }
+
+/* Left Panel */
+.leftPanel { flex: 1; background: var(--gradient-primary); color: white; display: flex; align-items: center; justify-content: center; padding: 3rem; position: relative; overflow: hidden; }
+.leftPanel::before { content: ""; position: absolute; top: -50%; right: -30%; width: 80%; height: 200%; background: radial-gradient(circle, rgba(255,255,255,0.06) 0%, transparent 70%); }
+.leftContent { position: relative; z-index: 1; max-width: 480px; }
+
+.logo { display: flex; align-items: center; gap: 0.625rem; margin-bottom: 3rem; text-decoration: none; color: white; }
+.logoIcon { display: flex; align-items: center; justify-content: center; width: 2.25rem; height: 2.25rem; background: rgba(255,255,255,0.15); border-radius: var(--radius-md); }
+.logoIcon .material-symbols-outlined { font-size: 1.25rem; }
+.logoText { font-family: var(--font-headline); font-size: 1.125rem; color: rgba(255,255,255,0.8); }
+.logoText strong { color: white; font-weight: 800; }
+
+.heroText h1 { font-size: 2.75rem; font-weight: 800; line-height: 1.1; margin-bottom: 1.25rem; color: white; }
+.heroText p { font-size: 1rem; color: rgba(255,255,255,0.75); line-height: 1.7; margin-bottom: 2.5rem; }
+
+.trustCard { background: rgba(255,255,255,0.1); backdrop-filter: blur(16px); border-radius: var(--radius-xl); padding: 1.25rem 1.5rem; margin-bottom: 2rem; border: 1px solid rgba(255,255,255,0.1); }
+.trustBadge { display: flex; align-items: center; gap: 0.5rem; font-weight: 600; margin-bottom: 0.25rem; }
+.trustBadge .material-symbols-outlined { font-size: 1.25rem; color: #a9c7ff; }
+.trustLabel { font-size: 0.8125rem; color: rgba(255,255,255,0.6); }
+
+.testimonial p { font-size: 0.9375rem; font-style: italic; color: rgba(255,255,255,0.8); line-height: 1.6; margin-bottom: 0.5rem; }
+.testimonial span { font-size: 0.8125rem; color: rgba(255,255,255,0.5); }
+
+/* Right Panel */
+.rightPanel { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 3rem; background: var(--surface); }
+.formWrapper { width: 100%; max-width: 400px; }
+.formWrapper h2 { margin-bottom: 0.5rem; }
+.formSubtitle { font-size: 0.9375rem; color: var(--on-surface-variant); margin-bottom: 2rem; }
+
+.form { display: flex; flex-direction: column; gap: 1.25rem; }
+.fieldGroup { display: flex; flex-direction: column; }
+.formActions { display: flex; justify-content: flex-end; margin-top: -0.5rem; }
+.forgotLink { font-size: 0.8125rem; color: var(--primary); font-weight: 500; }
+
+.divider { display: flex; align-items: center; gap: 1rem; margin: 1.5rem 0; }
+.divider::before, .divider::after { content: ""; flex: 1; height: 1px; background: var(--outline-variant); opacity: 0.3; }
+.divider span { font-size: 0.8125rem; color: var(--outline); }
+
+.socialBtn { width: 100%; justify-content: center; }
+.signupPrompt { text-align: center; font-size: 0.875rem; color: var(--on-surface-variant); margin-top: 1.5rem; }
+.signupLink { color: var(--primary); font-weight: 600; }
+
+.loginFooter { margin-top: 3rem; text-align: center; }
+.loginFooter p { font-size: 0.75rem; color: var(--outline); margin-bottom: 0.5rem; }
+.footLinks { display: flex; gap: 1rem; justify-content: center; }
+.footLinks a { font-size: 0.75rem; color: var(--outline); text-decoration: none; }
+.footLinks a:hover { color: var(--primary); }
+
+@media (max-width: 900px) { .leftPanel { display: none; } .rightPanel { flex: 1; } }

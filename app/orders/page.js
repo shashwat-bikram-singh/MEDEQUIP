@@ -8,17 +8,58 @@ export const metadata = {
 };
 
 export default function OrdersPage() {
+  const orders = [
+    { id: "MSP-20911", date: "Apr 10, 2026", total: "$1,240.00", items: 6, status: "Delivered" },
+    { id: "MSP-20874", date: "Apr 06, 2026", total: "$890.00", items: 3, status: "Pending" },
+    { id: "MSP-20822", date: "Mar 29, 2026", total: "$14,200.00", items: 34, status: "Delivered" },
+  ];
+
   return (
     <>
       <Navbar />
-      <main style={{ padding: "160px 2rem 80px", minHeight: "70vh", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", textAlign: "center", backgroundColor: "var(--bg-main)" }}>
+      <main style={{ padding: "120px 2rem 80px", minHeight: "70vh", backgroundColor: "var(--background)" }}>
         <FadeIn>
-          <span className="material-symbols-outlined" style={{ fontSize: "4rem", color: "var(--primary)", marginBottom: "1rem", opacity: 0.8 }}>local_shipping</span>
-          <h1 style={{ fontSize: "2.5rem", marginBottom: "1rem", color: "var(--text-main)" }}>Order Logistics</h1>
-          <p style={{ color: "var(--text-muted)", maxWidth: "500px", margin: "0 auto 2rem", lineHeight: "1.6" }}>
-            The extended tracking portal for past and present shipments is currently updating its delivery status feeds.
-          </p>
-          <Link href="/dashboard" className="btn btn-primary">Return to Dashboard</Link>
+          <div className="container">
+            <h1 style={{ marginBottom: "0.75rem" }}>My Orders</h1>
+            <p style={{ marginBottom: "1.5rem", maxWidth: "680px" }}>
+              Review your complete order history and track every shipment in one place.
+            </p>
+
+            <div style={{ background: "var(--surface-container-lowest)", borderRadius: "var(--radius-xl)", boxShadow: "var(--shadow-sm)", overflow: "hidden" }}>
+              <table className="data-table">
+                <thead>
+                  <tr>
+                    <th>Order ID</th>
+                    <th>Date</th>
+                    <th>Items</th>
+                    <th>Total</th>
+                    <th>Status</th>
+                    <th>Details</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {orders.map((order) => (
+                    <tr key={order.id}>
+                      <td>{order.id}</td>
+                      <td>{order.date}</td>
+                      <td>{order.items}</td>
+                      <td>{order.total}</td>
+                      <td>
+                        <span className={`badge ${order.status === "Delivered" ? "badge-success" : "badge-warning"}`}>
+                          {order.status}
+                        </span>
+                      </td>
+                      <td>
+                        <Link href={`/orders/${order.id}`} className="btn btn-outline btn-sm">
+                          View
+                        </Link>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </div>
         </FadeIn>
       </main>
       <Footer />

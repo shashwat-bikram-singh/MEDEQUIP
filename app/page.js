@@ -2,6 +2,7 @@ import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import Link from "next/link";
 import { FadeIn } from "@/components/FadeIn";
+import products from "@/data/products.json";
 import styles from "./page.module.css";
 
 export default function Home() {
@@ -114,6 +115,47 @@ export default function Home() {
                 </Link>
               ))}
             </FadeIn>
+          </div>
+        </section>
+
+        <section style={{ padding: "4rem 0" }}>
+          <div className="container">
+            <FadeIn>
+              <span className="label-kicker">Featured Products</span>
+              <h2 style={{ margin: "0.5rem 0 1.5rem" }}>Most purchased products this week.</h2>
+            </FadeIn>
+            <div style={{ display: "grid", gridTemplateColumns: "repeat(3, minmax(0, 1fr))", gap: "1rem" }}>
+              {products.slice(0, 3).map((item) => (
+                <FadeIn key={item.id}>
+                  <Link href={`/shop/${item.id}`} className="card-elevated">
+                    <h4 style={{ marginBottom: "0.5rem" }}>{item.name}</h4>
+                    <p style={{ marginBottom: "0.75rem" }}>{item.desc}</p>
+                    <strong>${item.price.toFixed(2)}</strong>
+                  </Link>
+                </FadeIn>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        <section style={{ padding: "1rem 0 4rem" }}>
+          <div className="container">
+            <FadeIn>
+              <span className="label-kicker">Offers & Discounts</span>
+              <h2 style={{ margin: "0.5rem 0 1.5rem" }}>Save more with bulk and seasonal deals.</h2>
+            </FadeIn>
+            <div style={{ display: "grid", gridTemplateColumns: "repeat(3, minmax(0, 1fr))", gap: "1rem" }}>
+              {[
+                { title: "Bulk Masks Offer", detail: "Buy 10 boxes, get 1 free." },
+                { title: "Diagnostic Bundle", detail: "Save 15% on selected kits." },
+                { title: "Free Delivery", detail: "Orders above $500 ship free." },
+              ].map((offer) => (
+                <div key={offer.title} className="card-elevated">
+                  <h4 style={{ marginBottom: "0.5rem" }}>{offer.title}</h4>
+                  <p>{offer.detail}</p>
+                </div>
+              ))}
+            </div>
           </div>
         </section>
 

@@ -71,6 +71,25 @@
   border-radius: var(--radius-full);
 }
 
+.filterGroup,
+.priceFilters {
+  display: grid;
+  gap: 0.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.filterOption {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.8125rem;
+  color: var(--on-surface-variant);
+}
+
+.filterOption input {
+  accent-color: var(--primary);
+}
+
 /* ---- Promo Card ---- */
 .promoCard {
   background: var(--surface-container-lowest);
@@ -115,6 +134,12 @@
   gap: 1rem;
 }
 
+.topActions {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
 .resultCount {
   font-size: 0.8125rem;
   color: var(--on-surface-variant);
@@ -148,6 +173,15 @@
 
 .searchInput::placeholder {
   color: var(--outline);
+}
+
+.sortSelect {
+  background: var(--surface-container-lowest);
+  border: 1px solid var(--outline-variant);
+  border-radius: var(--radius-md);
+  padding: 0.625rem 0.75rem;
+  color: var(--on-surface);
+  font-size: 0.8125rem;
 }
 
 /* ---- Product Grid ---- */
@@ -293,7 +327,15 @@
     align-items: stretch;
   }
 
+  .topActions {
+    flex-direction: column;
+  }
+
   .searchBar {
     flex: 1;
+  }
+
+  .sortSelect {
+    width: 100%;
   }
 }

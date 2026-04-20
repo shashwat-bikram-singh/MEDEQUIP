@@ -1,10 +1,24 @@
+"use client";
+
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import FadeIn from "@/components/FadeIn";
+import Modal from "@/components/Modal";
+import { useState } from "react";
 
-export const metadata = { title: "My Profile | MedSupply Precision" };
 
 export default function ProfilePage() {
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [loading, setLoading] = useState(false);
+
+  const handleSave = () => {
+    setLoading(true);
+    setTimeout(() => {
+      setLoading(false);
+      setIsModalOpen(false);
+    }, 1000);
+  };
+
   return (
     <>
       <Navbar />
@@ -37,12 +51,36 @@ export default function ProfilePage() {
                 </div>
               </div>
               <div style={{ display: "flex", gap: "1rem" }}>
-                <button className="btn btn-primary">Edit Profile</button>
+                <button className="btn btn-primary" onClick={() => setIsModalOpen(true)}>Edit Profile</button>
                 <button className="btn btn-outline" style={{ backgroundColor: "transparent", border: "1px solid var(--border)", color: "var(--text-main)", padding: "0.8rem 1.5rem", borderRadius: "8px", cursor: "pointer" }}>Change Password</button>
               </div>
             </div>
           </div>
         </FadeIn>
+        
+        <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} title="Edit Profile Details">
+          <div style={{ display: "flex", flexDirection: "column", gap: "1rem" }}>
+            <div>
+              <label className="input-label">Full Name</label>
+              <input type="text" className="input-field" defaultValue="Dr. Sarah Jennings" />
+            </div>
+            <div>
+              <label className="input-label">Email Address</label>
+              <input type="email" className="input-field" defaultValue="s.jennings@medsupply.com" />
+            </div>
+            <div>
+              <label className="input-label">Phone Number</label>
+              <input type="tel" className="input-field" defaultValue="+1 (555) 123-4567" />
+            </div>
+            <div style={{ display: "flex", gap: "1rem", marginTop: "1rem", justifyContent: "flex-end" }}>
+              <button className="btn btn-outline" onClick={() => setIsModalOpen(false)}>Cancel</button>
+              <button className="btn btn-primary" onClick={handleSave} disabled={loading}>
+                {loading ? "Saving..." : "Save Changes"}
+              </button>
+            </div>
+          </div>
+        </Modal>
+
       </main>
       <Footer />
     </>

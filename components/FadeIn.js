@@ -23,3 +23,5 @@ export function FadeIn({ children, delay = 0, direction = "up", className = "" }
     </motion.div>
   );
 }
+
+export default FadeIn;

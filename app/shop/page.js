@@ -2,6 +2,7 @@ import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import Link from "next/link";
 import { FadeIn } from "@/components/FadeIn";
+import ProductCard from "@/components/ProductCard";
 import products from "@/data/products.json";
 import styles from "./shop.module.css";
 
@@ -107,31 +108,7 @@ export default function ShopPage() {
             <div className={styles.grid}>
               {products.map((p, i) => (
                 <FadeIn key={p.id} delay={0.1 + (i * 0.1)}>
-                  <Link href={`/shop/${p.id}`} className={styles.productCard}>
-                  <div className={styles.productImg}>
-                    <span className="material-symbols-outlined">{
-                      p.cat === "Respiratory" ? "masks" :
-                      p.cat === "Diagnostics" ? "biotech" :
-                      p.cat === "Protective" ? "shield" :
-                      p.cat === "Hospitality" ? "bed" :
-                      "back_hand"
-                    }</span>
-                    {p.badge && (
-                      <span className={`${styles.productBadge} ${p.badge === "New" ? styles.badgeNew : p.badge === "Premium" ? styles.badgePremium : ""}`}>
-                        {p.badge}
-                      </span>
-                    )}
-                  </div>
-                  <div className={styles.productBody}>
-                    <span className={styles.productBrand}>{p.brand}</span>
-                    <h4 className={styles.productName}>{p.name}</h4>
-                    <p className={styles.productDesc}>{p.desc}</p>
-                    <div className={styles.productFooter}>
-                      <span className={styles.productPrice}>${p.price.toFixed(2)}</span>
-                      <span className={styles.productUnit}>/ {p.unit}</span>
-                    </div>
-                  </div>
-                  </Link>
+                  <ProductCard p={p} />
                 </FadeIn>
               ))}
             </div>

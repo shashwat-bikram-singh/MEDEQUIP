@@ -1,27 +1,91 @@
-import Navbar from "@/components/Navbar";
-import Footer from "@/components/Footer";
-import Link from "next/link";
-import FadeIn from "@/components/FadeIn";
+"use client";
 
-export const metadata = {
-  title: "Forgot Password | MedSupply Precision",
-};
+import { useState } from "react";
+import { useRouter } from "next/navigation";
+import Link from "next/link";
+import toast from "react-hot-toast";
+import styles from "../login/login.module.css";
+import Loader from "@/components/Loader";
 
 export default function ForgotPasswordPage() {
+  const router = useRouter();
+  const [email, setEmail] = useState("");
+  const [loading, setLoading] = useState(false);
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    if (!email) {
+      toast.error("Please provide your email address.");
+      return;
+    }
+
+    setLoading(true);
+    // Simulate network request
+    setTimeout(() => {
+      setLoading(false);
+      toast.success("Verification link sent to your email!");
+      router.push("/login");
+    }, 1500);
+  };
+
   return (
-    <>
-      <Navbar />
-      <main style={{ padding: "160px 2rem 80px", minHeight: "70vh", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", textAlign: "center", backgroundColor: "var(--bg-main)" }}>
-        <FadeIn>
-          <span className="material-symbols-outlined" style={{ fontSize: "4rem", color: "var(--primary)", marginBottom: "1rem", opacity: 0.8 }}>lock_reset</span>
-          <h1 style={{ fontSize: "2.5rem", marginBottom: "1rem", color: "var(--text-main)" }}>Password Recovery</h1>
-          <p style={{ color: "var(--text-muted)", maxWidth: "500px", margin: "0 auto 2rem", lineHeight: "1.6" }}>
-            The password recovery portal is undergoing maintenance to ensure maximum security for clinical accounts.
+    <main className={styles.loginPage}>
+      {loading && <Loader text="Sending recovery email..." />}
+      
+      {/* Left Panel */}
+      <div className={styles.leftPanel}>
+        <div className={styles.leftContent}>
+          <Link href="/" className={styles.logo}>
+            <span className={styles.logoIcon}>
+              <span className="material-symbols-outlined">medication</span>
+            </span>
+            <span className={styles.logoText}>
+              MedSupply<strong>Precision</strong>
+            </span>
+          </Link>
+
+          <div className={styles.heroText}>
+            <h1>Secure Account Recovery.</h1>
+            <p>
+              For the protection of sensitive medical data, password resets require email verification and administrative approval.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      {/* Right Panel */}
+      <div className={styles.rightPanel}>
+        <div className={styles.formWrapper}>
+          <h2>Reset Password</h2>
+          <p className={styles.formSubtitle}>
+            Enter your email to receive recovery instructions.
           </p>
-          <Link href="/login" className="btn btn-primary">Back to Login</Link>
-        </FadeIn>
-      </main>
-      <Footer />
-    </>
+
+          <form className={styles.form} onSubmit={handleSubmit}>
+            <div className={styles.fieldGroup}>
+              <label className="input-label" htmlFor="reset-email">Email Address</label>
+              <input 
+                type="email" 
+                id="reset-email" 
+                className="input-field" 
+                placeholder="you@hospital.org" 
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+              />
+            </div>
+            
+            <button type="submit" className="btn btn-primary btn-lg" style={{ width: "100%", marginTop: "1rem" }} disabled={loading}>
+              Reset Password
+              <span className="material-symbols-outlined">lock_reset</span>
+            </button>
+          </form>
+
+          <p className={styles.signupPrompt}>
+            Remembered your password?{" "}
+            <Link href="/login" className={styles.signupLink}>Sign In</Link>
+          </p>
+        </div>
+      </div>
+    </main>
   );
 }

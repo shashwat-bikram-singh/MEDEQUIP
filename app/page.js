@@ -2,6 +2,8 @@ import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import Link from "next/link";
 import { FadeIn } from "@/components/FadeIn";
+import ProductCard from "@/components/ProductCard";
+import CategoryCard from "@/components/CategoryCard";
 import products from "@/data/products.json";
 import styles from "./page.module.css";
 
@@ -100,19 +102,7 @@ export default function Home() {
                 { icon: "masks", title: "Respiratory & Masks", desc: "N95, Surgical & Face Shields", color: "#fff3e0" },
                 { icon: "precision_manufacturing", title: "Heavy Equipment", desc: "Surgical tables and ventilators", color: "#fce4ec" },
               ].map((cat) => (
-                <Link href="/shop" key={cat.title} className={styles.catCard}>
-                  <div
-                    className={styles.catIcon}
-                    style={{ background: cat.color }}
-                  >
-                    <span className="material-symbols-outlined">{cat.icon}</span>
-                  </div>
-                  <h4>{cat.title}</h4>
-                  <p>{cat.desc}</p>
-                  <span className={styles.catArrow}>
-                    <span className="material-symbols-outlined">arrow_forward</span>
-                  </span>
-                </Link>
+                <CategoryCard key={cat.title} cat={cat} />
               ))}
             </FadeIn>
           </div>
@@ -127,11 +117,7 @@ export default function Home() {
             <div style={{ display: "grid", gridTemplateColumns: "repeat(3, minmax(0, 1fr))", gap: "1rem" }}>
               {products.slice(0, 3).map((item) => (
                 <FadeIn key={item.id}>
-                  <Link href={`/shop/${item.id}`} className="card-elevated">
-                    <h4 style={{ marginBottom: "0.5rem" }}>{item.name}</h4>
-                    <p style={{ marginBottom: "0.75rem" }}>{item.desc}</p>
-                    <strong>${item.price.toFixed(2)}</strong>
-                  </Link>
+                  <ProductCard p={item} />
                 </FadeIn>
               ))}
             </div>

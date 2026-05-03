@@ -74,7 +74,7 @@ export default function B2BPage() {
               <div className={styles.featCard}>
                 <span className="material-symbols-outlined">schedule</span>
                 <h4>Just-In-Time Delivery</h4>
-                <p>Minimize on-site storage costs with scheduled delivery windows synchronized to your facility's consumption rates.</p>
+                <p>Minimize on-site storage costs with scheduled delivery windows synchronized to your facility&apos;s consumption rates.</p>
               </div>
             </div>
           </div>

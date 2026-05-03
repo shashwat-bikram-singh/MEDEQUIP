@@ -12,7 +12,7 @@ export default function SearchResultsPage() {
       <main style={{ padding: "120px 2rem 80px", minHeight: "70vh" }}>
         <div className="container">
           <h1 style={{ marginBottom: "0.5rem" }}>Search Results</h1>
-          <p style={{ marginBottom: "1.5rem" }}>Showing {results.length} products for "mask".</p>
+          <p style={{ marginBottom: "1.5rem" }}>Showing {results.length} products for &quot;mask&quot;.</p>
           <div style={{ display: "grid", gridTemplateColumns: "repeat(2, minmax(0, 1fr))", gap: "1rem" }}>
             {results.map((product) => (
               <Link key={product.id} href={`/shop/${product.id}`} className="card-elevated">

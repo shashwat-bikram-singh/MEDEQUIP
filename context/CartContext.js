@@ -6,19 +6,17 @@ import toast from "react-hot-toast";
 const CartContext = createContext();
 
 export function CartProvider({ children }) {
-  const [cartItems, setCartItems] = useState([]);
-
-  // Load cart from local storage on mount (optional, good for UX)
-  useEffect(() => {
-    const saved = localStorage.getItem("medsupply_cart");
-    if (saved) {
-      try {
-        setCartItems(JSON.parse(saved));
-      } catch (e) {
-        console.error("Failed to parse cart");
-      }
+  const [cartItems, setCartItems] = useState(() => {
+    if (typeof window === "undefined") return [];
+    const saved = window.localStorage?.getItem("medsupply_cart");
+    if (!saved) return [];
+    try {
+      const parsed = JSON.parse(saved);
+      return Array.isArray(parsed) ? parsed : [];
+    } catch {
+      return [];
     }
-  }, []);
+  });
 
   // Save cart whenever it changes
   useEffect(() => {

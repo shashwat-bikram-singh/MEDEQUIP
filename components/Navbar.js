@@ -8,10 +8,8 @@ export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
   const { count } = useCart();
-  const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
-    setMounted(true);
     const handleScroll = () => setScrolled(window.scrollY > 20);
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
@@ -41,7 +39,7 @@ export default function Navbar() {
         <div className={styles.actions}>
           <Link href="/cart" className={styles.iconBtn} aria-label="Cart">
             <span className="material-symbols-outlined">shopping_cart</span>
-            {mounted && count > 0 && (
+            {count > 0 && (
               <span className={styles.cartBadge}>{count}</span>
             )}
           </Link>

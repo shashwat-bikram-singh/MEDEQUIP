@@ -89,9 +89,9 @@ export default function Cart() {
               <span>Total</span><span>₹{(total + gst + shipping).toLocaleString()}</span>
             </div>
           </div>
-          <button className="w-full btn-primary mt-5 py-3 text-base rounded-2xl justify-center">
+          <Link to="/checkout" className="w-full btn-primary mt-5 py-3 text-base rounded-2xl justify-center">
             Proceed to Checkout <ArrowRight size={16} />
-          </button>
+          </Link>
           <Link to="/products" className="block text-center text-sm text-primary-600 hover:underline mt-3">
             Continue Shopping
           </Link>

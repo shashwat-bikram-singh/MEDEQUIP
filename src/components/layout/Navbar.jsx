@@ -75,6 +75,13 @@ export default function Navbar() {
             )}
           </div>
 
+          {/* Quick Nav Links */}
+          <div className="hidden lg:flex items-center gap-1">
+            <Link to="/b2b" className="px-3 py-2 text-sm font-medium text-slate-700 hover:text-primary-600 hover:bg-primary-50 rounded-xl transition-all">Hospital B2B</Link>
+            <Link to="/support" className="px-3 py-2 text-sm font-medium text-slate-700 hover:text-primary-600 hover:bg-primary-50 rounded-xl transition-all">Support</Link>
+            <Link to="/about" className="px-3 py-2 text-sm font-medium text-slate-700 hover:text-primary-600 hover:bg-primary-50 rounded-xl transition-all">About</Link>
+          </div>
+
           {/* Search */}
           <form onSubmit={handleSearch} className="flex-1 hidden md:flex">
             <div className="relative w-full max-w-lg">
@@ -162,6 +169,16 @@ export default function Navbar() {
               <span>{cat.icon}</span> {cat.name}
             </Link>
           ))}
+          <p className="text-xs font-semibold text-slate-400 uppercase tracking-wider mt-4 mb-2 px-2">Quick Links</p>
+          <Link to="/b2b" className="flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm text-slate-700 hover:bg-primary-50 hover:text-primary-600 transition-colors">
+            🏢 Hospital B2B
+          </Link>
+          <Link to="/support" className="flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm text-slate-700 hover:bg-primary-50 hover:text-primary-600 transition-colors">
+            💬 Help &amp; Support
+          </Link>
+          <Link to="/about" className="flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm text-slate-700 hover:bg-primary-50 hover:text-primary-600 transition-colors">
+            🏥 About Us
+          </Link>
           <div className="border-t border-slate-100 pt-3 mt-3">
             {user ? (
               <button onClick={logout} className="flex items-center gap-2 px-3 py-2 text-sm text-red-500 w-full">

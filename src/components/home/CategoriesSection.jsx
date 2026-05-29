@@ -1,8 +1,11 @@
 import { Link } from 'react-router-dom';
 import { ArrowRight } from 'lucide-react';
 import { categories } from '../../data/categories';
+import { products } from '../../data/products';
 
 export default function Categories() {
+  const getCount = (slug) => products.filter(p => p.category === slug).length;
+
   return (
     <section className="py-14 bg-white">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -26,7 +29,7 @@ export default function Categories() {
                 {cat.icon}
               </div>
               <h3 className="text-sm font-semibold text-slate-800 mb-1">{cat.name}</h3>
-              <p className="text-xs text-slate-400">{cat.count} products</p>
+              <p className="text-xs text-slate-400">{getCount(cat.slug)} products</p>
             </Link>
           ))}
         </div>

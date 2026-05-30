@@ -17,7 +17,7 @@ export const products = [
   {
     id: 17, name: 'Surgical Forceps Hemostatic', category: 'surgical-equipment', categoryName: 'Surgical Equipment',
     price: 1799, originalPrice: 2300, rating: 4.7, reviews: 93,
-    image: 'https://images.unsplash.com/photo-1559757175-0eb30cd8c063?w=400&h=400&fit=crop',
+    image: '/images/products/surgical_forceps.png',
     stock: 'In Stock', badge: null, description: 'Stainless steel hemostatic forceps set. Includes Kelly, Mosquito, and Crile forceps. Ratchet lock mechanism, autoclavable.',
     specs: ['Types: 3', 'Material: SS 304', 'Lock: Ratchet', 'Autoclavable: Yes']
   },
@@ -105,7 +105,7 @@ export const products = [
   {
     id: 19, name: 'Defibrillator AED Unit', category: 'icu-equipment', categoryName: 'ICU Equipment',
     price: 129999, originalPrice: 160000, rating: 5.0, reviews: 22,
-    image: 'https://images.unsplash.com/photo-1519494026892-80bbd2d6fd0d?w=400&h=400&fit=crop',
+    image: '/images/products/defibrillator_aed.png',
     stock: 'Limited Stock', badge: 'Premium', description: 'Automated External Defibrillator with voice guidance. FDA approved, self-test mode, IP55 rated. Includes carry case and electrode pads.',
     specs: ['FDA: Approved', 'IP Rating: IP55', 'Battery: 4 years standby', 'Guidance: Voice/Visual']
   },
@@ -149,14 +149,14 @@ export const products = [
   {
     id: 20, name: 'Wound Closure Stapler', category: 'first-aid', categoryName: 'First Aid',
     price: 2299, originalPrice: 3000, rating: 4.8, reviews: 145,
-    image: 'https://images.unsplash.com/photo-1603398938378-e54eab446dde?w=400&h=400&fit=crop',
+    image: '/images/products/wound_stapler.png',
     stock: 'In Stock', badge: null, description: 'Disposable skin stapler with 35 staples. Ergonomic handle, stainless steel staples, removable. For emergency wound closure.',
     specs: ['Staples: 35', 'Material: SS', 'Type: Disposable', 'Sterile: Yes']
   },
   {
     id: 34, name: 'Emergency Splint Roll (36")', category: 'first-aid', categoryName: 'First Aid',
     price: 499, originalPrice: 750, rating: 4.8, reviews: 342,
-    image: 'https://images.unsplash.com/photo-1606206591513-ad601376f90d?w=400&h=400&fit=crop',
+    image: '/images/products/emergency_splint.png',
     stock: 'In Stock', badge: 'Best Seller', description: 'Universal moldable orthopedic splint, 36" roll. Closed-cell foam padded aluminum core. Lightweight, waterproof, reusable, and completely radiolucent (X-ray clear).',
     specs: ['Size: 36 × 4.25 inches', 'Core: Aluminum', 'Radiolucent: Yes', 'Waterproof: Yes']
   },
@@ -170,7 +170,7 @@ export const products = [
   {
     id: 36, name: 'Instant Cold Packs 10-Pack', category: 'first-aid', categoryName: 'First Aid',
     price: 699, originalPrice: 950, rating: 4.6, reviews: 412,
-    image: 'https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?w=400&h=400&fit=crop',
+    image: 'https://images.unsplash.com/photo-1606206591513-ad601376f90d?w=400&h=400&fit=crop',
     stock: 'In Stock', badge: null, description: 'Disposable squeeze-activated cold therapy compress packs. Rapid endothermic reaction reaches sub-zero temperatures in seconds. Ideal for sprains, swelling, and pain relief.',
     specs: ['Activation: Squeeze to cold', 'Disposable: Yes', 'Temp: Under 5°C', 'Qty: 10 packs']
   },
@@ -179,7 +179,7 @@ export const products = [
   {
     id: 5, name: 'Paracetamol 500mg Tablets', category: 'medicines', categoryName: 'Medicines',
     price: 45, originalPrice: 60, rating: 4.5, reviews: 1240,
-    image: 'https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?w=400&h=400&fit=crop',
+    image: 'https://images.unsplash.com/photo-1584017911766-d451b3d0e843?w=400&h=400&fit=crop',
     stock: 'In Stock', badge: null, description: 'Paracetamol 500mg for pain relief and fever reduction. Pack of 30 tablets. Suitable for adults and children over 12 years.',
     specs: ['Strength: 500mg', 'Pack: 30 tablets', 'Form: Oral tablet', 'Use: Pain/Fever']
   },
@@ -193,28 +193,28 @@ export const products = [
   {
     id: 21, name: 'Vitamin D3 2000 IU Softgels', category: 'medicines', categoryName: 'Medicines',
     price: 349, originalPrice: 450, rating: 4.7, reviews: 2890,
-    image: 'https://images.unsplash.com/photo-1471864190281-a93a3070b6de?w=400&h=400&fit=crop',
+    image: 'https://images.unsplash.com/photo-1579126038374-606c5ec84485?w=400&h=400&fit=crop',
     stock: 'In Stock', badge: 'Popular', description: 'High strength Vitamin D3 2000 IU softgels. Pack of 90. Supports bone health, immunity and muscle function. Soy-free, gluten-free.',
     specs: ['Strength: 2000 IU', 'Pack: 90 softgels', 'Soy-free: Yes', 'Gluten-free: Yes']
   },
   {
     id: 37, name: 'Ibuprofen 400mg Tablets', category: 'medicines', categoryName: 'Medicines',
     price: 55, originalPrice: 75, rating: 4.6, reviews: 850,
-    image: 'https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?w=400&h=400&fit=crop',
+    image: 'https://images.unsplash.com/photo-1607619056574-7b8f304b3b89?w=400&h=400&fit=crop',
     stock: 'In Stock', badge: null, description: 'Non-steroidal anti-inflammatory drug (NSAID) for quick relief of pain, headaches, muscle aches, toothaches, joint pain, and fever. Pack of 20 coated tablets.',
     specs: ['Strength: 400mg', 'Pack: 20 tablets', 'Class: NSAID', 'Form: Coated tablet']
   },
   {
     id: 38, name: 'Pantoprazole 40mg (Gerd Care)', category: 'medicines', categoryName: 'Medicines',
     price: 95, originalPrice: 125, rating: 4.7, reviews: 672,
-    image: 'https://images.unsplash.com/photo-1471864190281-a93a3070b6de?w=400&h=400&fit=crop',
+    image: 'https://images.unsplash.com/photo-1550572017-edd951b55104?w=400&h=400&fit=crop',
     stock: 'In Stock', badge: null, description: 'Proton Pump Inhibitor (PPI) that decreases the amount of acid produced in the stomach. Formulated for acid reflux, GERD, and healing stomach ulcers. 15 gastro-resistant tablets.',
     specs: ['Strength: 40mg', 'Pack: 15 tablets', 'Type: Gastro-resistant', 'Rx: Required']
   },
   {
     id: 39, name: 'Complete Daily A-Z Multivitamins', category: 'medicines', categoryName: 'Medicines',
     price: 450, originalPrice: 600, rating: 4.8, reviews: 1420,
-    image: 'https://images.unsplash.com/photo-1584036561566-baf8f5f1b144?w=400&h=400&fit=crop',
+    image: 'https://images.unsplash.com/photo-1616679911721-fe6eec4743cd?w=400&h=400&fit=crop',
     stock: 'In Stock', badge: 'Best Seller', description: 'Daily multivitamin and mineral supplement with 24 essential vitamins and trace minerals. Formulated for immune defense, bone strength, cognitive function, and cellular energy.',
     specs: ['Nutrients: 24 active', 'Qty: 60 tablets', 'Form: Oral tablet', 'Gluten-free: Yes']
   },
@@ -237,7 +237,7 @@ export const products = [
   {
     id: 22, name: 'PCR Test Kit 50-Pack', category: 'lab-equipment', categoryName: 'Lab Equipment',
     price: 8999, originalPrice: 12000, rating: 4.9, reviews: 67,
-    image: 'https://images.unsplash.com/photo-1576086213369-97a306d36557?w=400&h=400&fit=crop',
+    image: '/images/products/pcr_test_kit.png',
     stock: 'In Stock', badge: 'New', description: 'Real-time PCR test kit. 50 tests per pack. CE-IVD marked, 98.5% sensitivity, 99.2% specificity. 30-minute results.',
     specs: ['Tests: 50 per pack', 'Sensitivity: 98.5%', 'Specificity: 99.2%', 'CE-IVD: Marked']
   },
@@ -251,14 +251,14 @@ export const products = [
   {
     id: 41, name: 'Digital Lab Water Bath 5L', category: 'lab-equipment', categoryName: 'Lab Equipment',
     price: 18499, originalPrice: 24000, rating: 4.7, reviews: 19,
-    image: 'https://images.unsplash.com/photo-1576086213369-97a306d36557?w=400&h=400&fit=crop',
+    image: '/images/products/lab_water_bath.png',
     stock: 'Limited Stock', badge: 'New', description: 'Constant temperature scientific laboratory water bath, 5-liter volume capacity. Microcomputer digital control panel, integrated seamless stainless steel interior.',
     specs: ['Capacity: 5 Liters', 'Temp range: RT to 99.9°C', 'Accuracy: ±0.5°C', 'Material: Stainless Steel']
   },
   {
     id: 42, name: 'MicroPipette Calibration 3-Pack', category: 'lab-equipment', categoryName: 'Lab Equipment',
     price: 7499, originalPrice: 9999, rating: 4.9, reviews: 32,
-    image: 'https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?w=400&h=400&fit=crop',
+    image: 'https://images.unsplash.com/photo-1624969862644-791f3dc98927?w=400&h=400&fit=crop',
     stock: 'In Stock', badge: 'Best Seller', description: 'Certified single-channel variable volume micropipettes. Includes three key ranges: 0.5-10ul, 10-100ul, and 100-1000ul. Extremely low pipetting forces, partially autoclavable.',
     specs: ['Pipettes: 3 pcs', 'Range: 0.5ul - 1000ul', 'Calibration: Certified', 'Autoclavable: Yes (Half)']
   },
@@ -281,28 +281,28 @@ export const products = [
   {
     id: 23, name: 'Commode Transport Chair', category: 'wheelchairs', categoryName: 'Wheelchairs',
     price: 6499, originalPrice: 8500, rating: 4.5, reviews: 134,
-    image: 'https://images.unsplash.com/photo-1609220136736-443140cffec6?w=400&h=400&fit=crop',
+    image: 'https://images.unsplash.com/photo-1508847154043-be12a62861c1?w=400&h=400&fit=crop',
     stock: 'In Stock', badge: null, description: 'Lightweight commode transport chair. Padded seat and back, swing-away footrests, commode opening. Dual purpose: transport + commode.',
     specs: ['Weight: 9kg', 'Max Load: 100kg', 'Commode: Built-in', 'Footrests: Swing-away']
   },
   {
     id: 43, name: 'Heavy-Duty Bariatric Wheelchair', category: 'wheelchairs', categoryName: 'Wheelchairs',
     price: 18999, originalPrice: 24000, rating: 4.8, reviews: 77,
-    image: 'https://images.unsplash.com/photo-1609220136736-443140cffec6?w=400&h=400&fit=crop',
+    image: 'https://images.unsplash.com/photo-1598256989800-fe5f95da9787?w=400&h=400&fit=crop',
     stock: 'In Stock', badge: null, description: 'Reinforced dual-steel frame bariatric wheelchair. Features comfortable 22-inch wide seat, heavy-duty composite wheels, and extra-strength padding. Holds up to 180kg.',
     specs: ['Seat Width: 22 inches', 'Max Load: 180kg', 'Frame: Heavy Steel', 'Weight: 19kg']
   },
   {
     id: 44, name: 'Reclining High-Back Wheelchair', category: 'wheelchairs', categoryName: 'Wheelchairs',
     price: 21999, originalPrice: 28000, rating: 4.7, reviews: 54,
-    image: 'https://images.unsplash.com/photo-1617791160536-598cf32026fb?w=400&h=400&fit=crop',
+    image: 'https://images.unsplash.com/photo-1544640808-32ca72ac7f37?w=400&h=400&fit=crop',
     stock: 'In Stock', badge: 'Popular', description: 'Premium hydraulic reclining system wheelchair with full high-back support. Easily recline from 90° up to 180°. Padded detachable headrest pillow and elevating leg rests.',
     specs: ['Recline: 90° - 180°', 'Frame: Chromed Steel', 'Elevating legs: Yes', 'Max Load: 110kg']
   },
   {
     id: 45, name: 'Ergonomic S-Seat Wheelchair', category: 'wheelchairs', categoryName: 'Wheelchairs',
     price: 14499, originalPrice: 19000, rating: 4.6, reviews: 82,
-    image: 'https://images.unsplash.com/photo-1609220136736-443140cffec6?w=400&h=400&fit=crop',
+    image: 'https://images.unsplash.com/photo-1534797258760-1bd2cc95a5bd?w=400&h=400&fit=crop',
     stock: 'In Stock', badge: null, description: 'S-Shape ergonomic seating system designed to relieve pressure points, optimize posture, and prevent sliding. Fitted with flat-free polyurethane tires and quick-release wheels.',
     specs: ['Weight: 13.5kg', 'Seat: S-Ergonomic', 'Tires: Flat-free PU', 'Max Load: 115kg']
   },
@@ -318,14 +318,14 @@ export const products = [
   {
     id: 16, name: 'N95 Respirator Masks 50-Pack', category: 'personal-care', categoryName: 'Personal Care',
     price: 1299, originalPrice: 1800, rating: 4.8, reviews: 3421,
-    image: 'https://images.unsplash.com/photo-1584036561566-baf8f5f1b144?w=400&h=400&fit=crop',
+    image: 'https://images.unsplash.com/photo-1584622781564-1d987f7333c1?w=400&h=400&fit=crop',
     stock: 'In Stock', badge: 'Best Seller', description: 'NIOSH approved N95 particulate respirator masks. 50-pack. Filters 95% of airborne particles. Foldable design, adjustable nose clip.',
     specs: ['Filtration: 95%', 'Pack: 50 masks', 'NIOSH: Approved', 'Type: Foldable']
   },
   {
     id: 24, name: 'Surgical Gloves Latex 100-Pack', category: 'personal-care', categoryName: 'Personal Care',
     price: 499, originalPrice: 700, rating: 4.6, reviews: 5678,
-    image: 'https://images.unsplash.com/photo-1583947215259-38e31be8751f?w=400&h=400&fit=crop',
+    image: 'https://images.unsplash.com/photo-1588776814546-1ffcf47267a5?w=400&h=400&fit=crop',
     stock: 'In Stock', badge: 'Best Seller', description: 'Powder-free latex surgical examination gloves. 100 gloves per box. Size M. AQL 1.5, ISO certified. Textured fingertips for grip.',
     specs: ['Qty: 100 per box', 'Size: Medium', 'AQL: 1.5', 'ISO: Certified']
   },

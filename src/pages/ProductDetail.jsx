@@ -4,6 +4,7 @@ import { products } from '../data/products';
 import { useCart } from '../context/CartContext';
 import { useWishlist } from '../context/WishlistContext';
 import ProductCard from '../components/products/ProductCard';
+import ProductLocationMap from '../components/products/ProductLocationMap';
 
 export default function ProductDetail() {
   const { id } = useParams();
@@ -116,9 +117,12 @@ export default function ProductDetail() {
         </div>
       </div>
 
+      {/* GPS Location Map */}
+      <ProductLocationMap product={product} />
+
       {/* Related */}
       {related.length > 0 && (
-        <div>
+        <div className="mt-12">
           <h2 className="text-xl font-bold text-slate-800 mb-5">Related Products</h2>
           <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
             {related.map(p => <ProductCard key={p.id} product={p} />)}

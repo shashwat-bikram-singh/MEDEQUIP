@@ -1,4 +1,4 @@
-export const products = [
+const initialProducts = [
   // --- Surgical Equipment (surgical-equipment) ---
   {
     id: 1, name: 'Pro Surgical Scalpel Set', category: 'surgical-equipment', categoryName: 'Surgical Equipment',
@@ -351,3 +351,62 @@ export const products = [
     specs: ['Material: Memory Foam', 'Cover: Bamboo fabric', 'Ergonomic: Yes', 'Washable cover: Yes']
   }
 ];
+
+const warehouses = [
+  {
+    warehouse: 'Central Kathmandu Hub',
+    city: 'Kathmandu',
+    address: 'Tripureshwor, Ward 11, Kathmandu, Nepal',
+    phone: '+977-1-4261100',
+    coordinates: [27.6934, 85.3149],
+  },
+  {
+    warehouse: 'Pokhara Health Supplies Depot',
+    city: 'Pokhara',
+    address: 'Nayabazar, Ward 9, Pokhara, Nepal',
+    phone: '+977-61-532100',
+    coordinates: [28.2212, 83.9920],
+  },
+  {
+    warehouse: 'Chitwan Medical City Hub',
+    city: 'Bharatpur',
+    address: 'Hospital Road, Bharatpur, Chitwan, Nepal',
+    phone: '+977-56-524300',
+    coordinates: [27.6798, 84.4362],
+  },
+  {
+    warehouse: 'Lalitpur Surgical Warehouse',
+    city: 'Lalitpur',
+    address: 'Lagankhel, Ward 12, Lalitpur, Nepal',
+    phone: '+977-1-5542200',
+    coordinates: [27.6685, 85.3204],
+  },
+  {
+    warehouse: 'Dharan East Nepal Supply Center',
+    city: 'Dharan',
+    address: 'BPKIHS Road, Dharan, Nepal',
+    phone: '+977-25-520100',
+    coordinates: [26.8126, 87.2831],
+  },
+  {
+    warehouse: 'Nepalgunj Border Supply Depot',
+    city: 'Nepalgunj',
+    address: 'Surkhet Road, Ward 4, Nepalgunj, Nepal',
+    phone: '+977-81-521100',
+    coordinates: [28.0500, 81.6167],
+  }
+];
+
+// Enrich each product with a stable location based on its ID
+export const products = initialProducts.map(p => {
+  const warehouse = warehouses[p.id % warehouses.length];
+  // Calculate a dynamic stock available at this warehouse
+  const stockAvailable = ((p.id * 7) % 35) + 5;
+  return {
+    ...p,
+    location: {
+      ...warehouse,
+      stockAvailable
+    }
+  };
+});

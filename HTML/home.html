@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>MedEquip — Precision Medical Supplies</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="MedEquip — Professional medical equipment and diagnostic tools. Trusted, certified, fast delivery." />
+  <link rel="stylesheet" href="stylish.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+
+  <!-- Sticky Glass Navbar -->
+  <header class="site-header">
+    <nav class="nav container">
+      <div class="brand">
+        <span class="brand-icon">⚕️</span>
+        <span>MedEquip</span>
+      </div>
+
+    <ul class="nav-links">
+  <li><a href="#home" class="active">Home</a></li>
+  <li><a href="#shop">Shop</a></li>
+
+  <li class="dropdown">
+    <a href="#categories">Categories ▾</a>
+
+    <ul class="dropdown-menu">
+      <li><a href="hospital_furniture.html">Hospital Furniture</li>
+
+      <li><a href="personal care.html">Personal Care</a></li>
+      <li><a href="diognostic.html">Diagnostic Tools</a></li>
+      <li><a href="surgical.html">Surgical Supplies</a></li>
+      <li><a href="emergency.html">Emergency Equipment</a></li>
+    </ul>
+  </li>
+
+  <li><a href="#support">Support</a></li>
+</ul>
+      
+
+      <div class="nav-actions">
+        <div class="search-box">
+          <input type="search" id="searchInput" placeholder="Search equipment..." aria-label="Search" />
+          <button class="search-btn" onclick="handleSearch()">🔍</button>
+        </div>
+
+        <button class="icon-btn cart-btn" onclick="toggleCart()" aria-label="Cart">
+          🛒 <span class="badge" id="cartCount">0</span>
+        </button>
+
+        
+      
+      <button class="mobile-menu-btn" onclick="toggleMobileMenu()">☰</button>
+    </nav>
+  </header>
+
+  <!-- Mobile Menu -->
+  <div class="mobile-menu" id="mobileMenu">
+    <ul>
+      <li><a href="#home">Home</a></li>
+      <li><a href="#shop">Shop</a></li>
+      <li><a href="#categories">Categories</a></li>
+      <li><a href="#support">Support</a></li>
+    </ul>
+  </div>
+
+  <!-- Shopping Cart Sidebar -->
+  <div class="cart-overlay" id="cartOverlay" onclick="toggleCart()"></div>
+  <aside class="cart-sidebar" id="cartSidebar">
+    <div class="cart-header">
+      <h3>Shopping Cart</h3>
+      <button class="close-cart" onclick="toggleCart()">✕</button>
+    </div>
+    <div class="cart-items" id="cartItems">
+      <p class="empty-cart">Your cart is empty</p>
+    </div>
+    <div class="cart-footer">
+      <div class="cart-total">
+        <span>Total:</span>
+        <span id="cartTotal">$0.00</span>
+      </div>
+      <button class="btn-checkout" onclick="checkout()">Proceed to Checkout</button>
+    </div>
+  </aside>
+
+  <!-- Login Modal -->
+  <div class="modal-overlay" id="loginModal">
+    <div class="modal">
+      <div class="modal-header">
+        <h3>Login</h3>
+        <button class="close-modal" onclick="closeModals()">✕</button>
+      </div>
+      <form onsubmit="handleLogin(event)">
+        <div class="form-group">
+          <label>Email</label>
+          <input type="email" required placeholder="your@email.com" />
+        </div>
+        <div class="form-group">
+          <label>Password</label>
+          <input type="password" required placeholder="••••••••" />
+        </div>
+        <button type="submit" class="btn-primary">Login</button>
+        <p class="form-footer">Don't have an account? <a href="#" onclick="showSignup()">Sign up</a></p>
+      </form>
+    </div>
+  </div>
+
+  <!-- Signup Modal -->
+  <div class="modal-overlay" id="signupModal">
+    <div class="modal">
+      <div class="modal-header">
+        <h3>Create Account</h3>
+        <button class="close-modal" onclick="closeModals()">✕</button>
+      </div>
+      <form onsubmit="handleSignup(event)">
+        <div class="form-group">
+          <label>Full Name</label>
+          <input type="text" required placeholder="John Doe" />
+        </div>
+        <div class="form-group">
+          <label>Email</label>
+          <input type="email" required placeholder="your@email.com" />
+        </div>
+        <div class="form-group">
+          <label>Password</label>
+          <input type="password" required placeholder="••••••••" />
+        </div>
+        <button type="submit" class="btn-primary">Create Account</button>
+        <p class="form-footer">Already have an account? <a href="#" onclick="showLogin()">Login</a></p>
+      </form>
+    </div>
+  </div>
+
+  <main>
+
+    <!-- Hero Section -->
+    <section class="hero" id="home">
+      <div class="container hero-grid">
+        <div class="hero-content">
+          <h1>Precision Diagnostics. Professional Care.</h1>
+          <p>
+            MedEquip delivers hospital-grade medical equipment and diagnostic tools
+            trusted by professionals worldwide. Quality certified products with fast delivery.
+          </p>
+          <div class="hero-actions">
+            <a href="#shop" class="btn-primary">Shop Now</a>
+            <a href="#categories" class="btn-secondary">Explore Categories</a>
+          </div>
+        </div>
+
+        <div class="hero-card">
+          <h3>Why Professionals Choose MedEquip</h3>
+          <ul>
+            <li>✔ FDA Approved Products</li>
+            <li>✔ Secure & Fast Delivery</li>
+            <li>✔ Trusted by 10,000+ Clinics & Hospitals</li>
+            <li>✔ 24/7 Expert Support</li>
+            <li>✔ 30-Day Returns</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- Featured Categories -->
+    <section class="categories container" id="categories">
+      <h2 class="section-title">Featured Categories</h2>
+      <div class="category-grid">
+        <article class="category-card" onclick="filterByCategory('furniture')">
+          <div class="category-icon">🛏️</div>
+          <h3>Hospital Furniture</h3>
+          <p>Beds, stretchers, chairs</p>
+        </article>
+        <article class="category-card" onclick="filterByCategory('personal')">
+          <div class="category-icon">🧴</div>
+          <h3>Personal Care</h3>
+          <p>Daily hygiene & care items</p>
+        </article>
+        <article class="category-card" onclick="filterByCategory('diagnostic')">
+          <div class="category-icon">🔬</div>
+          <h3>Diagnostic Tools</h3>
+          <p>Stethoscopes, monitors, scopes</p>
+        </article>
+        <article class="category-card" onclick="filterByCategory('surgical')">
+          <div class="category-icon">🩹</div>
+          <h3>Surgical Supplies</h3>
+          <p>Instruments, sutures, drapes</p>
+        </article>
+        <article class="category-card" onclick="filterByCategory('emergency')">
+          <div class="category-icon">🚨</div>
+          <h3>Emergency Equipment</h3>
+          <p>Defibrillators, kits, trauma</p>
+        </article>
+      </div>
+    </section>
+
+    <!-- Products Section -->
+    <section class="products container" id="shop">
+      <div class="products-header">
+        <h2 class="section-title">Popular Products</h2>
+        <div class="filter-buttons">
+          <button class="filter-btn active" onclick="filterProducts('all')">All</button>
+          <button class="filter-btn" onclick="filterProducts('diagnostic')">Diagnostic</button>
+          <button class="filter-btn" onclick="filterProducts('surgical')">Surgical</button>
+          <button class="filter-btn" onclick="filterProducts('emergency')">Emergency</button>
+        </div>
+      </div>
+
+      <div class="product-grid" id="productGrid">
+        <!-- Products will be dynamically inserted here -->
+      </div>
+      
+      <div class="load-more">
+        <button class="btn-secondary" onclick="loadMoreProducts()">Load More Products</button>
+      </div>
+    </section>
+
+    <!-- Why Choose Us -->
+    <section class="why-us" id="support">
+      <div class="container why-grid">
+        <article class="why-card">
+          <div class="icon">🛡️</div>
+          <h3>Certified Quality</h3>
+          <p>All products meet strict FDA, CE, and ISO medical standards and certifications.</p>
+        </article>
+
+        <article class="why-card">
+          <div class="icon">🚚</div>
+          <h3>Fast Delivery</h3>
+          <p>Reliable logistics network ensuring 24-48 hour delivery to your facility.</p>
+        </article>
+
+        <article class="why-card">
+          <div class="icon">💳</div>
+          <h3>Secure Payments</h3>
+          <p>256-bit encrypted transactions with trusted payment providers.</p>
+        </article>
+
+        <article class="why-card">
+          <div class="icon">📞</div>
+          <h3>24/7 Support</h3>
+          <p>Our medical experts are always ready to help you choose the right equipment.</p>
+        </article>
+      </div>
+    </section>
+
+    <!-- Newsletter -->
+    <section class="newsletter">
+      <div class="container">
+        <h2>Stay Updated</h2>
+        <p>Get the latest medical equipment news and exclusive offers</p>
+        <form class="newsletter-form" onsubmit="handleNewsletter(event)">
+          <input type="email" placeholder="Enter your email" required />
+          <button type="submit" class="btn-primary">Subscribe</button>
+        </form>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Footer -->
+  <footer class="site-footer">
+    <div class="container footer-grid">
+      <div class="footer-brand">
+        <h3>MedEquip</h3>
+        <p>Professional medical equipment for modern healthcare. Trusted by hospitals and clinics worldwide since 2010.</p>
+        <div class="social-links">
+          <a href="#">📘</a>
+          <a href="#">🐦</a>
+          <a href="#">📸</a>
+          <a href="#">💼</a>
+        </div>
+      </div>
+      <div class="footer-links">
+        <h4>Company</h4>
+        <a href="#">About Us</a>
+        <a href="#">Careers</a>
+        <a href="#">Contact</a>
+        <a href="#">Press</a>
+      </div>
+      <div class="footer-links">
+        <h4>Support</h4>
+        <a href="#">Help Center</a>
+        <a href="#">Returns & Refunds</a>
+        <a href="#">Shipping Info</a>
+        <a href="#">Track Order</a>
+      </div>
+      <div class="footer-links">
+        <h4>Legal</h4>
+        <a href="#">Privacy Policy</a>
+        <a href="#">Terms of Service</a>
+        <a href="#">Cookie Policy</a>
+        <a href="#">Compliance</a>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p class="copyright">© 2026 MedEquip. All rights reserved.</p>
+      <div class="payment-icons">
+        <span>💳 Visa</span>
+        <span>💳 MC</span>
+        <span>💳 Amex</span>
+        <span>💳 PayPal</span>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Toast Notification -->
+  <div class="toast" id="toast"></div>
+
+  <script src="app.js"></script>
+</body>
+</html>

@@ -1,0 +1,1066 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CodeProbe — Live Interview Platform</title>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:ital,wght@0,300;0,400;0,500;0,600;1,400&family=Syne:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg: #0a0c10;
+    --surface: #111318;
+    --surface2: #181c24;
+    --border: #232830;
+    --border2: #2e3540;
+    --accent: #00e5a0;
+    --accent2: #0070f3;
+    --accent3: #ff6b35;
+    --warn: #ffb800;
+    --danger: #ff3e5b;
+    --text: #e8edf5;
+    --text2: #8b95a8;
+    --text3: #4a5568;
+    --mono: 'IBM Plex Mono', monospace;
+    --sans: 'Syne', sans-serif;
+    --radius: 8px;
+  }
+
+  html, body { height: 100%; overflow: hidden; background: var(--bg); color: var(--text); font-family: var(--sans); }
+
+  /* SCANLINE OVERLAY */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background: repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0,229,160,0.012) 2px, rgba(0,229,160,0.012) 4px);
+    pointer-events: none;
+    z-index: 9999;
+  }
+
+  /* LAYOUT */
+  .app { display: grid; grid-template-rows: 52px 1fr; height: 100vh; }
+
+  /* TOP BAR */
+  .topbar {
+    display: flex; align-items: center; gap: 16px;
+    padding: 0 20px;
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+    position: relative;
+    z-index: 100;
+  }
+  .logo {
+    font-family: var(--mono); font-weight: 600; font-size: 15px;
+    color: var(--accent); letter-spacing: -0.5px;
+    display: flex; align-items: center; gap: 8px;
+  }
+  .logo-icon {
+    width: 24px; height: 24px;
+    border: 1.5px solid var(--accent);
+    border-radius: 4px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 10px;
+  }
+  .topbar-divider { width: 1px; height: 24px; background: var(--border2); }
+  .session-info { display: flex; align-items: center; gap: 12px; flex: 1; }
+  .session-label { font-family: var(--mono); font-size: 11px; color: var(--text3); text-transform: uppercase; letter-spacing: 1px; }
+  .session-id { font-family: var(--mono); font-size: 12px; color: var(--text2); background: var(--bg); border: 1px solid var(--border); padding: 2px 8px; border-radius: 4px; }
+  .live-badge {
+    display: flex; align-items: center; gap: 6px;
+    font-family: var(--mono); font-size: 11px; color: var(--danger);
+    background: rgba(255,62,91,0.08); border: 1px solid rgba(255,62,91,0.2);
+    padding: 3px 10px; border-radius: 20px;
+  }
+  .live-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--danger); animation: pulse 1.4s ease-in-out infinite; }
+  @keyframes pulse { 0%,100%{opacity:1; transform:scale(1)} 50%{opacity:0.5; transform:scale(0.8)} }
+
+  .timer {
+    font-family: var(--mono); font-size: 22px; font-weight: 600;
+    color: var(--warn); letter-spacing: 2px; min-width: 72px; text-align: right;
+  }
+  .timer.critical { color: var(--danger); animation: blink 0.8s step-end infinite; }
+  @keyframes blink { 50%{opacity:0.4} }
+
+  .topbar-actions { display: flex; gap: 8px; margin-left: auto; }
+  .btn {
+    font-family: var(--mono); font-size: 11px; font-weight: 500;
+    padding: 6px 14px; border-radius: var(--radius); cursor: pointer;
+    border: 1px solid transparent; transition: all 0.15s; letter-spacing: 0.5px; text-transform: uppercase;
+  }
+  .btn-ghost { background: transparent; border-color: var(--border2); color: var(--text2); }
+  .btn-ghost:hover { border-color: var(--text2); color: var(--text); }
+  .btn-accent { background: var(--accent); color: #000; font-weight: 600; border-color: var(--accent); }
+  .btn-accent:hover { background: #00ffc4; box-shadow: 0 0 20px rgba(0,229,160,0.4); }
+  .btn-danger { background: rgba(255,62,91,0.1); border-color: rgba(255,62,91,0.3); color: var(--danger); }
+  .btn-danger:hover { background: rgba(255,62,91,0.2); }
+
+  /* MAIN BODY */
+  .main { display: grid; grid-template-columns: 320px 1fr 300px; overflow: hidden; }
+
+  /* LEFT PANEL */
+  .left-panel { display: flex; flex-direction: column; border-right: 1px solid var(--border); overflow: hidden; }
+
+  .panel-header {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 14px 16px; border-bottom: 1px solid var(--border);
+    background: var(--surface); flex-shrink: 0;
+  }
+  .panel-title { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 1.5px; color: var(--text3); }
+
+  /* PROBLEM SECTION */
+  .problem-meta { padding: 16px; border-bottom: 1px solid var(--border); flex-shrink: 0; }
+  .problem-title { font-size: 17px; font-weight: 700; color: var(--text); margin-bottom: 8px; line-height: 1.3; }
+  .problem-tags { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 12px; }
+  .tag {
+    font-family: var(--mono); font-size: 10px; padding: 2px 8px; border-radius: 20px;
+    border: 1px solid; text-transform: uppercase; letter-spacing: 0.5px;
+  }
+  .tag-medium { color: var(--warn); border-color: rgba(255,184,0,0.3); background: rgba(255,184,0,0.06); }
+  .tag-hard { color: var(--danger); border-color: rgba(255,62,91,0.3); background: rgba(255,62,91,0.06); }
+  .tag-easy { color: var(--accent); border-color: rgba(0,229,160,0.3); background: rgba(0,229,160,0.06); }
+  .tag-topic { color: var(--text2); border-color: var(--border2); background: var(--surface2); }
+
+  .problem-body { padding: 0 16px 16px; overflow-y: auto; flex: 1; font-size: 13px; line-height: 1.7; color: var(--text2); }
+  .problem-body p { margin-bottom: 12px; }
+  .problem-body strong { color: var(--text); font-weight: 600; }
+  .problem-body code {
+    font-family: var(--mono); font-size: 12px;
+    background: var(--surface2); border: 1px solid var(--border);
+    padding: 1px 5px; border-radius: 3px; color: var(--accent);
+  }
+
+  .example-block {
+    background: var(--surface2); border: 1px solid var(--border);
+    border-left: 3px solid var(--accent2);
+    border-radius: var(--radius); padding: 12px; margin-bottom: 10px;
+  }
+  .example-label { font-family: var(--mono); font-size: 10px; font-weight: 600; color: var(--accent2); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 6px; }
+  .example-body { font-family: var(--mono); font-size: 12px; color: var(--text); line-height: 1.6; }
+  .example-comment { color: var(--text3); }
+
+  /* CENTER - EDITOR */
+  .center-panel { display: flex; flex-direction: column; overflow: hidden; }
+
+  .editor-toolbar {
+    display: flex; align-items: center; gap: 10px;
+    padding: 8px 16px; border-bottom: 1px solid var(--border);
+    background: var(--surface); flex-shrink: 0;
+  }
+  .lang-select {
+    font-family: var(--mono); font-size: 12px; background: var(--bg); color: var(--text);
+    border: 1px solid var(--border2); border-radius: var(--radius); padding: 5px 10px;
+    cursor: pointer; appearance: none; padding-right: 24px; position: relative;
+  }
+  .lang-select:focus { outline: none; border-color: var(--accent); }
+
+  .editor-actions { display: flex; gap: 6px; margin-left: auto; }
+  .icon-btn {
+    width: 30px; height: 30px; border-radius: 6px;
+    border: 1px solid var(--border2); background: transparent; color: var(--text2);
+    cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 14px;
+    transition: all 0.15s;
+  }
+  .icon-btn:hover { border-color: var(--text2); color: var(--text); background: var(--surface2); }
+
+  .editor-area { flex: 1; overflow: hidden; position: relative; }
+
+  .line-nums {
+    position: absolute; left: 0; top: 0; bottom: 0;
+    width: 48px; background: var(--surface);
+    border-right: 1px solid var(--border);
+    padding-top: 16px;
+    font-family: var(--mono); font-size: 13px; line-height: 22px;
+    color: var(--text3); text-align: right; padding-right: 12px;
+    user-select: none; overflow: hidden;
+  }
+
+  .editor-code {
+    position: absolute; inset: 0; left: 48px;
+    padding: 16px; overflow: auto;
+    font-family: var(--mono); font-size: 13px; line-height: 22px;
+    color: var(--text); background: transparent; border: none; outline: none; resize: none;
+    caret-color: var(--accent); tab-size: 2;
+    white-space: pre;
+  }
+  .editor-code::selection { background: rgba(0,229,160,0.15); }
+
+  /* Syntax coloring via spans on overlay - we use textarea + div approach */
+  .editor-wrapper { position: relative; flex: 1; overflow: hidden; }
+
+  /* OUTPUT / TESTS */
+  .output-panel {
+    border-top: 1px solid var(--border); height: 200px;
+    display: flex; flex-direction: column; flex-shrink: 0;
+  }
+  .output-tabs { display: flex; border-bottom: 1px solid var(--border); background: var(--surface); }
+  .output-tab {
+    font-family: var(--mono); font-size: 11px; text-transform: uppercase; letter-spacing: 1px;
+    padding: 10px 16px; cursor: pointer; color: var(--text3); border-bottom: 2px solid transparent;
+    transition: all 0.15s;
+  }
+  .output-tab.active { color: var(--accent); border-bottom-color: var(--accent); }
+  .output-content { flex: 1; overflow-y: auto; padding: 12px 16px; font-family: var(--mono); font-size: 12px; line-height: 1.7; }
+
+  .test-case { margin-bottom: 12px; }
+  .test-header { display: flex; align-items: center; gap: 8px; margin-bottom: 4px; font-size: 11px; }
+  .test-status {
+    width: 16px; height: 16px; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center; font-size: 9px; flex-shrink: 0;
+  }
+  .test-pass { background: rgba(0,229,160,0.15); color: var(--accent); border: 1px solid rgba(0,229,160,0.3); }
+  .test-fail { background: rgba(255,62,91,0.15); color: var(--danger); border: 1px solid rgba(255,62,91,0.3); }
+  .test-pending { background: rgba(139,149,168,0.1); color: var(--text3); border: 1px solid var(--border); }
+  .test-name { color: var(--text2); }
+  .test-detail { font-size: 11px; color: var(--text3); padding-left: 24px; }
+  .test-detail .got { color: var(--danger); }
+  .test-detail .expected { color: var(--accent); }
+
+  .run-output { color: var(--text2); }
+  .run-output .line-ok { color: var(--accent); }
+  .run-output .line-err { color: var(--danger); }
+  .run-output .line-info { color: var(--accent2); }
+
+  /* RIGHT PANEL */
+  .right-panel { display: flex; flex-direction: column; border-left: 1px solid var(--border); overflow: hidden; }
+
+  /* CANDIDATE VIDEO */
+  .video-section { padding: 12px; border-bottom: 1px solid var(--border); flex-shrink: 0; }
+  .video-box {
+    background: var(--surface2); border: 1px solid var(--border);
+    border-radius: var(--radius); aspect-ratio: 16/9;
+    display: flex; align-items: center; justify-content: center;
+    position: relative; overflow: hidden;
+  }
+  .video-placeholder {
+    display: flex; flex-direction: column; align-items: center; gap: 8px;
+    color: var(--text3); font-size: 12px; font-family: var(--mono);
+  }
+  .video-avatar {
+    width: 48px; height: 48px; border-radius: 50%;
+    background: linear-gradient(135deg, #1a2a3a, #0d1f33);
+    border: 2px solid var(--border2);
+    display: flex; align-items: center; justify-content: center; font-size: 20px;
+  }
+  .video-overlay {
+    position: absolute; bottom: 8px; left: 8px; right: 8px;
+    display: flex; justify-content: space-between; align-items: center;
+  }
+  .video-name { font-family: var(--mono); font-size: 10px; color: var(--text2); background: rgba(0,0,0,0.6); padding: 2px 8px; border-radius: 4px; }
+  .video-controls { display: flex; gap: 4px; }
+  .vcam-btn {
+    width: 24px; height: 24px; border-radius: 4px; border: none;
+    background: rgba(0,0,0,0.6); color: var(--text2); cursor: pointer; font-size: 11px;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .vcam-btn:hover { background: rgba(0,0,0,0.8); color: var(--text); }
+
+  /* NOTES */
+  .notes-section { flex: 1; display: flex; flex-direction: column; overflow: hidden; }
+  .notes-area {
+    flex: 1; padding: 12px 16px;
+    font-family: var(--mono); font-size: 12px; line-height: 1.7; color: var(--text2);
+    background: transparent; border: none; outline: none; resize: none; overflow-y: auto;
+  }
+  .notes-area::placeholder { color: var(--text3); }
+
+  /* EVALUATION SECTION */
+  .eval-section { border-top: 1px solid var(--border); padding: 12px; flex-shrink: 0; }
+  .eval-title { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 1.5px; color: var(--text3); margin-bottom: 10px; }
+  .eval-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 10px; }
+  .eval-item { display: flex; flex-direction: column; gap: 4px; }
+  .eval-label { font-family: var(--mono); font-size: 10px; color: var(--text3); }
+  .star-row { display: flex; gap: 2px; }
+  .star { font-size: 14px; cursor: pointer; color: var(--border2); transition: color 0.1s; line-height: 1; }
+  .star.filled { color: var(--warn); }
+  .star:hover { color: var(--warn); }
+
+  /* SCROLLBAR */
+  ::-webkit-scrollbar { width: 5px; height: 5px; }
+  ::-webkit-scrollbar-track { background: transparent; }
+  ::-webkit-scrollbar-thumb { background: var(--border2); border-radius: 10px; }
+  ::-webkit-scrollbar-thumb:hover { background: var(--text3); }
+
+  /* NOTIFICATIONS */
+  .notif-stack { position: fixed; bottom: 20px; right: 20px; z-index: 1000; display: flex; flex-direction: column; gap: 8px; }
+  .notif {
+    background: var(--surface); border: 1px solid var(--border2);
+    border-left: 3px solid var(--accent);
+    border-radius: var(--radius); padding: 10px 16px;
+    font-family: var(--mono); font-size: 12px; color: var(--text2);
+    max-width: 280px; animation: slideIn 0.3s cubic-bezier(0.16,1,0.3,1);
+    display: flex; align-items: center; gap: 8px;
+  }
+  .notif.notif-err { border-left-color: var(--danger); }
+  .notif.notif-warn { border-left-color: var(--warn); }
+  @keyframes slideIn { from{transform:translateX(120%); opacity:0} to{transform:translateX(0); opacity:1} }
+
+  /* RUNNING OVERLAY */
+  .running-bar {
+    position: absolute; top: 0; left: 0; right: 0; height: 2px;
+    background: linear-gradient(90deg, transparent, var(--accent), transparent);
+    background-size: 200% 100%;
+    animation: scanBar 1s linear infinite;
+    opacity: 0; transition: opacity 0.2s;
+  }
+  .running-bar.active { opacity: 1; }
+  @keyframes scanBar { 0%{background-position:200% 0} 100%{background-position:-200% 0} }
+
+  /* COMPLETION BADGE */
+  .complexity-row { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 10px; }
+  .metric-pill {
+    font-family: var(--mono); font-size: 10px; padding: 3px 8px;
+    border-radius: 20px; border: 1px solid var(--border2); color: var(--text3);
+    background: var(--surface2);
+  }
+  .metric-pill.good { color: var(--accent); border-color: rgba(0,229,160,0.3); background: rgba(0,229,160,0.06); }
+
+  /* PROGRESS BAR */
+  .progress-bar-wrap { height: 2px; background: var(--border); margin: 0; }
+  .progress-bar-fill { height: 100%; background: var(--accent2); transition: width 0.5s; }
+
+  /* GLOWS */
+  .accent-glow { box-shadow: 0 0 20px rgba(0,229,160,0.08); }
+
+  /* Modal */
+  .modal-overlay {
+    position: fixed; inset: 0; background: rgba(0,0,0,0.7); z-index: 500;
+    display: flex; align-items: center; justify-content: center;
+    opacity: 0; pointer-events: none; transition: opacity 0.2s;
+    backdrop-filter: blur(4px);
+  }
+  .modal-overlay.visible { opacity: 1; pointer-events: all; }
+  .modal {
+    background: var(--surface); border: 1px solid var(--border2);
+    border-radius: 12px; padding: 28px; width: 420px; max-width: 90vw;
+    transform: translateY(20px); transition: transform 0.2s;
+  }
+  .modal-overlay.visible .modal { transform: translateY(0); }
+  .modal-title { font-size: 18px; font-weight: 700; margin-bottom: 8px; }
+  .modal-subtitle { font-size: 13px; color: var(--text2); margin-bottom: 20px; line-height: 1.5; }
+  .modal-actions { display: flex; gap: 10px; justify-content: flex-end; }
+
+  /* Tooltip */
+  [data-tip] { position: relative; }
+  [data-tip]:hover::after {
+    content: attr(data-tip);
+    position: absolute; bottom: calc(100% + 8px); left: 50%; transform: translateX(-50%);
+    background: var(--surface2); border: 1px solid var(--border2); color: var(--text2);
+    font-family: var(--mono); font-size: 10px; white-space: nowrap;
+    padding: 3px 8px; border-radius: 4px; pointer-events: none; z-index: 200;
+  }
+
+  select option { background: var(--surface); }
+</style>
+</head>
+<body>
+<div class="app">
+  <!-- TOP BAR -->
+  <header class="topbar">
+    <div class="logo">
+      <div class="logo-icon">CP</div>
+      CodeProbe
+    </div>
+    <div class="topbar-divider"></div>
+    <div class="session-info">
+      <span class="session-label">Session</span>
+      <span class="session-id">#INT-2024-0847</span>
+      <div class="live-badge"><div class="live-dot"></div> LIVE</div>
+    </div>
+    <div class="timer" id="timerDisplay">45:00</div>
+    <div class="topbar-actions">
+      <button class="btn btn-ghost" onclick="toggleTimer()" id="timerBtn">⏸ Pause</button>
+      <button class="btn btn-ghost" onclick="changeQuestion()">↺ New Q</button>
+      <button class="btn btn-danger" onclick="showEndModal()">■ End</button>
+      <button class="btn btn-accent" onclick="runCode()">▶ Run</button>
+    </div>
+  </header>
+
+  <!-- PROGRESS BAR -->
+  <div class="progress-bar-wrap" style="position: relative; height: 2px; flex-shrink: 0; grid-row: auto;">
+    <div class="progress-bar-fill" id="timerProgress" style="width: 100%;"></div>
+  </div>
+
+  <!-- MAIN -->
+  <div class="main">
+
+    <!-- LEFT: PROBLEM -->
+    <div class="left-panel">
+      <div class="panel-header">
+        <span class="panel-title">Problem</span>
+        <div style="display:flex; gap:6px;">
+          <button class="icon-btn" data-tip="Previous" onclick="changeQuestion(-1)">‹</button>
+          <button class="icon-btn" data-tip="Next" onclick="changeQuestion(1)">›</button>
+        </div>
+      </div>
+      <div class="problem-meta" id="problemMeta">
+        <!-- Populated by JS -->
+      </div>
+      <div class="problem-body" id="problemBody">
+        <!-- Populated by JS -->
+      </div>
+    </div>
+
+    <!-- CENTER: EDITOR -->
+    <div class="center-panel">
+      <div class="editor-toolbar">
+        <select class="lang-select" id="langSelect" onchange="switchLang()">
+          <option value="python">Python 3</option>
+          <option value="javascript">JavaScript</option>
+          <option value="java">Java</option>
+          <option value="cpp">C++</option>
+          <option value="go">Go</option>
+        </select>
+        <div class="topbar-divider"></div>
+        <div class="editor-actions">
+          <button class="icon-btn" data-tip="Format" onclick="formatCode()">≡</button>
+          <button class="icon-btn" data-tip="Reset" onclick="resetCode()">↺</button>
+          <button class="icon-btn" data-tip="Copy" onclick="copyCode()">⎘</button>
+          <button class="icon-btn" data-tip="Font size +" onclick="changeFontSize(1)">A+</button>
+          <button class="icon-btn" data-tip="Font size -" onclick="changeFontSize(-1)">A-</button>
+        </div>
+      </div>
+
+      <div class="editor-wrapper" style="flex:1; display:flex; overflow:hidden; position:relative;">
+        <div class="running-bar" id="runningBar"></div>
+        <div class="line-nums" id="lineNums"></div>
+        <textarea class="editor-code" id="codeEditor" spellcheck="false"
+          oninput="onEditorInput()" onkeydown="handleEditorKey(event)"
+          onscroll="syncScroll()"></textarea>
+      </div>
+
+      <div class="output-panel">
+        <div class="output-tabs">
+          <div class="output-tab active" onclick="switchTab('tests', this)">Test Cases</div>
+          <div class="output-tab" onclick="switchTab('console', this)">Console</div>
+          <div class="output-tab" onclick="switchTab('analytics', this)">Analytics</div>
+        </div>
+        <div class="output-content" id="outputContent"></div>
+      </div>
+    </div>
+
+    <!-- RIGHT: INTERVIEWER PANEL -->
+    <div class="right-panel">
+      <div class="panel-header">
+        <span class="panel-title">Interview Panel</span>
+      </div>
+
+      <!-- VIDEO -->
+      <div class="video-section">
+        <div class="video-box" id="videoBox">
+          <div class="video-placeholder" id="videoPlaceholder">
+            <div class="video-avatar">👤</div>
+            <span>Camera Off</span>
+          </div>
+          <video id="videoElement" style="width:100%;height:100%;object-fit:cover;display:none;border-radius:6px;" autoplay muted></video>
+          <div class="video-overlay">
+            <span class="video-name">Candidate</span>
+            <div class="video-controls">
+              <button class="vcam-btn" onclick="toggleCamera()" id="camBtn" data-tip="Camera">📷</button>
+              <button class="vcam-btn" data-tip="Mic">🎙</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- NOTES -->
+      <div class="notes-section">
+        <div class="panel-header" style="flex-shrink:0;">
+          <span class="panel-title">Interviewer Notes</span>
+          <button class="icon-btn" data-tip="Clear" onclick="clearNotes()" style="font-size:10px;">✕</button>
+        </div>
+        <textarea class="notes-area" id="notesArea"
+          placeholder="Type notes here...&#10;&#10;• Problem approach&#10;• Edge case handling&#10;• Communication style&#10;• Code quality"></textarea>
+      </div>
+
+      <!-- EVALUATION -->
+      <div class="eval-section">
+        <div class="eval-title">Evaluation</div>
+        <div class="eval-grid">
+          <div class="eval-item">
+            <div class="eval-label">Problem Solving</div>
+            <div class="star-row" data-category="solving"></div>
+          </div>
+          <div class="eval-item">
+            <div class="eval-label">Code Quality</div>
+            <div class="star-row" data-category="quality"></div>
+          </div>
+          <div class="eval-item">
+            <div class="eval-label">Communication</div>
+            <div class="star-row" data-category="comm"></div>
+          </div>
+          <div class="eval-item">
+            <div class="eval-label">Efficiency</div>
+            <div class="star-row" data-category="efficiency"></div>
+          </div>
+        </div>
+        <button class="btn btn-accent" style="width:100%; margin-top:2px;" onclick="submitEval()">Submit Evaluation</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- END MODAL -->
+<div class="modal-overlay" id="endModal">
+  <div class="modal">
+    <div class="modal-title">End Interview Session?</div>
+    <div class="modal-subtitle">This will finalize the session #INT-2024-0847. The candidate's code and evaluation will be saved for review.</div>
+    <div class="modal-actions">
+      <button class="btn btn-ghost" onclick="hideEndModal()">Cancel</button>
+      <button class="btn btn-danger" onclick="endSession()">End Session</button>
+    </div>
+  </div>
+</div>
+
+<!-- NOTIFICATIONS -->
+<div class="notif-stack" id="notifStack"></div>
+
+<script>
+// ─── DATA ─────────────────────────────────────────────────────────
+const PROBLEMS = [
+  {
+    title: "Two Sum",
+    difficulty: "easy",
+    topics: ["Array", "Hash Map"],
+    desc: `<p>Given an array of integers <code>nums</code> and an integer <code>target</code>, return <strong>indices</strong> of the two numbers such that they add up to <code>target</code>.</p>
+<p>You may assume that each input would have <strong>exactly one solution</strong>, and you may not use the same element twice.</p>`,
+    examples: [
+      { input: "nums = [2, 7, 11, 15], target = 9", output: "[0, 1]", explain: "nums[0] + nums[1] == 9" },
+      { input: "nums = [3, 2, 4], target = 6", output: "[1, 2]", explain: "nums[1] + nums[2] == 6" },
+    ],
+    starterCode: {
+      python: `def two_sum(nums: list[int], target: int) -> list[int]:
+    # Your solution here
+    pass`,
+      javascript: `function twoSum(nums, target) {
+    // Your solution here
+}`,
+      java: `class Solution {
+    public int[] twoSum(int[] nums, int target) {
+        // Your solution here
+    }
+}`,
+      cpp: `class Solution {
+public:
+    vector<int> twoSum(vector<int>& nums, int target) {
+        // Your solution here
+    }
+};`,
+      go: `func twoSum(nums []int, target int) []int {
+    // Your solution here
+}`,
+    },
+    testCases: [
+      { name: "Example 1", input: "[2,7,11,15], 9", expected: "[0,1]" },
+      { name: "Example 2", input: "[3,2,4], 6", expected: "[1,2]" },
+      { name: "Duplicate values", input: "[3,3], 6", expected: "[0,1]" },
+      { name: "Negative nums", input: "[-1,-2,-3,-4,-5], -8", expected: "[2,4]" },
+    ]
+  },
+  {
+    title: "Longest Substring Without Repeating Characters",
+    difficulty: "medium",
+    topics: ["Sliding Window", "Hash Map", "String"],
+    desc: `<p>Given a string <code>s</code>, find the length of the <strong>longest substring</strong> without repeating characters.</p>
+<p>A <strong>substring</strong> is a contiguous sequence of characters within the string.</p>`,
+    examples: [
+      { input: 's = "abcabcbb"', output: "3", explain: '"abc" has length 3' },
+      { input: 's = "bbbbb"', output: "1", explain: '"b" has length 1' },
+      { input: 's = "pwwkew"', output: "3", explain: '"wke" has length 3' },
+    ],
+    starterCode: {
+      python: `def length_of_longest_substring(s: str) -> int:
+    # Your solution here
+    pass`,
+      javascript: `function lengthOfLongestSubstring(s) {
+    // Your solution here
+}`,
+      java: `class Solution {
+    public int lengthOfLongestSubstring(String s) {
+        // Your solution here
+    }
+}`,
+      cpp: `class Solution {
+public:
+    int lengthOfLongestSubstring(string s) {
+        // Your solution here
+    }
+};`,
+      go: `func lengthOfLongestSubstring(s string) int {
+    // Your solution here
+}`,
+    },
+    testCases: [
+      { name: '"abcabcbb"', input: '"abcabcbb"', expected: "3" },
+      { name: '"bbbbb"', input: '"bbbbb"', expected: "1" },
+      { name: '"pwwkew"', input: '"pwwkew"', expected: "3" },
+      { name: 'Empty string ""', input: '""', expected: "0" },
+    ]
+  },
+  {
+    title: "Merge K Sorted Lists",
+    difficulty: "hard",
+    topics: ["Linked List", "Divide & Conquer", "Heap"],
+    desc: `<p>You are given an array of <code>k</code> linked-lists <code>lists</code>, each linked-list is sorted in ascending order.</p>
+<p><strong>Merge</strong> all the linked-lists into one sorted linked-list and return it.</p>`,
+    examples: [
+      { input: "lists = [[1,4,5],[1,3,4],[2,6]]", output: "[1,1,2,3,4,4,5,6]", explain: "All three lists merged" },
+      { input: "lists = []", output: "[]", explain: "Empty input" },
+    ],
+    starterCode: {
+      python: `class ListNode:
+    def __init__(self, val=0, next=None):
+        self.val = val
+        self.next = next
+
+def merge_k_lists(lists: list) -> ListNode:
+    # Your solution here
+    pass`,
+      javascript: `function mergeKLists(lists) {
+    // Your solution here
+}`,
+      java: `class Solution {
+    public ListNode mergeKLists(ListNode[] lists) {
+        // Your solution here
+    }
+}`,
+      cpp: `class Solution {
+public:
+    ListNode* mergeKLists(vector<ListNode*>& lists) {
+        // Your solution here
+    }
+};`,
+      go: `func mergeKLists(lists []*ListNode) *ListNode {
+    // Your solution here
+}`,
+    },
+    testCases: [
+      { name: "3 sorted lists", input: "[[1,4,5],[1,3,4],[2,6]]", expected: "[1,1,2,3,4,4,5,6]" },
+      { name: "Empty input", input: "[]", expected: "[]" },
+      { name: "Single empty", input: "[[]]", expected: "[]" },
+      { name: "Single list", input: "[[1,2,3]]", expected: "[1,2,3]" },
+    ]
+  }
+];
+
+// ─── STATE ────────────────────────────────────────────────────────
+let currentProblem = 0;
+let currentLang = 'python';
+let currentTab = 'tests';
+let timerSeconds = 45 * 60;
+let timerRunning = true;
+let timerInterval = null;
+let testResults = [];
+let fontSize = 13;
+let ratings = { solving: 0, quality: 0, comm: 0, efficiency: 0 };
+let codeHistory = {}; // lang -> code
+
+// ─── INIT ─────────────────────────────────────────────────────────
+function init() {
+  loadProblem(0);
+  initStars();
+  startTimer();
+  updateLineNums();
+  renderTests();
+  
+  // Load saved notes
+  document.getElementById('notesArea').value = '';
+  
+  setTimeout(() => notify('Session started. Good luck! 🎯'), 600);
+}
+
+function loadProblem(idx) {
+  currentProblem = idx;
+  const p = PROBLEMS[idx];
+  
+  // Meta
+  const meta = document.getElementById('problemMeta');
+  const diffClass = { easy: 'tag-easy', medium: 'tag-medium', hard: 'tag-hard' }[p.difficulty];
+  meta.innerHTML = `
+    <div class="problem-title">${p.title}</div>
+    <div class="problem-tags">
+      <span class="tag ${diffClass}">${p.difficulty}</span>
+      ${p.topics.map(t => `<span class="tag tag-topic">${t}</span>`).join('')}
+    </div>
+  `;
+  
+  // Body
+  const body = document.getElementById('problemBody');
+  let html = p.desc;
+  html += '<br>';
+  p.examples.forEach((ex, i) => {
+    html += `<div class="example-block">
+      <div class="example-label">Example ${i+1}</div>
+      <div class="example-body">
+        <strong>Input:</strong> ${ex.input}<br>
+        <strong>Output:</strong> ${ex.output}<br>
+        <span class="example-comment">// ${ex.explain}</span>
+      </div>
+    </div>`;
+  });
+  body.innerHTML = html;
+  
+  // Code
+  const editor = document.getElementById('codeEditor');
+  const key = `${idx}-${currentLang}`;
+  if (!codeHistory[key]) codeHistory[key] = p.starterCode[currentLang] || '';
+  editor.value = codeHistory[key];
+  updateLineNums();
+  
+  // Reset tests
+  testResults = p.testCases.map(() => 'pending');
+  if (currentTab === 'tests') renderTests();
+}
+
+// ─── TIMER ────────────────────────────────────────────────────────
+function startTimer() {
+  timerInterval = setInterval(() => {
+    if (!timerRunning) return;
+    timerSeconds--;
+    updateTimerDisplay();
+    if (timerSeconds <= 0) { clearInterval(timerInterval); notify('Time\'s up!', 'err'); }
+  }, 1000);
+}
+
+function updateTimerDisplay() {
+  const m = Math.floor(timerSeconds / 60);
+  const s = timerSeconds % 60;
+  const el = document.getElementById('timerDisplay');
+  el.textContent = `${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;
+  el.classList.toggle('critical', timerSeconds < 300);
+  
+  const totalSecs = 45 * 60;
+  const pct = (timerSeconds / totalSecs) * 100;
+  document.getElementById('timerProgress').style.width = pct + '%';
+  document.getElementById('timerProgress').style.background =
+    timerSeconds < 300 ? 'var(--danger)' : timerSeconds < 600 ? 'var(--warn)' : 'var(--accent2)';
+}
+
+function toggleTimer() {
+  timerRunning = !timerRunning;
+  document.getElementById('timerBtn').textContent = timerRunning ? '⏸ Pause' : '▶ Resume';
+  notify(timerRunning ? 'Timer resumed' : 'Timer paused', 'warn');
+}
+
+// ─── EDITOR ───────────────────────────────────────────────────────
+function onEditorInput() {
+  const key = `${currentProblem}-${currentLang}`;
+  codeHistory[key] = document.getElementById('codeEditor').value;
+  updateLineNums();
+}
+
+function updateLineNums() {
+  const code = document.getElementById('codeEditor').value;
+  const lines = code.split('\n').length;
+  const nums = document.getElementById('lineNums');
+  nums.innerHTML = Array.from({length: lines}, (_, i) => `<div>${i+1}</div>`).join('');
+}
+
+function syncScroll() {
+  const editor = document.getElementById('codeEditor');
+  document.getElementById('lineNums').scrollTop = editor.scrollTop;
+}
+
+function handleEditorKey(e) {
+  if (e.key === 'Tab') {
+    e.preventDefault();
+    const ta = e.target;
+    const start = ta.selectionStart;
+    const end = ta.selectionEnd;
+    ta.value = ta.value.substring(0, start) + '  ' + ta.value.substring(end);
+    ta.selectionStart = ta.selectionEnd = start + 2;
+    onEditorInput();
+  }
+  if ((e.ctrlKey || e.metaKey) && e.key === 'Enter') {
+    e.preventDefault();
+    runCode();
+  }
+}
+
+function switchLang() {
+  // Save current
+  const oldKey = `${currentProblem}-${currentLang}`;
+  codeHistory[oldKey] = document.getElementById('codeEditor').value;
+  
+  currentLang = document.getElementById('langSelect').value;
+  const newKey = `${currentProblem}-${currentLang}`;
+  if (!codeHistory[newKey]) codeHistory[newKey] = PROBLEMS[currentProblem].starterCode[currentLang] || '';
+  document.getElementById('codeEditor').value = codeHistory[newKey];
+  updateLineNums();
+}
+
+function resetCode() {
+  document.getElementById('codeEditor').value = PROBLEMS[currentProblem].starterCode[currentLang] || '';
+  delete codeHistory[`${currentProblem}-${currentLang}`];
+  onEditorInput();
+  notify('Code reset to starter template');
+}
+
+function copyCode() {
+  navigator.clipboard.writeText(document.getElementById('codeEditor').value);
+  notify('Code copied to clipboard ⎘');
+}
+
+function formatCode() {
+  // Simple formatting: normalize indentation
+  notify('Code formatted ≡');
+}
+
+function changeFontSize(delta) {
+  fontSize = Math.max(10, Math.min(18, fontSize + delta));
+  document.getElementById('codeEditor').style.fontSize = fontSize + 'px';
+  document.getElementById('lineNums').style.fontSize = fontSize + 'px';
+  document.getElementById('lineNums').style.lineHeight = (fontSize + 9) + 'px';
+  document.getElementById('codeEditor').style.lineHeight = (fontSize + 9) + 'px';
+}
+
+// ─── RUN CODE ─────────────────────────────────────────────────────
+function runCode() {
+  const bar = document.getElementById('runningBar');
+  bar.classList.add('active');
+  notify('Running tests...', 'info');
+  
+  switchTab('tests', document.querySelector('.output-tab'));
+  testResults = PROBLEMS[currentProblem].testCases.map(() => 'running');
+  renderTests();
+  
+  // Simulate test execution with staggered results
+  const p = PROBLEMS[currentProblem];
+  const code = document.getElementById('codeEditor').value;
+  const hasLogic = code.length > 50 && !code.includes('pass') && !code.includes('// Your solution here');
+  
+  p.testCases.forEach((tc, i) => {
+    setTimeout(() => {
+      // Smart fake result based on code content
+      const passes = hasLogic ? (Math.random() > 0.25) : (Math.random() > 0.8);
+      testResults[i] = passes ? 'pass' : 'fail';
+      renderTests();
+      
+      if (i === p.testCases.length - 1) {
+        bar.classList.remove('active');
+        const passing = testResults.filter(r => r === 'pass').length;
+        const total = testResults.length;
+        if (passing === total) {
+          notify(`All ${total} tests passed! ✓`, 'ok');
+        } else {
+          notify(`${passing}/${total} tests passed`, 'warn');
+        }
+      }
+    }, 400 + i * 300 + Math.random() * 200);
+  });
+}
+
+// ─── OUTPUT TABS ──────────────────────────────────────────────────
+function switchTab(tab, el) {
+  currentTab = tab;
+  document.querySelectorAll('.output-tab').forEach(t => t.classList.remove('active'));
+  if (el) el.classList.add('active');
+  else document.querySelectorAll('.output-tab')[['tests','console','analytics'].indexOf(tab)].classList.add('active');
+  
+  if (tab === 'tests') renderTests();
+  else if (tab === 'console') renderConsole();
+  else renderAnalytics();
+}
+
+function renderTests() {
+  const p = PROBLEMS[currentProblem];
+  const el = document.getElementById('outputContent');
+  
+  el.innerHTML = p.testCases.map((tc, i) => {
+    const result = testResults[i] || 'pending';
+    let statusEl, detail = '';
+    
+    if (result === 'pass') {
+      statusEl = `<div class="test-status test-pass">✓</div>`;
+    } else if (result === 'fail') {
+      statusEl = `<div class="test-status test-fail">✗</div>`;
+      const fakeGot = tc.expected === '[0,1]' ? '[1,0]' : tc.expected === '3' ? '2' : 'null';
+      detail = `<div class="test-detail">Got: <span class="got">${fakeGot}</span> &nbsp; Expected: <span class="expected">${tc.expected}</span></div>`;
+    } else if (result === 'running') {
+      statusEl = `<div class="test-status test-pending" style="animation:pulse 0.6s ease-in-out infinite">·</div>`;
+    } else {
+      statusEl = `<div class="test-status test-pending">○</div>`;
+    }
+    
+    return `<div class="test-case">
+      <div class="test-header">
+        ${statusEl}
+        <span class="test-name">${tc.name}</span>
+        <span style="color:var(--text3); font-size:11px; margin-left:auto;">Input: ${tc.input}</span>
+      </div>
+      ${detail}
+    </div>`;
+  }).join('');
+}
+
+function renderConsole() {
+  const hasRun = testResults.some(r => r !== 'pending');
+  const el = document.getElementById('outputContent');
+  
+  if (!hasRun) {
+    el.innerHTML = `<div class="run-output" style="color:var(--text3);">No output yet. Press ▶ Run to execute.</div>`;
+    return;
+  }
+  
+  el.innerHTML = `<div class="run-output">
+    <div class="line-info">$ Running ${PROBLEMS[currentProblem].title}...</div>
+    <div class="line-ok">→ Compilation successful [${currentLang}]</div>
+    <div>→ Executing test suite...</div>
+    ${testResults.map((r, i) => `<div class="${r === 'pass' ? 'line-ok' : r === 'fail' ? 'line-err' : ''}">  Test ${i+1}: ${r.toUpperCase()}</div>`).join('')}
+    <div class="line-info">→ Runtime: ${(Math.random() * 80 + 20).toFixed(0)}ms | Memory: ${(Math.random() * 10 + 2).toFixed(1)}MB</div>
+  </div>`;
+}
+
+function renderAnalytics() {
+  const el = document.getElementById('outputContent');
+  const code = document.getElementById('codeEditor').value;
+  const lines = code.split('\n').filter(l => l.trim()).length;
+  const elapsed = 45*60 - timerSeconds;
+  const elapsedMin = Math.floor(elapsed / 60);
+  
+  el.innerHTML = `<div style="font-family:var(--mono); font-size:12px; color:var(--text2);">
+    <div style="margin-bottom:12px; color:var(--text); font-weight:600;">Session Analytics</div>
+    <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-bottom:14px;">
+      <div style="background:var(--surface2); border:1px solid var(--border); border-radius:6px; padding:10px;">
+        <div style="color:var(--text3); font-size:10px; text-transform:uppercase; letter-spacing:1px; margin-bottom:4px;">Lines Written</div>
+        <div style="font-size:22px; color:var(--accent); font-weight:600;">${lines}</div>
+      </div>
+      <div style="background:var(--surface2); border:1px solid var(--border); border-radius:6px; padding:10px;">
+        <div style="color:var(--text3); font-size:10px; text-transform:uppercase; letter-spacing:1px; margin-bottom:4px;">Time Elapsed</div>
+        <div style="font-size:22px; color:var(--accent2); font-weight:600;">${elapsedMin}m</div>
+      </div>
+      <div style="background:var(--surface2); border:1px solid var(--border); border-radius:6px; padding:10px;">
+        <div style="color:var(--text3); font-size:10px; text-transform:uppercase; letter-spacing:1px; margin-bottom:4px;">Tests Passing</div>
+        <div style="font-size:22px; color:var(--warn); font-weight:600;">${testResults.filter(r=>r==='pass').length}/${testResults.length}</div>
+      </div>
+      <div style="background:var(--surface2); border:1px solid var(--border); border-radius:6px; padding:10px;">
+        <div style="color:var(--text3); font-size:10px; text-transform:uppercase; letter-spacing:1px; margin-bottom:4px;">Run Attempts</div>
+        <div style="font-size:22px; color:var(--text); font-weight:600;">${Math.max(0, testResults.filter(r=>r!=='pending').length > 0 ? Math.floor(Math.random()*3)+1 : 0)}</div>
+      </div>
+    </div>
+    <div style="color:var(--text3); font-size:10px; text-transform:uppercase; letter-spacing:1px; margin-bottom:6px;">Estimated Complexity</div>
+    <div style="display:flex; gap:6px; flex-wrap:wrap;">
+      <span class="metric-pill good">Time: O(n)</span>
+      <span class="metric-pill good">Space: O(n)</span>
+      <span class="metric-pill">Language: ${currentLang}</span>
+    </div>
+  </div>`;
+}
+
+// ─── QUESTIONS ─────────────────────────────────────────────────────
+function changeQuestion(dir) {
+  if (typeof dir === 'number') {
+    const next = (currentProblem + dir + PROBLEMS.length) % PROBLEMS.length;
+    loadProblem(next);
+  } else {
+    const next = (currentProblem + 1) % PROBLEMS.length;
+    loadProblem(next);
+  }
+  notify(`Loaded: ${PROBLEMS[currentProblem].title}`);
+}
+
+// ─── STARS ────────────────────────────────────────────────────────
+function initStars() {
+  document.querySelectorAll('.star-row').forEach(row => {
+    const cat = row.dataset.category;
+    for (let i = 1; i <= 5; i++) {
+      const star = document.createElement('span');
+      star.className = 'star';
+      star.textContent = '★';
+      star.dataset.val = i;
+      star.addEventListener('click', () => setRating(cat, i, row));
+      star.addEventListener('mouseenter', () => hoverStars(row, i));
+      star.addEventListener('mouseleave', () => renderStars(row, ratings[cat]));
+      row.appendChild(star);
+    }
+    renderStars(row, 0);
+  });
+}
+
+function setRating(cat, val, row) {
+  ratings[cat] = val;
+  renderStars(row, val);
+}
+
+function hoverStars(row, val) {
+  row.querySelectorAll('.star').forEach((s, i) => {
+    s.classList.toggle('filled', i < val);
+  });
+}
+
+function renderStars(row, val) {
+  row.querySelectorAll('.star').forEach((s, i) => {
+    s.classList.toggle('filled', i < val);
+  });
+}
+
+// ─── CAMERA ───────────────────────────────────────────────────────
+let cameraOn = false;
+async function toggleCamera() {
+  if (!cameraOn) {
+    try {
+      const stream = await navigator.mediaDevices.getUserMedia({ video: true });
+      const video = document.getElementById('videoElement');
+      video.srcObject = stream;
+      video.style.display = 'block';
+      document.getElementById('videoPlaceholder').style.display = 'none';
+      cameraOn = true;
+      document.getElementById('camBtn').textContent = '📷';
+      notify('Camera enabled');
+    } catch (e) {
+      notify('Camera access denied', 'err');
+    }
+  } else {
+    const video = document.getElementById('videoElement');
+    if (video.srcObject) video.srcObject.getTracks().forEach(t => t.stop());
+    video.style.display = 'none';
+    document.getElementById('videoPlaceholder').style.display = 'flex';
+    cameraOn = false;
+    notify('Camera disabled');
+  }
+}
+
+// ─── NOTES ────────────────────────────────────────────────────────
+function clearNotes() {
+  document.getElementById('notesArea').value = '';
+  notify('Notes cleared');
+}
+
+// ─── NOTIFICATIONS ────────────────────────────────────────────────
+function notify(msg, type = 'ok') {
+  const stack = document.getElementById('notifStack');
+  const n = document.createElement('div');
+  n.className = `notif${type === 'err' ? ' notif-err' : type === 'warn' ? ' notif-warn' : ''}`;
+  n.style.borderLeftColor = type === 'err' ? 'var(--danger)' : type === 'warn' ? 'var(--warn)' : type === 'info' ? 'var(--accent2)' : 'var(--accent)';
+  n.innerHTML = `<span>${type === 'err' ? '⚠' : type === 'warn' ? '⚡' : '✓'}</span> ${msg}`;
+  stack.appendChild(n);
+  setTimeout(() => { n.style.opacity = '0'; n.style.transition = 'opacity 0.3s'; setTimeout(() => n.remove(), 300); }, 2500);
+}
+
+// ─── MODAL ─────────────────────────────────────────────────────────
+function showEndModal() { document.getElementById('endModal').classList.add('visible'); }
+function hideEndModal() { document.getElementById('endModal').classList.remove('visible'); }
+function endSession() {
+  hideEndModal();
+  notify('Session saved and ended. Redirecting...', 'warn');
+  setTimeout(() => { notify('Generating report...', 'info'); }, 1500);
+}
+
+// ─── EVAL ─────────────────────────────────────────────────────────
+function submitEval() {
+  const avg = Object.values(ratings).reduce((a,b) => a+b, 0) / 4;
+  if (avg === 0) { notify('Please rate all categories first', 'warn'); return; }
+  notify(`Evaluation submitted! Avg: ${avg.toFixed(1)}/5 ★`);
+}
+
+// ─── START ────────────────────────────────────────────────────────
+init();
+
+// ─── KEYBOARD SHORTCUTS ──────────────────────────────────────────
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape') hideEndModal();
+});
+</script>
+</body>
+</html>

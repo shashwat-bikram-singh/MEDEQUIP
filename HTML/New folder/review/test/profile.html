@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profile - MyWebsite</title>
+    
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="css.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body class="dashboard-page">
+    <!-- Sidebar (same as dashboard) -->
+    <aside class="sidebar" id="sidebar">
+        <div class="sidebar-header">
+            <a href="index.html" class="logo">
+                <i class="fas fa-code"></i>
+                <span>MyWebsite</span>
+            </a>
+            <button class="sidebar-toggle" id="sidebarToggle">
+                <i class="fas fa-bars"></i>
+            </button>
+        </div>
+        
+        <nav class="sidebar-nav">
+            <div class="nav-section">
+                <span class="nav-section-title">Main</span>
+                <ul>
+                    <li><a href="dashboard.html" class="nav-link"><i class="fas fa-home"></i><span>Dashboard</span></a></li>
+                    <li><a href="#" class="nav-link"><i class="fas fa-chart-line"></i><span>Analytics</span></a></li>
+                    <li><a href="#" class="nav-link"><i class="fas fa-folder"></i><span>Projects</span></a></li>
+                    <li><a href="#" class="nav-link"><i class="fas fa-tasks"></i><span>Tasks</span></a></li>
+                </ul>
+            </div>
+            <div class="nav-section">
+                <span class="nav-section-title">Account</span>
+                <ul>
+                    <li><a href="profile.html" class="nav-link active"><i class="fas fa-user"></i><span>Profile</span></a></li>
+                    <li><a href="settings.html" class="nav-link"><i class="fas fa-cog"></i><span>Settings</span></a></li>
+                    <li><a href="#" class="nav-link"><i class="fas fa-bell"></i><span>Notifications</span></a></li>
+                </ul>
+            </div>
+        </nav>
+        
+        <div class="sidebar-footer">
+            <a href="#" class="nav-link" id="sidebarLogout">
+                <i class="fas fa-sign-out-alt"></i>
+                <span>Logout</span>
+            </a>
+        </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="dashboard-main" id="dashboardMain">
+        <header class="dashboard-header">
+            <div class="header-left">
+                <button class="mobile-menu-btn" id="mobileMenuBtn"><i class="fas fa-bars"></i></button>
+                <h1 class="page-title">Profile</h1>
+            </div>
+            <div class="header-right">
+                <div class="user-dropdown" id="headerUserDropdown">
+                    <img src="https://via.placeholder.com/40" alt="User" id="headerUserAvatar">
+                    <span id="headerUserName">User</span>
+                    <i class="fas fa-chevron-down"></i>
+                    <div class="dropdown-menu">
+                        <a href="profile.html"><i class="fas fa-user"></i> Profile</a>
+                        <a href="settings.html"><i class="fas fa-cog"></i> Settings</a>
+                        <hr>
+                        <a href="#" id="headerLogout"><i class="fas fa-sign-out-alt"></i> Logout</a>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <div class="dashboard-content">
+            <!-- Profile Header -->
+            <section class="profile-header animate-fade-in">
+                <div class="profile-cover">
+                    <img src="https://images.unsplash.com/photo-1579546929518-9e396f3cc809?w=1200" alt="Cover">
+                    <button class="edit-cover-btn"><i class="fas fa-camera"></i></button>
+                </div>
+                <div class="profile-info-section">
+                    <div class="profile-avatar-wrapper">
+                        <img src="https://via.placeholder.com/150" alt="Avatar" id="profileAvatar" class="profile-avatar">
+                        <button class="edit-avatar-btn" id="editAvatarBtn"><i class="fas fa-camera"></i></button>
+                        <input type="file" id="avatarInput" accept="image/*" hidden>
+                    </div>
+                    <div class="profile-details">
+                        <h1 id="profileFullName">John Doe</h1>
+                        <p class="profile-username" id="profileUsername">@johndoe</p>
+                        <p class="profile-bio" id="profileBio">Software Developer | Tech Enthusiast | Coffee Lover</p>
+                        <div class="profile-stats">
+                            <div class="profile-stat">
+                                <span class="stat-value">12</span>
+                                <span class="stat-label">Projects</span>
+                            </div>
+                            <div class="profile-stat">
+                                <span class="stat-value">48</span>
+                                <span class="stat-label">Tasks</span>
+                            </div>
+                            <div class="profile-stat">
+                                <span class="stat-value">4.8</span>
+                                <span class="stat-label">Rating</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="profile-actions">
+                        <button class="btn btn-primary" id="editProfileBtn">
+                            <i class="fas fa-edit"></i> Edit Profile
+                        </button>
+                        <button class="btn btn-outline">
+                            <i class="fas fa-share"></i> Share
+                        </button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Profile Content -->
+            <div class="profile-content">
+                <!-- Profile Tabs -->
+                <div class="profile-tabs">
+                    <button class="tab-btn active" data-tab="about">About</button>
+                    <button class="tab-btn" data-tab="activity">Activity</button>
+                    <button class="tab-btn" data-tab="projects">Projects</button>
+                    <button class="tab-btn" data-tab="achievements">Achievements</button>
+                </div>
+
+                <!-- Tab Content -->
+                <div class="tab-content active" id="about">
+                    <div class="profile-grid">
+                        <div class="profile-card animate-slide-up">
+                            <h3><i class="fas fa-info-circle"></i> About Me</h3>
+                            <p id="aboutText">Passionate developer with 5+ years of experience in web development. I love creating beautiful and functional applications that make a difference.</p>
+                        </div>
+                        <div class="profile-card animate-slide-up">
+                            <h3><i class="fas fa-briefcase"></i> Work Information</h3>
+                            <div class="info-list">
+                                <div class="info-item">
+                                    <span class="info-label">Company</span>
+                                    <span class="info-value" id="company">Tech Corp</span>
+                                </div>
+                                <div class="info-item">
+                                    <span class="info-label">Position</span>
+                                    <span class="info-value" id="position">Senior Developer</span>
+                                </div>
+                                <div class="info-item">
+                                    <span class="info-label">Location</span>
+                                    <span class="info-value" id="location">San Francisco, CA</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="profile-card animate-slide-up">
+                            <h3><i class="fas fa-envelope"></i> Contact Information</h3>
+                            <div class="info-list">
+                                <div class="info-item">
+                                    <span class="info-label">Email</span>
+                                    <span class="info-value" id="profileEmail">john@example.com</span>
+                                </div>
+                                <div class="info-item">
+                                    <span class="info-label">Phone</span>
+                                    <span class="info-value" id="profilePhone">+1 234 567 8900</span>
+                                </div>
+                                <div class="info-item">
+                                    <span class="info-label">Website</span>
+                                    <span class="info-value" id="profileWebsite">www.johndoe.com</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="profile-card animate-slide-up">
+                            <h3><i class="fas fa-code"></i> Skills</h3>
+                            <div class="skills-list" id="skillsList">
+                                <span class="skill-tag">JavaScript</span>
+                                <span class="skill-tag">Python</span>
+                                <span class="skill-tag">React</span>
+                                <span class="skill-tag">Node.js</span>
+                                <span class="skill-tag">CSS</span>
+                                <span class="skill-tag">HTML</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="tab-content" id="activity">
+                    <div class="activity-timeline" id="profileActivityTimeline">
+                        <!-- Activity items will be loaded dynamically -->
+                    </div>
+                </div>
+
+                <div class="tab-content" id="projects">
+                    <div class="projects-grid" id="profileProjectsGrid">
+                        <!-- Projects will be loaded dynamically -->
+                    </div>
+                </div>
+
+                <div class="tab-content" id="achievements">
+                    <div class="achievements-grid" id="achievementsGrid">
+                        <!-- Achievements will be loaded dynamically -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Edit Profile Modal -->
+    <div class="modal" id="editProfileModal">
+        <div class="modal-overlay"></div>
+        <div class="modal-content modal-lg">
+            <button class="modal-close" id="closeEditProfileModal">&times;</button>
+            <h2>Edit Profile</h2>
+            <form id="editProfileForm">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="editFirstName">First Name</label>
+                        <input type="text" id="editFirstName" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="editLastName">Last Name</label>
+                        <input type="text" id="editLastName" required>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="editBio">Bio</label>
+                    <textarea id="editBio" rows="3"></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="editCompany">Company</label>
+                    <input type="text" id="editCompany">
+                </div>
+                <div class="form-group">
+                    <label for="editPosition">Position</label>
+                    <input type="text" id="editPosition">
+                </div>
+                <div class="form-group">
+                    <label for="editLocation">Location</label>
+                    <input type="text" id="editLocation">
+                </div>
+                <div class="form-group">
+                    <label for="editWebsite">Website</label>
+                    <input type="url" id="editWebsite">
+                </div>
+                <button type="submit" class="btn btn-primary btn-block">Save Changes</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Toast Container -->
+    <div class="toast-container" id="toastContainer"></div>
+
+    <script src="js/data.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/validation.js"></script>
+    <script src="js/animations.js"></script>
+    <script src="js/main.js"></script>
+</body>
+</html>

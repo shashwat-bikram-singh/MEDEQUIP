@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>StudyFlow — AI Study Planner & Focus Tracker</title>
+  <link rel="stylesheet" href="style.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Mono:wght@300;400;500&family=Lora:ital,wght@0,400;1,400&display=swap" rel="stylesheet">
+</head>
+<body>
+
+  <!-- Ambient Background -->
+  <div class="bg-layer">
+    <div class="orb orb-1"></div>
+    <div class="orb orb-2"></div>
+    <div class="orb orb-3"></div>
+    <div class="noise"></div>
+  </div>
+
+  <!-- Header -->
+  <header class="header">
+    <div class="logo">
+      <span class="logo-icon">◈</span>
+      <span class="logo-text">StudyFlow</span>
+    </div>
+    <nav class="nav">
+      <button class="nav-btn active" data-tab="planner">Planner</button>
+      <button class="nav-btn" data-tab="focus">Focus</button>
+      <button class="nav-btn" data-tab="stats">Stats</button>
+    </nav>
+    <div class="streak-badge">
+      <span class="flame">🔥</span>
+      <span id="streakCount">0</span> day streak
+    </div>
+  </header>
+
+  <!-- MAIN CONTENT -->
+  <main class="main">
+
+    <!-- ===== TAB: PLANNER ===== -->
+    <section class="tab-panel active" id="tab-planner">
+      <div class="panel-header">
+        <h1 class="panel-title">Study Planner</h1>
+        <p class="panel-sub">Organize. Prioritize. Conquer.</p>
+      </div>
+
+      <!-- AI Suggestion Bar -->
+      <div class="ai-bar">
+        <div class="ai-bar-inner">
+          <span class="ai-icon">✦</span>
+          <span class="ai-label">AI Tip:</span>
+          <span class="ai-text" id="aiTip">Loading your personalized tip…</span>
+        </div>
+        <button class="ai-refresh-btn" id="refreshTip" title="Get new tip">↻</button>
+      </div>
+
+      <!-- Add Task Form -->
+      <div class="task-form glass-card">
+        <h2 class="form-title">Add a Study Task</h2>
+        <div class="form-row">
+          <input type="text" id="taskName" class="input-field" placeholder="What will you study?" />
+          <select id="taskSubject" class="input-field select-field">
+            <option value="">Subject</option>
+            <option>Math</option>
+            <option>Science</option>
+            <option>English</option>
+            <option>History</option>
+            <option>Programming</option>
+            <option>Languages</option>
+            <option>Other</option>
+          </select>
+        </div>
+        <div class="form-row">
+          <input type="date" id="taskDue" class="input-field" />
+          <select id="taskPriority" class="input-field select-field">
+            <option value="">Priority</option>
+            <option value="high">🔴 High</option>
+            <option value="medium">🟡 Medium</option>
+            <option value="low">🟢 Low</option>
+          </select>
+          <input type="number" id="taskDuration" class="input-field" placeholder="Est. minutes" min="5" max="480" />
+        </div>
+        <div class="form-row">
+          <textarea id="taskNotes" class="input-field textarea-field" placeholder="Notes (optional)…" rows="2"></textarea>
+        </div>
+        <button class="btn-primary" id="addTaskBtn">+ Add Task</button>
+      </div>
+
+      <!-- Task Filters -->
+      <div class="filter-bar">
+        <button class="filter-btn active" data-filter="all">All</button>
+        <button class="filter-btn" data-filter="high">High Priority</button>
+        <button class="filter-btn" data-filter="today">Due Today</button>
+        <button class="filter-btn" data-filter="done">Completed</button>
+      </div>
+
+      <!-- Task List -->
+      <div class="task-list" id="taskList">
+        <div class="empty-state" id="emptyState">
+          <div class="empty-icon">📚</div>
+          <p>No tasks yet. Add your first study task above!</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== TAB: FOCUS ===== -->
+    <section class="tab-panel" id="tab-focus">
+      <div class="panel-header">
+        <h1 class="panel-title">Focus Mode</h1>
+        <p class="panel-sub">Deep work. Zero distractions.</p>
+      </div>
+
+      <!-- Session Selector -->
+      <div class="session-selector glass-card">
+        <label class="field-label">Choose task to focus on</label>
+        <select id="focusTask" class="input-field select-field">
+          <option value="">— Select a task —</option>
+        </select>
+        <div class="mode-btns">
+          <button class="mode-btn active" data-mode="25">Pomodoro 25m</button>
+          <button class="mode-btn" data-mode="45">Deep Work 45m</button>
+          <button class="mode-btn" data-mode="90">Flow 90m</button>
+          <button class="mode-btn" data-mode="custom">Custom</button>
+        </div>
+        <div class="custom-time hidden" id="customTimeRow">
+          <input type="number" id="customMinutes" class="input-field" placeholder="Minutes" min="1" max="240" style="width:120px"/>
+        </div>
+      </div>
+
+      <!-- Timer Display -->
+      <div class="timer-section">
+        <div class="timer-ring-wrapper">
+          <svg class="timer-ring" viewBox="0 0 220 220">
+            <circle class="ring-bg" cx="110" cy="110" r="98"/>
+            <circle class="ring-progress" id="ringProgress" cx="110" cy="110" r="98"
+              stroke-dasharray="616" stroke-dashoffset="0"/>
+          </svg>
+          <div class="timer-center">
+            <div class="timer-display" id="timerDisplay">25:00</div>
+            <div class="timer-phase" id="timerPhase">Ready</div>
+          </div>
+        </div>
+
+        <div class="timer-controls">
+          <button class="ctrl-btn" id="startBtn">▶ Start</button>
+          <button class="ctrl-btn secondary" id="pauseBtn" disabled>⏸ Pause</button>
+          <button class="ctrl-btn secondary" id="resetBtn">↺ Reset</button>
+        </div>
+
+        <div class="session-info">
+          <div class="info-chip">
+            <span class="chip-label">Sessions today</span>
+            <span class="chip-val" id="sessionsToday">0</span>
+          </div>
+          <div class="info-chip">
+            <span class="chip-label">Focus time</span>
+            <span class="chip-val" id="focusTimeToday">0m</span>
+          </div>
+          <div class="info-chip">
+            <span class="chip-label">Break time</span>
+            <span class="chip-val" id="breakTimeToday">0m</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Focus Log -->
+      <div class="focus-log glass-card">
+        <h3 class="log-title">Today's Focus Log</h3>
+        <div id="focusLog" class="log-list">
+          <p class="log-empty">No sessions yet. Start your first focus session!</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== TAB: STATS ===== -->
+    <section class="tab-panel" id="tab-stats">
+      <div class="panel-header">
+        <h1 class="panel-title">Your Stats</h1>
+        <p class="panel-sub">Progress is the only proof that matters.</p>
+      </div>
+
+      <!-- Stat Cards -->
+      <div class="stats-grid">
+        <div class="stat-card glass-card">
+          <div class="stat-icon">📖</div>
+          <div class="stat-val" id="stat-tasks-done">0</div>
+          <div class="stat-label">Tasks Completed</div>
+        </div>
+        <div class="stat-card glass-card">
+          <div class="stat-icon">⏱</div>
+          <div class="stat-val" id="stat-focus-total">0h 0m</div>
+          <div class="stat-label">Total Focus Time</div>
+        </div>
+        <div class="stat-card glass-card">
+          <div class="stat-icon">🎯</div>
+          <div class="stat-val" id="stat-sessions">0</div>
+          <div class="stat-label">Sessions Done</div>
+        </div>
+        <div class="stat-card glass-card">
+          <div class="stat-icon">🔥</div>
+          <div class="stat-val" id="stat-streak">0</div>
+          <div class="stat-label">Day Streak</div>
+        </div>
+      </div>
+
+      <!-- Weekly Heatmap -->
+      <div class="glass-card heatmap-card">
+        <h3 class="section-heading">Weekly Activity</h3>
+        <div class="heatmap" id="weeklyHeatmap"></div>
+        <div class="heatmap-legend">
+          <span>Less</span>
+          <div class="legend-dots">
+            <span class="dot d0"></span>
+            <span class="dot d1"></span>
+            <span class="dot d2"></span>
+            <span class="dot d3"></span>
+            <span class="dot d4"></span>
+          </div>
+          <span>More</span>
+        </div>
+      </div>
+
+      <!-- Subject Breakdown -->
+      <div class="glass-card subject-card">
+        <h3 class="section-heading">Subject Breakdown</h3>
+        <div id="subjectBreakdown" class="subject-list">
+          <p class="log-empty">Complete tasks to see subject stats.</p>
+        </div>
+      </div>
+
+      <!-- Motivational Quote -->
+      <div class="quote-card glass-card">
+        <div class="quote-mark">"</div>
+        <p class="quote-text" id="quoteText">Loading your motivational quote…</p>
+        <p class="quote-author" id="quoteAuthor">— StudyFlow AI</p>
+        <button class="btn-ghost" id="newQuoteBtn">New Quote</button>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Toast Notification -->
+  <div class="toast" id="toast"></div>
+
+  <!-- Audio feedback (silent beep) -->
+  <audio id="timerBeep" preload="auto">
+    <source src="data:audio/wav;base64,UklGRnoGAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YQoGAACBhYqFbF1fdJivrJBHBy9AZjm=" type="audio/wav">
+  </audio>
+
+  <script src="app.js"></script>
+</body>
+</html>

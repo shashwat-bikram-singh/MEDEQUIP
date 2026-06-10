@@ -1,0 +1,1170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DEV INSIGHT AI — Code Performance Analyzer</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne+Mono&family=Syne:wght@400;700;800&family=DM+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #070810;
+    --surface: #0d0f1e;
+    --panel: #111326;
+    --border: #1e2140;
+    --accent: #00f5c8;
+    --accent2: #7b5ea7;
+    --accent3: #ff6b35;
+    --warn: #ffd166;
+    --danger: #ef476f;
+    --ok: #06d6a0;
+    --txt: #e2e8f7;
+    --txt-dim: #6b7494;
+    --txt-mid: #9ba3c4;
+    --glow: 0 0 20px rgba(0,245,200,0.18);
+    --glow2: 0 0 20px rgba(123,94,167,0.22);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--bg);
+    color: var(--txt);
+    font-family: 'Syne', sans-serif;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* Grid noise background */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(0,245,200,0.03) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(0,245,200,0.03) 1px, transparent 1px);
+    background-size: 32px 32px;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  body::after {
+    content: '';
+    position: fixed;
+    top: -200px; left: -200px;
+    width: 600px; height: 600px;
+    background: radial-gradient(circle, rgba(0,245,200,0.06) 0%, transparent 70%);
+    pointer-events: none;
+    z-index: 0;
+    animation: orb 8s ease-in-out infinite alternate;
+  }
+
+  @keyframes orb {
+    to { transform: translate(calc(100vw - 400px), calc(100vh - 400px)); opacity: 0.3; }
+  }
+
+  .app {
+    position: relative;
+    z-index: 1;
+    display: grid;
+    grid-template-rows: auto 1fr;
+    min-height: 100vh;
+  }
+
+  /* HEADER */
+  header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 18px 32px;
+    border-bottom: 1px solid var(--border);
+    background: rgba(7,8,16,0.85);
+    backdrop-filter: blur(12px);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+
+  .logo {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .logo-icon {
+    width: 36px; height: 36px;
+    background: linear-gradient(135deg, var(--accent), var(--accent2));
+    border-radius: 8px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 18px;
+    box-shadow: var(--glow);
+  }
+
+  .logo-text {
+    font-size: 13px;
+    font-weight: 800;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+  }
+
+  .logo-sub {
+    font-size: 10px;
+    color: var(--accent);
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    font-family: 'DM Mono', monospace;
+    font-weight: 300;
+  }
+
+  .header-right {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+
+  .status-dot {
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    background: var(--accent);
+    animation: pulse 2s ease-in-out infinite;
+    box-shadow: 0 0 8px var(--accent);
+  }
+
+  @keyframes pulse {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.4; transform: scale(0.8); }
+  }
+
+  .status-label {
+    font-size: 11px;
+    color: var(--txt-dim);
+    font-family: 'DM Mono', monospace;
+    letter-spacing: 0.1em;
+  }
+
+  .btn-analyze {
+    padding: 9px 22px;
+    background: linear-gradient(135deg, var(--accent), #00b894);
+    color: #000;
+    font-family: 'Syne', sans-serif;
+    font-weight: 800;
+    font-size: 12px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.2s;
+    box-shadow: var(--glow);
+  }
+
+  .btn-analyze:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 0 30px rgba(0,245,200,0.35);
+  }
+
+  .btn-analyze:active { transform: translateY(0); }
+
+  .btn-analyze.loading {
+    background: linear-gradient(135deg, #1e2140, #2a2d50);
+    color: var(--accent);
+    pointer-events: none;
+  }
+
+  /* MAIN LAYOUT */
+  .main {
+    display: grid;
+    grid-template-columns: 1fr 420px;
+    gap: 0;
+    height: calc(100vh - 65px);
+  }
+
+  /* LEFT: Editor */
+  .editor-pane {
+    display: flex;
+    flex-direction: column;
+    border-right: 1px solid var(--border);
+  }
+
+  .pane-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px 20px;
+    border-bottom: 1px solid var(--border);
+    background: var(--surface);
+  }
+
+  .pane-title {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--txt-mid);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .pane-title span { color: var(--accent); }
+
+  .lang-badge {
+    padding: 3px 10px;
+    background: rgba(0,245,200,0.08);
+    border: 1px solid rgba(0,245,200,0.2);
+    border-radius: 100px;
+    font-size: 10px;
+    color: var(--accent);
+    font-family: 'DM Mono', monospace;
+    letter-spacing: 0.1em;
+  }
+
+  .lang-select {
+    background: var(--panel);
+    border: 1px solid var(--border);
+    color: var(--txt-mid);
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    padding: 4px 10px;
+    border-radius: 5px;
+    cursor: pointer;
+    outline: none;
+  }
+
+  .lang-select:focus { border-color: var(--accent); }
+
+  .editor-wrap {
+    flex: 1;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .line-numbers {
+    position: absolute;
+    left: 0; top: 0; bottom: 0;
+    width: 48px;
+    padding: 16px 0;
+    background: rgba(13,15,30,0.6);
+    border-right: 1px solid var(--border);
+    overflow: hidden;
+    font-family: 'DM Mono', monospace;
+    font-size: 13px;
+    line-height: 22px;
+    color: var(--txt-dim);
+    text-align: right;
+    padding-right: 10px;
+    pointer-events: none;
+    z-index: 2;
+    user-select: none;
+  }
+
+  #codeEditor {
+    position: absolute;
+    inset: 0;
+    padding: 16px 16px 16px 64px;
+    background: transparent;
+    color: var(--txt);
+    font-family: 'DM Mono', monospace;
+    font-size: 13px;
+    line-height: 22px;
+    border: none;
+    outline: none;
+    resize: none;
+    width: 100%;
+    height: 100%;
+    tab-size: 2;
+    caret-color: var(--accent);
+    z-index: 1;
+    white-space: pre;
+    overflow-wrap: normal;
+    overflow: auto;
+  }
+
+  #codeEditor::selection { background: rgba(0,245,200,0.15); }
+
+  /* scanning line effect */
+  .scan-line {
+    position: absolute;
+    left: 0; right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, var(--accent), transparent);
+    opacity: 0;
+    pointer-events: none;
+    z-index: 3;
+    transition: top 0.05s linear;
+  }
+
+  .scan-line.active {
+    animation: scan 1.5s ease-in-out;
+  }
+
+  @keyframes scan {
+    0% { opacity: 0; top: 0; }
+    10% { opacity: 0.7; }
+    90% { opacity: 0.4; }
+    100% { opacity: 0; top: 100%; }
+  }
+
+  /* RIGHT: Analysis Panel */
+  .analysis-pane {
+    display: flex;
+    flex-direction: column;
+    background: var(--surface);
+    overflow-y: auto;
+  }
+
+  .analysis-pane::-webkit-scrollbar { width: 4px; }
+  .analysis-pane::-webkit-scrollbar-track { background: transparent; }
+  .analysis-pane::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
+
+  /* Score Card */
+  .score-card {
+    padding: 24px;
+    border-bottom: 1px solid var(--border);
+    background: linear-gradient(135deg, rgba(0,245,200,0.04), rgba(123,94,167,0.04));
+  }
+
+  .score-header {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: var(--txt-dim);
+    margin-bottom: 16px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .score-header::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--border);
+  }
+
+  .score-ring-wrap {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+  }
+
+  .score-ring {
+    position: relative;
+    width: 88px;
+    height: 88px;
+    flex-shrink: 0;
+  }
+
+  .score-ring svg {
+    transform: rotate(-90deg);
+    width: 100%;
+    height: 100%;
+  }
+
+  .score-ring-track {
+    fill: none;
+    stroke: var(--border);
+    stroke-width: 6;
+  }
+
+  .score-ring-fill {
+    fill: none;
+    stroke: var(--accent);
+    stroke-width: 6;
+    stroke-linecap: round;
+    stroke-dasharray: 226;
+    stroke-dashoffset: 226;
+    transition: stroke-dashoffset 1.2s cubic-bezier(.4,0,.2,1), stroke 0.5s;
+    filter: drop-shadow(0 0 4px var(--accent));
+  }
+
+  .score-num {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 24px;
+    font-weight: 800;
+    font-family: 'Syne Mono', monospace;
+    color: var(--accent);
+    transition: color 0.5s;
+  }
+
+  .score-details {
+    flex: 1;
+  }
+
+  .score-grade {
+    font-size: 28px;
+    font-weight: 800;
+    line-height: 1;
+    margin-bottom: 4px;
+    transition: color 0.5s;
+  }
+
+  .score-label {
+    font-size: 12px;
+    color: var(--txt-dim);
+    font-family: 'DM Mono', monospace;
+    margin-bottom: 10px;
+  }
+
+  .score-mini-stats {
+    display: flex;
+    gap: 12px;
+  }
+
+  .mini-stat {
+    text-align: center;
+  }
+
+  .mini-stat-val {
+    font-size: 14px;
+    font-weight: 700;
+    font-family: 'Syne Mono', monospace;
+    color: var(--txt);
+  }
+
+  .mini-stat-lbl {
+    font-size: 9px;
+    color: var(--txt-dim);
+    font-family: 'DM Mono', monospace;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+
+  /* Metrics Grid */
+  .metrics-section {
+    padding: 20px 24px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .section-title {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--txt-dim);
+    margin-bottom: 14px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .section-title::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--border);
+  }
+
+  .metric-bars {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .metric-row {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  .metric-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .metric-name {
+    font-size: 11px;
+    color: var(--txt-mid);
+    font-family: 'DM Mono', monospace;
+  }
+
+  .metric-val {
+    font-size: 11px;
+    font-family: 'Syne Mono', monospace;
+    font-weight: 500;
+  }
+
+  .metric-bar-bg {
+    height: 4px;
+    background: var(--border);
+    border-radius: 2px;
+    overflow: hidden;
+  }
+
+  .metric-bar-fill {
+    height: 100%;
+    border-radius: 2px;
+    transition: width 1s cubic-bezier(.4,0,.2,1);
+    width: 0;
+  }
+
+  /* Issues List */
+  .issues-section {
+    padding: 20px 24px;
+    border-bottom: 1px solid var(--border);
+    flex: 1;
+  }
+
+  .issues-list {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .issue-card {
+    padding: 12px 14px;
+    background: var(--panel);
+    border-radius: 8px;
+    border-left: 3px solid var(--border);
+    transition: all 0.2s;
+    cursor: pointer;
+    opacity: 0;
+    transform: translateX(10px);
+    animation: slideIn 0.3s ease forwards;
+  }
+
+  .issue-card:hover {
+    background: rgba(30,33,64,0.8);
+    transform: translateX(2px) !important;
+  }
+
+  @keyframes slideIn {
+    to { opacity: 1; transform: translateX(0); }
+  }
+
+  .issue-card.critical { border-left-color: var(--danger); }
+  .issue-card.warning { border-left-color: var(--warn); }
+  .issue-card.info { border-left-color: var(--accent); }
+  .issue-card.ok { border-left-color: var(--ok); }
+
+  .issue-top {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 4px;
+  }
+
+  .issue-tag {
+    font-size: 9px;
+    font-family: 'DM Mono', monospace;
+    font-weight: 500;
+    padding: 2px 7px;
+    border-radius: 3px;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+  }
+
+  .issue-tag.critical { background: rgba(239,71,111,0.15); color: var(--danger); }
+  .issue-tag.warning { background: rgba(255,209,102,0.12); color: var(--warn); }
+  .issue-tag.info { background: rgba(0,245,200,0.1); color: var(--accent); }
+  .issue-tag.ok { background: rgba(6,214,160,0.1); color: var(--ok); }
+
+  .issue-line {
+    font-size: 10px;
+    font-family: 'DM Mono', monospace;
+    color: var(--txt-dim);
+    margin-left: auto;
+  }
+
+  .issue-title {
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--txt);
+    margin-bottom: 2px;
+  }
+
+  .issue-desc {
+    font-size: 11px;
+    color: var(--txt-dim);
+    font-family: 'DM Mono', monospace;
+    line-height: 1.5;
+  }
+
+  /* Suggestion box */
+  .suggestion-section {
+    padding: 20px 24px;
+  }
+
+  .suggestion-box {
+    background: linear-gradient(135deg, rgba(0,245,200,0.05), rgba(123,94,167,0.05));
+    border: 1px solid rgba(0,245,200,0.15);
+    border-radius: 10px;
+    padding: 16px;
+  }
+
+  .suggestion-label {
+    font-size: 9px;
+    font-weight: 700;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 8px;
+    font-family: 'DM Mono', monospace;
+  }
+
+  .suggestion-text {
+    font-size: 12px;
+    color: var(--txt-mid);
+    line-height: 1.6;
+    font-family: 'DM Mono', monospace;
+    white-space: pre-wrap;
+  }
+
+  /* Loading state */
+  .analyzing-overlay {
+    display: none;
+    position: absolute;
+    inset: 0;
+    background: rgba(7,8,16,0.7);
+    backdrop-filter: blur(4px);
+    z-index: 10;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .analyzing-overlay.active { display: flex; }
+
+  .analyzing-spinner {
+    width: 48px; height: 48px;
+    border: 2px solid var(--border);
+    border-top-color: var(--accent);
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+  }
+
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  .analyzing-text {
+    font-size: 12px;
+    font-family: 'DM Mono', monospace;
+    color: var(--accent);
+    letter-spacing: 0.15em;
+    animation: blink 1.5s ease-in-out infinite;
+  }
+
+  @keyframes blink {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.4; }
+  }
+
+  /* Empty state */
+  .empty-state {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 48px 24px;
+    text-align: center;
+    gap: 10px;
+    flex: 1;
+  }
+
+  .empty-icon {
+    font-size: 40px;
+    opacity: 0.3;
+    margin-bottom: 8px;
+  }
+
+  .empty-title {
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--txt-mid);
+  }
+
+  .empty-desc {
+    font-size: 11px;
+    color: var(--txt-dim);
+    font-family: 'DM Mono', monospace;
+    line-height: 1.6;
+  }
+
+  /* Complexity chart */
+  .complexity-section {
+    padding: 20px 24px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .mini-chart {
+    display: flex;
+    align-items: flex-end;
+    gap: 3px;
+    height: 40px;
+    margin-top: 10px;
+  }
+
+  .mini-bar {
+    flex: 1;
+    background: var(--border);
+    border-radius: 2px 2px 0 0;
+    transition: all 0.8s cubic-bezier(.4,0,.2,1);
+    position: relative;
+  }
+
+  .mini-bar:hover::after {
+    content: attr(data-label);
+    position: absolute;
+    bottom: calc(100% + 4px);
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 9px;
+    font-family: 'DM Mono', monospace;
+    color: var(--txt-mid);
+    white-space: nowrap;
+    background: var(--panel);
+    padding: 2px 6px;
+    border-radius: 3px;
+    border: 1px solid var(--border);
+  }
+
+  /* Error state */
+  .error-banner {
+    padding: 16px 20px;
+    background: rgba(239,71,111,0.08);
+    border: 1px solid rgba(239,71,111,0.2);
+    border-radius: 8px;
+    color: var(--danger);
+    font-size: 12px;
+    font-family: 'DM Mono', monospace;
+    margin: 16px;
+    display: none;
+  }
+
+  .error-banner.active { display: block; }
+
+  /* Token counter */
+  .token-bar {
+    padding: 8px 20px;
+    background: var(--surface);
+    border-top: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    color: var(--txt-dim);
+  }
+
+  .token-item { display: flex; align-items: center; gap: 5px; }
+  .token-dot { width: 6px; height: 6px; border-radius: 50%; }
+
+  /* Tooltip */
+  .tooltip {
+    position: fixed;
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 8px 12px;
+    font-size: 11px;
+    font-family: 'DM Mono', monospace;
+    color: var(--txt-mid);
+    pointer-events: none;
+    z-index: 999;
+    opacity: 0;
+    transition: opacity 0.15s;
+  }
+
+  @media (max-width: 900px) {
+    .main { grid-template-columns: 1fr; grid-template-rows: 50vh 1fr; }
+    .editor-pane { border-right: none; border-bottom: 1px solid var(--border); }
+  }
+</style>
+</head>
+<body>
+<div class="app">
+
+<header>
+  <div class="logo">
+    <div class="logo-icon">⚡</div>
+    <div>
+      <div class="logo-text">Dev Insight</div>
+      <div class="logo-sub">Performance Analyzer</div>
+    </div>
+  </div>
+  <div class="header-right">
+    <div class="status-dot" id="statusDot"></div>
+    <span class="status-label" id="statusLabel">READY</span>
+    <button class="btn-analyze" id="analyzeBtn" onclick="analyzeCode()">▶ Analyze</button>
+  </div>
+</header>
+
+<div class="main">
+
+  <!-- EDITOR -->
+  <div class="editor-pane">
+    <div class="pane-header">
+      <div class="pane-title"><span>01</span> Source Code</div>
+      <div style="display:flex;gap:10px;align-items:center;">
+        <select class="lang-select" id="langSelect">
+          <option value="javascript">JavaScript</option>
+          <option value="python">Python</option>
+          <option value="typescript">TypeScript</option>
+          <option value="java">Java</option>
+          <option value="cpp">C++</option>
+          <option value="go">Go</option>
+        </select>
+        <div class="lang-badge" id="langBadge">JS</div>
+      </div>
+    </div>
+    <div class="editor-wrap" style="position:relative;">
+      <div class="line-numbers" id="lineNumbers">1</div>
+      <textarea id="codeEditor" spellcheck="false" autocomplete="off" autocorrect="off" autocapitalize="off">// Example: Nested loops with optimization opportunities
+function findDuplicates(arr) {
+  const duplicates = [];
+  
+  // O(n²) - Can be optimized to O(n) with a Set
+  for (let i = 0; i < arr.length; i++) {
+    for (let j = i + 1; j < arr.length; j++) {
+      if (arr[i] === arr[j] && !duplicates.includes(arr[i])) {
+        duplicates.push(arr[i]);
+      }
+    }
+  }
+  return duplicates;
+}
+
+// Memory leak: event listener never removed
+function setupHandler() {
+  document.addEventListener('click', function() {
+    console.log('clicked at', new Date());
+  });
+}
+
+// Synchronous blocking operation
+function loadData(url) {
+  const xhr = new XMLHttpRequest();
+  xhr.open('GET', url, false); // false = synchronous
+  xhr.send();
+  return JSON.parse(xhr.responseText);
+}
+
+// Inefficient string concatenation in loop
+function buildHTML(items) {
+  let html = '';
+  for (const item of items) {
+    html += '<div>' + item.name + '</div>'; // Should use array.join
+  }
+  return html;
+}</textarea>
+      <div class="scan-line" id="scanLine"></div>
+      <div class="analyzing-overlay" id="analyzingOverlay">
+        <div class="analyzing-spinner"></div>
+        <div class="analyzing-text">ANALYZING CODE...</div>
+      </div>
+    </div>
+    <div class="token-bar">
+      <div class="token-item">
+        <div class="token-dot" style="background:var(--accent)"></div>
+        <span id="lineCount">32 lines</span>
+      </div>
+      <div class="token-item">
+        <div class="token-dot" style="background:var(--accent2)"></div>
+        <span id="charCount">820 chars</span>
+      </div>
+      <div class="token-item">
+        <div class="token-dot" style="background:var(--accent3)"></div>
+        <span id="funcCount">4 functions</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ANALYSIS PANEL -->
+  <div class="analysis-pane" id="analysisPane">
+
+    <div class="pane-header" style="position:sticky;top:0;z-index:5;background:var(--surface);">
+      <div class="pane-title"><span>02</span> Analysis Report</div>
+      <div id="analysisTimestamp" style="font-size:10px;font-family:'DM Mono',monospace;color:var(--txt-dim);"></div>
+    </div>
+
+    <div id="emptyState" class="empty-state">
+      <div class="empty-icon">🔬</div>
+      <div class="empty-title">No Analysis Yet</div>
+      <div class="empty-desc">Paste your code in the editor<br>and click Analyze to get insights.</div>
+    </div>
+
+    <div id="resultsContent" style="display:none;">
+
+      <!-- Score -->
+      <div class="score-card">
+        <div class="score-header">Performance Score</div>
+        <div class="score-ring-wrap">
+          <div class="score-ring">
+            <svg viewBox="0 0 88 88">
+              <circle class="score-ring-track" cx="44" cy="44" r="36"/>
+              <circle class="score-ring-fill" id="scoreRingFill" cx="44" cy="44" r="36"/>
+            </svg>
+            <div class="score-num" id="scoreNum">—</div>
+          </div>
+          <div class="score-details">
+            <div class="score-grade" id="scoreGrade">—</div>
+            <div class="score-label" id="scoreLabel">awaiting analysis</div>
+            <div class="score-mini-stats">
+              <div class="mini-stat">
+                <div class="mini-stat-val" id="complexityVal">—</div>
+                <div class="mini-stat-lbl">Complexity</div>
+              </div>
+              <div class="mini-stat">
+                <div class="mini-stat-val" id="issueCount">—</div>
+                <div class="mini-stat-lbl">Issues</div>
+              </div>
+              <div class="mini-stat">
+                <div class="mini-stat-val" id="securityVal">—</div>
+                <div class="mini-stat-lbl">Security</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Metrics -->
+      <div class="metrics-section">
+        <div class="section-title">Metric Breakdown</div>
+        <div class="metric-bars" id="metricBars"></div>
+      </div>
+
+      <!-- Issues -->
+      <div class="issues-section">
+        <div class="section-title">Detected Issues</div>
+        <div class="issues-list" id="issuesList"></div>
+        <div class="error-banner" id="errorBanner"></div>
+      </div>
+
+      <!-- Complexity Chart -->
+      <div class="complexity-section">
+        <div class="section-title">Function Complexity</div>
+        <div class="mini-chart" id="complexityChart"></div>
+      </div>
+
+      <!-- AI Suggestion -->
+      <div class="suggestion-section">
+        <div class="suggestion-box">
+          <div class="suggestion-label">⚡ AI Recommendation</div>
+          <div class="suggestion-text" id="suggestionText">—</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+</div><!-- end main -->
+</div><!-- end app -->
+
+<div class="tooltip" id="tooltip"></div>
+
+<script>
+const LANG_BADGES = { javascript:'JS', python:'PY', typescript:'TS', java:'JV', cpp:'C++', go:'GO' };
+
+// Editor live stats
+const editor = document.getElementById('codeEditor');
+const lineNumbers = document.getElementById('lineNumbers');
+
+function updateEditorStats() {
+  const code = editor.value;
+  const lines = code.split('\n');
+  document.getElementById('lineCount').textContent = lines.length + ' lines';
+  document.getElementById('charCount').textContent = code.length + ' chars';
+
+  // Count function definitions
+  const fnMatches = (code.match(/function\s+\w+|=>\s*{|\bdef\s+\w+|\bfunc\s+\w+/g) || []).length;
+  document.getElementById('funcCount').textContent = fnMatches + ' functions';
+
+  // Update line numbers
+  lineNumbers.textContent = lines.map((_, i) => i + 1).join('\n');
+}
+
+editor.addEventListener('input', updateEditorStats);
+editor.addEventListener('scroll', () => { lineNumbers.scrollTop = editor.scrollTop; });
+updateEditorStats();
+
+document.getElementById('langSelect').addEventListener('change', function() {
+  document.getElementById('langBadge').textContent = LANG_BADGES[this.value] || this.value.toUpperCase().slice(0,2);
+});
+
+// ANALYZE
+async function analyzeCode() {
+  const code = editor.value.trim();
+  if (!code) return;
+
+  const btn = document.getElementById('analyzeBtn');
+  const overlay = document.getElementById('analyzingOverlay');
+  const statusLabel = document.getElementById('statusLabel');
+  const scanLine = document.getElementById('scanLine');
+  const errorBanner = document.getElementById('errorBanner');
+
+  btn.classList.add('loading');
+  btn.textContent = '⏳ Analyzing...';
+  overlay.classList.add('active');
+  statusLabel.textContent = 'ANALYZING';
+  errorBanner.classList.remove('active');
+
+  // Trigger scan effect
+  scanLine.classList.remove('active');
+  void scanLine.offsetWidth;
+  scanLine.classList.add('active');
+
+  const lang = document.getElementById('langSelect').value;
+
+  const prompt = `You are a senior software performance engineer. Analyze the following ${lang} code and return ONLY a valid JSON object (no markdown, no explanation, just raw JSON) with this exact structure:
+
+{
+  "score": <integer 0-100>,
+  "grade": "<A/B/C/D/F>",
+  "gradeLabel": "<one short phrase>",
+  "complexity": "<O(1)/O(n)/O(n²)/O(n³) or similar>",
+  "securityRating": "<Safe/Low Risk/Medium Risk/High Risk>",
+  "metrics": [
+    { "name": "Time Complexity", "value": "<label>", "score": <0-100>, "color": "<hex>" },
+    { "name": "Memory Usage", "value": "<label>", "score": <0-100>, "color": "<hex>" },
+    { "name": "Code Quality", "value": "<label>", "score": <0-100>, "color": "<hex>" },
+    { "name": "Security", "value": "<label>", "score": <0-100>, "color": "<hex>" },
+    { "name": "Maintainability", "value": "<label>", "score": <0-100>, "color": "<hex>" }
+  ],
+  "issues": [
+    {
+      "severity": "<critical|warning|info|ok>",
+      "title": "<short issue name>",
+      "description": "<one sentence explanation>",
+      "line": "<line number or range, e.g. '6-9'>"
+    }
+  ],
+  "functions": [
+    { "name": "<function name>", "complexity": <1-10> }
+  ],
+  "recommendation": "<2-3 concise actionable sentences about the most important optimizations>"
+}
+
+Code to analyze:
+\`\`\`${lang}
+${code}
+\`\`\``;
+
+  try {
+    const response = await fetch("https://api.anthropic.com/v1/messages", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        model: "claude-sonnet-4-20250514",
+        max_tokens: 1000,
+        messages: [{ role: "user", content: prompt }]
+      })
+    });
+
+    const data = await response.json();
+    const rawText = data.content.map(b => b.text || '').join('');
+
+    // Strip possible json fences
+    const clean = rawText.replace(/```json|```/g, '').trim();
+    const result = JSON.parse(clean);
+
+    renderResults(result);
+
+  } catch (err) {
+    errorBanner.textContent = '⚠ Analysis failed: ' + (err.message || 'Unknown error. Check API connection.');
+    errorBanner.classList.add('active');
+    document.getElementById('emptyState').style.display = 'none';
+    document.getElementById('resultsContent').style.display = 'block';
+  } finally {
+    btn.classList.remove('loading');
+    btn.textContent = '▶ Analyze';
+    overlay.classList.remove('active');
+    statusLabel.textContent = 'READY';
+  }
+}
+
+function renderResults(r) {
+  document.getElementById('emptyState').style.display = 'none';
+  document.getElementById('resultsContent').style.display = 'block';
+
+  const ts = new Date().toLocaleTimeString();
+  document.getElementById('analysisTimestamp').textContent = ts;
+
+  // Score ring
+  const score = Math.max(0, Math.min(100, r.score || 0));
+  const circumference = 226;
+  const offset = circumference - (score / 100) * circumference;
+  const fill = document.getElementById('scoreRingFill');
+  fill.style.strokeDashoffset = offset;
+
+  // Color the score
+  const scoreColor = score >= 80 ? '#06d6a0' : score >= 60 ? '#ffd166' : score >= 40 ? '#ff6b35' : '#ef476f';
+  fill.style.stroke = scoreColor;
+  document.getElementById('scoreNum').style.color = scoreColor;
+  document.getElementById('scoreNum').textContent = score;
+
+  const gradeEl = document.getElementById('scoreGrade');
+  gradeEl.textContent = r.grade || '—';
+  gradeEl.style.color = scoreColor;
+  document.getElementById('scoreLabel').textContent = r.gradeLabel || '';
+  document.getElementById('complexityVal').textContent = r.complexity || '—';
+  document.getElementById('issueCount').textContent = (r.issues || []).length;
+  document.getElementById('securityVal').textContent = r.securityRating || '—';
+
+  // Metrics bars
+  const metricsContainer = document.getElementById('metricBars');
+  metricsContainer.innerHTML = '';
+  (r.metrics || []).forEach(m => {
+    const pct = Math.max(0, Math.min(100, m.score || 0));
+    const color = m.color || (pct >= 70 ? '#06d6a0' : pct >= 40 ? '#ffd166' : '#ef476f');
+    metricsContainer.innerHTML += `
+      <div class="metric-row">
+        <div class="metric-top">
+          <span class="metric-name">${m.name}</span>
+          <span class="metric-val" style="color:${color}">${m.value}</span>
+        </div>
+        <div class="metric-bar-bg">
+          <div class="metric-bar-fill" style="width:${pct}%;background:${color}"></div>
+        </div>
+      </div>`;
+  });
+
+  // Issues
+  const issuesList = document.getElementById('issuesList');
+  issuesList.innerHTML = '';
+  (r.issues || []).forEach((issue, i) => {
+    const sev = issue.severity || 'info';
+    const div = document.createElement('div');
+    div.className = `issue-card ${sev}`;
+    div.style.animationDelay = (i * 0.07) + 's';
+    div.innerHTML = `
+      <div class="issue-top">
+        <span class="issue-tag ${sev}">${sev}</span>
+        <span class="issue-line">ln ${issue.line || '?'}</span>
+      </div>
+      <div class="issue-title">${issue.title || ''}</div>
+      <div class="issue-desc">${issue.description || ''}</div>`;
+    issuesList.appendChild(div);
+  });
+
+  // Complexity chart
+  const chart = document.getElementById('complexityChart');
+  chart.innerHTML = '';
+  const fns = r.functions || [];
+  if (fns.length) {
+    const max = Math.max(...fns.map(f => f.complexity || 1));
+    fns.forEach(f => {
+      const pct = Math.max(10, ((f.complexity || 1) / max) * 100);
+      const color = f.complexity >= 8 ? '#ef476f' : f.complexity >= 5 ? '#ffd166' : '#06d6a0';
+      chart.innerHTML += `<div class="mini-bar" data-label="${f.name} (${f.complexity})" style="height:${pct}%;background:${color};opacity:0.7"></div>`;
+    });
+  }
+
+  // Suggestion
+  document.getElementById('suggestionText').textContent = r.recommendation || 'No specific recommendation.';
+}
+
+// Keyboard shortcut
+document.addEventListener('keydown', e => {
+  if ((e.ctrlKey || e.metaKey) && e.key === 'Enter') analyzeCode();
+});
+
+// Auto-trigger on load after short delay
+setTimeout(() => {}, 800);
+</script>
+</body>
+</html>

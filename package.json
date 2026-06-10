@@ -1,0 +1,15 @@
+{
+  "name": "medequip",
+  "version": "1.0.0",
+  "description": "Medical Equipment Project",
+  "main": "index.js",
+  "scripts": {
+    "dev": "http-server -p 8000 -o"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "http-server": "^14.1.1"
+  }
+}

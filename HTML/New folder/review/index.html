@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Account | CodeReview AI</title>
+    <link rel="stylesheet" href="css.css">
+    <link rel="stylesheet" href="java.js">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body class="dashboard-body">
+    <nav class="sidebar" id="sidebar">
+        <div class="sidebar-header">
+            <div class="logo">
+                <i class="fas fa-code-branch"></i>
+                <span>CodeReview</span>
+            </div>
+        </div>
+        <div class="nav-section">
+            <div class="nav-item" onclick="window.location.href='dashboard.html'">
+                <i class="fas fa-home"></i>
+                <span>Dashboard</span>
+            </div>
+            <div class="nav-item active" onclick="window.location.href='account.html'">
+                <i class="fas fa-user-circle"></i>
+                <span>Account</span>
+            </div>
+        </div>
+        <div class="nav-section bottom">
+            <div class="nav-item" onclick="logout()">
+                <i class="fas fa-sign-out-alt"></i>
+                <span>Logout</span>
+            </div>
+        </div>
+    </nav>
+
+    <main class="main-content">
+        <header class="top-header">
+            <h1>Account Settings</h1>
+            <div class="header-actions">
+                <button class="btn btn-secondary" onclick="window.location.href='dashboard.html'">
+                    <i class="fas fa-arrow-left"></i> Back to Dashboard
+                </button>
+            </div>
+        </header>
+
+        <div class="content-wrapper">
+            <div class="account-grid">
+                <div class="account-card profile-card">
+                    <div class="profile-header">
+                        <div class="avatar-upload">
+                            <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=Felix" alt="Profile" class="large-avatar">
+                            <button class="upload-btn"><i class="fas fa-camera"></i></button>
+                        </div>
+                        <div class="profile-info">
+                            <h2>Alex Chen</h2>
+                            <p>Senior Software Engineer</p>
+                            <span class="badge pro">Pro Plan</span>
+                        </div>
+                    </div>
+                    
+                    <form class="account-form">
+                        <div class="form-row">
+                            <div class="input-group">
+                                <label>Display Name</label>
+                                <input type="text" value="Alex Chen">
+                            </div>
+                            <div class="input-group">
+                                <label>Username</label>
+                                <input type="text" value="@alexchen">
+                            </div>
+                        </div>
+                        
+                        <div class="input-group">
+                            <label>Email Address</label>
+                            <input type="email" value="alex.chen@company.com">
+                        </div>
+                        
+                        <div class="input-group">
+                            <label>Bio</label>
+                            <textarea rows="3">Full-stack developer passionate about clean code and AI tools.</textarea>
+                        </div>
+                        
+                        <button type="button" class="btn btn-primary" onclick="saveProfile()">
+                            <i class="fas fa-save"></i> Save Changes
+                        </button>
+                    </form>
+                </div>
+
+                <div class="account-card security-card">
+                    <h3><i class="fas fa-shield-alt"></i> Security</h3>
+                    
+                    <div class="security-item">
+                        <div class="security-info">
+                            <h4>Password</h4>
+                            <p>Last changed 3 months ago</p>
+                        </div>
+                        <button class="btn btn-secondary">Change</button>
+                    </div>
+                    
+                    <div class="security-item">
+                        <div class="security-info">
+                            <h4>Two-Factor Authentication</h4>
+                            <p class="status enabled"><i class="fas fa-check-circle"></i> Enabled</p>
+                        </div>
+                        <button class="btn btn-secondary">Configure</button>
+                    </div>
+                    
+                    <div class="security-item">
+                        <div class="security-info">
+                            <h4>Active Sessions</h4>
+                            <p>3 devices currently logged in</p>
+                        </div>
+                        <button class="btn btn-text">Manage</button>
+                    </div>
+                </div>
+
+                <div class="account-card integrations-card">
+                    <h3><i class="fas fa-plug"></i> Integrations</h3>
+                    
+                    <div class="integration-item">
+                        <div class="integration-icon github">
+                            <i class="fab fa-github"></i>
+                        </div>
+                        <div class="integration-info">
+                            <h4>GitHub</h4>
+                            <p>Connected as @alexchen-dev</p>
+                        </div>
+                        <label class="switch">
+                            <input type="checkbox" checked>
+                            <span class="slider"></span>
+                        </label>
+                    </div>
+                    
+                    <div class="integration-item">
+                        <div class="integration-icon gitlab">
+                            <i class="fab fa-gitlab"></i>
+                        </div>
+                        <div class="integration-info">
+                            <h4>GitLab</h4>
+                            <p>Not connected</p>
+                        </div>
+                        <button class="btn btn-secondary">Connect</button>
+                    </div>
+                    
+                    <div class="integration-item">
+                        <div class="integration-icon slack">
+                            <i class="fab fa-slack"></i>
+                        </div>
+                        <div class="integration-info">
+                            <h4>Slack</h4>
+                            <p>Connected to #code-reviews</p>
+                        </div>
+                        <label class="switch">
+                            <input type="checkbox" checked>
+                            <span class="slider"></span>
+                        </label>
+                    </div>
+                </div>
+
+                <div class="account-card preferences-card">
+                    <h3><i class="fas fa-cog"></i> AI Preferences</h3>
+                    
+                    <div class="preference-item">
+                        <div class="preference-info">
+                            <h4>Review Strictness</h4>
+                            <p>How thorough should the AI be?</p>
+                        </div>
+                        <select class="custom-select">
+                            <option>Standard</option>
+                            <option selected>Strict</option>
+                            <option>Very Strict</option>
+                        </select>
+                    </div>
+                    
+                    <div class="preference-item">
+                        <div class="preference-info">
+                            <h4>Auto-Refactoring</h4>
+                            <p>Automatically apply safe fixes</p>
+                        </div>
+                        <label class="switch">
+                            <input type="checkbox" checked>
+                            <span class="slider"></span>
+                        </label>
+                    </div>
+                    
+                    <div class="preference-item">
+                        <div class="preference-info">
+                            <h4>Email Notifications</h4>
+                            <p>Receive daily digest of reviews</p>
+                        </div>
+                        <label class="switch">
+                            <input type="checkbox">
+                            <span class="slider"></span>
+                        </label>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script src="auth.js"></script>
+    <script>
+        function saveProfile() {
+            showToast('Profile updated successfully!', 'success');
+        }
+    </script>
+</body>
+</html>

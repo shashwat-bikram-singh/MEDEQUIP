@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Settings - MyWebsite</title>
+   
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="css.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body class="dashboard-page">
+    <!-- Sidebar -->
+    <aside class="sidebar" id="sidebar">
+        <div class="sidebar-header">
+            <a href="index.html" class="logo">
+                <i class="fas fa-code"></i>
+                <span>MyWebsite</span>
+            </a>
+            <button class="sidebar-toggle" id="sidebarToggle">
+                <i class="fas fa-bars"></i>
+            </button>
+        </div>
+        <nav class="sidebar-nav">
+            <div class="nav-section">
+                <span class="nav-section-title">Main</span>
+                <ul>
+                    <li><a href="dashboard.html" class="nav-link"><i class="fas fa-home"></i><span>Dashboard</span></a></li>
+                    <li><a href="#" class="nav-link"><i class="fas fa-chart-line"></i><span>Analytics</span></a></li>
+                    <li><a href="#" class="nav-link"><i class="fas fa-folder"></i><span>Projects</span></a></li>
+                </ul>
+            </div>
+            <div class="nav-section">
+                <span class="nav-section-title">Account</span>
+                <ul>
+                    <li><a href="profile.html" class="nav-link"><i class="fas fa-user"></i><span>Profile</span></a></li>
+                    <li><a href="settings.html" class="nav-link active"><i class="fas fa-cog"></i><span>Settings</span></a></li>
+                </ul>
+            </div>
+        </nav>
+        <div class="sidebar-footer">
+            <a href="#" class="nav-link" id="sidebarLogout">
+                <i class="fas fa-sign-out-alt"></i>
+                <span>Logout</span>
+            </a>
+        </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="dashboard-main" id="dashboardMain">
+        <header class="dashboard-header">
+            <div class="header-left">
+                <button class="mobile-menu-btn" id="mobileMenuBtn"><i class="fas fa-bars"></i></button>
+                <h1 class="page-title">Settings</h1>
+            </div>
+            <div class="header-right">
+                <div class="user-dropdown" id="headerUserDropdown">
+                    <img src="https://via.placeholder.com/40" alt="User" id="headerUserAvatar">
+                    <span id="headerUserName">User</span>
+                    <i class="fas fa-chevron-down"></i>
+                    <div class="dropdown-menu">
+                        <a href="profile.html"><i class="fas fa-user"></i> Profile</a>
+                        <a href="settings.html"><i class="fas fa-cog"></i> Settings</a>
+                        <hr>
+                        <a href="#" id="headerLogout"><i class="fas fa-sign-out-alt"></i> Logout</a>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <div class="dashboard-content">
+            <div class="settings-container">
+                <!-- Settings Navigation -->
+                <div class="settings-nav animate-slide-up">
+                    <button class="settings-nav-btn active" data-section="account">
+                        <i class="fas fa-user-circle"></i>
+                        <span>Account</span>
+                    </button>
+                    <button class="settings-nav-btn" data-section="security">
+                        <i class="fas fa-shield-alt"></i>
+                        <span>Security</span>
+                    </button>
+                    <button class="settings-nav-btn" data-section="notifications">
+                        <i class="fas fa-bell"></i>
+                        <span>Notifications</span>
+                    </button>
+                    <button class="settings-nav-btn" data-section="appearance">
+                        <i class="fas fa-palette"></i>
+                        <span>Appearance</span>
+                    </button>
+                    <button class="settings-nav-btn" data-section="privacy">
+                        <i class="fas fa-lock"></i>
+                        <span>Privacy</span>
+                    </button>
+                    <button class="settings-nav-btn danger" data-section="danger">
+                        <i class="fas fa-exclamation-triangle"></i>
+                        <span>Danger Zone</span>
+                    </button>
+                </div>
+
+                <!-- Settings Content -->
+                <div class="settings-content">
+                    <!-- Account Settings -->
+                    <section class="settings-section active" id="account">
+                        <h2>Account Settings</h2>
+                        <form class="settings-form" id="accountSettingsForm">
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="settingsFirstName">First Name</label>
+                                    <input type="text" id="settingsFirstName">
+                                </div>
+                                <div class="form-group">
+                                    <label for="settingsLastName">Last Name</label>
+                                    <input type="text" id="settingsLastName">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="settingsEmail">Email Address</label>
+                                <input type="email" id="settingsEmail">
+                            </div>
+                            <div class="form-group">
+                                <label for="settingsUsername">Username</label>
+                                <input type="text" id="settingsUsername">
+                            </div>
+                            <div class="form-group">
+                                <label for="settingsPhone">Phone Number</label>
+                                <input type="tel" id="settingsPhone">
+                            </div>
+                            <button type="submit" class="btn btn-primary">Save Changes</button>
+                        </form>
+                    </section>
+
+                    <!-- Security Settings -->
+                    <section class="settings-section" id="security">
+                        <h2>Security Settings</h2>
+                        <div class="settings-card">
+                            <h3>Change Password</h3>
+                            <form id="changePasswordForm">
+                                <div class="form-group">
+                                    <label for="currentPassword">Current Password</label>
+                                    <div class="input-wrapper">
+                                        <input type="password" id="currentPassword">
+                                        <button type="button" class="toggle-password"><i class="fas fa-eye"></i></button>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="newPassword">New Password</label>
+                                    <div class="input-wrapper">
+                                        <input type="password" id="newPassword">
+                                        <button type="button" class="toggle-password"><i class="fas fa-eye"></i></button>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="confirmNewPassword">Confirm New Password</label>
+                                    <div class="input-wrapper">
+                                        <input type="password" id="confirmNewPassword">
+                                        <button type="button" class="toggle-password"><i class="fas fa-eye"></i></button>
+                                    </div>
+                                </div>
+                                <button type="submit" class="btn btn-primary">Update Password</button>
+                            </form>
+                        </div>
+                        <div class="settings-card">
+                            <h3>Two-Factor Authentication</h3>
+                            <p>Add an extra layer of security to your account.</p>
+                            <div class="toggle-setting">
+                                <span>Enable 2FA</span>
+                                <label class="toggle-switch">
+                                    <input type="checkbox" id="toggle2FA">
+                                    <span class="toggle-slider"></span>
+                                </label>
+                            </div>
+                        </div>
+                        <div class="settings-card">
+                            <h3>Active Sessions</h3>
+                            <div class="sessions-list" id="sessionsList">
+                                <div class="session-item">
+                                    <div class="session-info">
+                                        <i class="fas fa-desktop"></i>
+                                        <div>
+                                            <strong>Chrome on Windows</strong>
+                                            <span>Current session • San Francisco, CA</span>
+                                        </div>
+                                    </div>
+                                    <span class="badge badge-success">Active</span>
+                                </div>
+                            </div>
+                            <button class="btn btn-outline btn-danger">Logout All Devices</button>
+                        </div>
+                    </section>
+
+                    <!-- Notification Settings -->
+                    <section class="settings-section" id="notifications">
+                        <h2>Notification Settings</h2>
+                        <div class="settings-card">
+                            <h3>Email Notifications</h3>
+                            <div class="toggle-setting">
+                                <div>
+                                    <span>Newsletter</span>
+                                    <p>Receive our weekly newsletter</p>
+                                </div>
+                                <label class="toggle-switch">
+                                    <input type="checkbox" id="newsletterNotif" checked>
+                                    <span class="toggle-slider"></span>
+                                </label>
+                            </div>
+                            <div class="toggle-setting">
+                                <div>
+                                    <span>Product Updates</span>
+                                    <p>Get notified about new features</p>
+                                </div>
+                                <label class="toggle-switch">
+                                    <input type="checkbox" id="productNotif" checked>
+                                    <span class="toggle-slider"></span>
+                                </label>
+                            </div>
+                            <div class="toggle-setting">
+                                <div>
+                                    <span>Security Alerts</span>
+                                    <p>Important security notifications</p>
+                                </div>
+                                <label class="toggle-switch">
+                                    <input type="checkbox" id="securityNotif" checked>
+                                    <span class="toggle-slider"></span>
+                                </label>
+                            </div>
+                        </div>
+                        <div class="settings-card">
+                            <h3>Push Notifications</h3>
+                            <div class="toggle-setting">
+                                <div>
+                                    <span>Enable Push Notifications</span>
+                                    <p>Receive notifications in browser</p>
+                                </div>
+                                <label class="toggle-switch">
+                                    <input type="checkbox" id="pushNotif">
+                                    <span class="toggle-slider"></span>
+                                </label>
+                            </div>
+                        </div>
+                    </section>
+
+                    <!-- Appearance Settings -->
+                    <section class="settings-section" id="appearance">
+                        <h2>Appearance Settings</h2>
+                        <div class="settings-card">
+                            <h3>Theme</h3>
+                            <div class="theme-options">
+                                <label class="theme-option">
+                                    <input type="radio" name="theme" value="light" checked>
+                                    <div class="theme-preview light">
+                                        <i class="fas fa-sun"></i>
+                                        <span>Light</span>
+                                    </div>
+                                </label>
+                                <label class="theme-option">
+                                    <input type="radio" name="theme" value="dark">
+                                    <div class="theme-preview dark">
+                                        <i class="fas fa-moon"></i>
+                                        <span>Dark</span>
+                                    </div>
+                                </label>
+                                <label class="theme-option">
+                                    <input type="radio" name="theme" value="system">
+                                    <div class="theme-preview system">
+                                        <i class="fas fa-desktop"></i>
+                                        <span>System</span>
+                                    </div>
+                                </label>
+                            </div>
+                        </div>
+                        <div class="settings-card">
+                            <h3>Accent Color</h3>
+                            <div class="color-options">
+                                <label class="color-option">
+                                    <input type="radio" name="accent" value="blue" checked>
+                                    <span class="color-swatch blue"></span>
+                                </label>
+                                <label class="color-option">
+                                    <input type="radio" name="accent" value="purple">
+                                    <span class="color-swatch purple"></span>
+                                </label>
+                                <label class="color-option">
+                                    <input type="radio" name="accent" value="green">
+                                    <span class="color-swatch green"></span>
+                                </label>
+                                <label class="color-option">
+                                    <input type="radio" name="accent" value="orange">
+                                    <span class="color-swatch orange"></span>
+                                </label>
+                                <label class="color-option">
+                                    <input type="radio" name="accent" value="red">
+                                    <span class="color-swatch red"></span>
+                                </label>
+                            </div>
+                        </div>
+                    </section>
+
+                    <!-- Privacy Settings -->
+                    <section class="settings-section" id="privacy">
+                        <h2>Privacy Settings</h2>
+                        <div class="settings-card">
+                            <h3>Profile Visibility</h3>
+                            <div class="toggle-setting">
+                                <div>
+                                    <span>Public Profile</span>
+                                    <p>Allow others to view your profile</p>
+                                </div>
+                                <label class="toggle-switch">
+                                    <input type="checkbox" id="publicProfile" checked>
+                                    <span class="toggle-slider"></span>
+                                </label>
+                            </div>
+                            <div class="toggle-setting">
+                                <div>
+                                    <span>Show Email</span>
+                                    <p>Display email on your profile</p>
+                                </div>
+                                <label class="toggle-switch">
+                                    <input type="checkbox" id="showEmail">
+                                    <span class="toggle-slider"></span>
+                                </label>
+                            </div>
+                        </div>
+                        <div class="settings-card">
+                            <h3>Data & Privacy</h3>
+                            <button class="btn btn-outline">Download My Data</button>
+                            <button class="btn btn-outline">Privacy Policy</button>
+                        </div>
+                    </section>
+
+                    <!-- Danger Zone -->
+                    <section class="settings-section" id="danger">
+                        <h2>Danger Zone</h2>
+                        <div class="settings-card danger">
+                            <h3><i class="fas fa-exclamation-triangle"></i> Delete Account</h3>
+                            <p>Once you delete your account, there is no going back. Please be certain.</p>
+                            <button class="btn btn-danger" id="deleteAccountBtn">Delete Account</button>
+                        </div>
+                    </section>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Delete Account Modal -->
+    <div class="modal" id="deleteAccountModal">
+        <div class="modal-overlay"></div>
+        <div class="modal-content">
+            <button class="modal-close" id="closeDeleteModal">&times;</button>
+            <div class="modal-icon danger">
+                <i class="fas fa-exclamation-triangle"></i>
+            </div>
+            <h2>Delete Account</h2>
+            <p>This action cannot be undone. Please type <strong>DELETE</strong> to confirm.</p>
+            <form id="deleteAccountForm">
+                <div class="form-group">
+                    <input type="text" id="deleteConfirmation" placeholder="Type DELETE to confirm">
+                </div>
+                <div class="form-buttons">
+                    <button type="button" class="btn btn-outline" id="cancelDelete">Cancel</button>
+                    <button type="submit" class="btn btn-danger" disabled id="confirmDeleteBtn">Delete Account</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Toast Container -->
+    <div class="toast-container" id="toastContainer"></div>
+
+    <script src="js/data.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/validation.js"></script>
+    <script src="js/animations.js"></script>
+    <script src="js/main.js"></script>
+</body>
+</html>

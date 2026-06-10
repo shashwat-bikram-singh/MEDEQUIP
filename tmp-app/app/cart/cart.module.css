@@ -1,0 +1,54 @@
+.cartPage { padding: 6rem 0 2rem; }
+.container { max-width: 1280px; margin: 0 auto; padding: 0 2rem; }
+.container h2 { margin-bottom: 2rem; }
+
+.layout { display: grid; grid-template-columns: 1fr 380px; gap: 2.5rem; }
+
+/* Left */
+.left { display: flex; flex-direction: column; gap: 2rem; }
+.section { background: var(--surface-container-lowest); border-radius: var(--radius-xl); padding: 2rem; }
+.sectionTitle { display: flex; align-items: center; gap: 0.5rem; margin-bottom: 1.5rem; font-size: 1rem; }
+.sectionTitle .material-symbols-outlined { color: var(--primary); font-size: 1.25rem; }
+
+.itemList { display: flex; flex-direction: column; gap: 1rem; }
+.cartItem { display: flex; align-items: center; gap: 1rem; padding: 1rem; background: var(--surface-container-low); border-radius: var(--radius-md); }
+.itemImg { width: 3rem; height: 3rem; border-radius: var(--radius-md); background: var(--surface-container); display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+.itemImg .material-symbols-outlined { font-size: 1.5rem; color: var(--outline-variant); }
+.itemInfo { flex: 1; }
+.itemInfo h5 { font-size: 0.875rem; margin-bottom: 0.125rem; }
+.itemInfo p { font-size: 0.75rem; color: var(--outline); }
+.itemQty { display: flex; align-items: center; gap: 0.5rem; background: var(--surface-container-lowest); border-radius: var(--radius-sm); overflow: hidden; }
+.qtyBtn { width: 2rem; height: 2rem; display: flex; align-items: center; justify-content: center; font-size: 1rem; cursor: pointer; color: var(--on-surface); }
+.qtyBtn:hover { background: var(--surface-container); }
+.itemQty span { font-weight: 600; font-size: 0.875rem; min-width: 1.5rem; text-align: center; }
+.itemPrice { font-weight: 700; font-size: 0.9375rem; min-width: 5rem; text-align: right; }
+.removeBtn { color: var(--outline); cursor: pointer; transition: color var(--transition-fast); }
+.removeBtn:hover { color: var(--error); }
+.removeBtn .material-symbols-outlined { font-size: 1.125rem; }
+
+.formGrid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+.fieldFull { grid-column: 1 / -1; }
+
+.paymentOptions { display: flex; gap: 1rem; margin-bottom: 1.5rem; flex-wrap: wrap; }
+.payOption { display: flex; align-items: center; gap: 0.5rem; padding: 0.75rem 1.25rem; background: var(--surface-container-low); border-radius: var(--radius-md); font-size: 0.875rem; cursor: pointer; transition: all var(--transition-fast); }
+.payOption:has(input:checked) { background: var(--primary-fixed); color: var(--primary); font-weight: 600; }
+.payOption input { accent-color: var(--primary); }
+
+/* Summary */
+.summary { position: sticky; top: 5.5rem; align-self: start; }
+.summaryCard { background: var(--surface-container-lowest); border-radius: var(--radius-xl); padding: 2rem; box-shadow: var(--shadow-sm); }
+.summaryCard h4 { margin-bottom: 1.5rem; }
+.summaryItem { display: flex; justify-content: space-between; align-items: flex-start; padding: 0.75rem 0; }
+.summaryItem:not(:last-of-type) { border-bottom: 1px solid rgba(194,198,212,0.1); }
+.summaryItem h5 { font-size: 0.875rem; margin-bottom: 0.125rem; }
+.summaryItem p { font-size: 0.75rem; color: var(--outline); }
+.summaryItem span { font-weight: 600; font-size: 0.875rem; white-space: nowrap; }
+
+.summaryLine { display: flex; justify-content: space-between; padding: 0.5rem 0; font-size: 0.875rem; color: var(--on-surface-variant); }
+.freeShip { color: #166534; font-weight: 600; }
+.summaryTotal { display: flex; justify-content: space-between; padding: 1rem 0 0; margin-top: 0.5rem; border-top: 2px solid var(--on-surface); font-size: 1.125rem; font-weight: 800; font-family: var(--font-headline); }
+.secureNote { display: flex; align-items: center; gap: 0.375rem; justify-content: center; font-size: 0.75rem; color: var(--outline); margin-top: 1rem; }
+.secureNote .material-symbols-outlined { font-size: 1rem; }
+
+@media (max-width: 900px) { .layout { grid-template-columns: 1fr; } .summary { position: static; } }
+@media (max-width: 600px) { .formGrid { grid-template-columns: 1fr; } .paymentOptions { flex-direction: column; } }

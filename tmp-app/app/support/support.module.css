@@ -1,0 +1,44 @@
+.supportPage {}
+
+.hero { padding: 8rem 0 4rem; background: var(--surface); }
+.hero h1 { margin-top: 0.5rem; margin-bottom: 1rem; }
+.heroDesc { font-size: 1.0625rem; max-width: 600px; line-height: 1.7; margin-bottom: 2rem; }
+.heroSearch { display: flex; align-items: center; gap: 0.75rem; background: var(--surface-container-lowest); padding: 1rem 1.5rem; border-radius: var(--radius-xl); box-shadow: var(--shadow-md); max-width: 560px; }
+.heroSearch .material-symbols-outlined { color: var(--outline); font-size: 1.5rem; }
+.heroSearchInput { flex: 1; border: none; background: none; font-size: 1rem; color: var(--on-surface); outline: none; }
+.heroSearchInput::placeholder { color: var(--outline); }
+
+.section { padding: 4rem 0; }
+.sectionHeader { margin-bottom: 2.5rem; }
+.sectionHeader h2 { margin-bottom: 0.5rem; }
+.sectionHeader p { font-size: 0.9375rem; color: var(--on-surface-variant); max-width: 600px; }
+
+.topicsGrid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1.5rem; }
+.topicCard { background: var(--surface-container-lowest); border-radius: var(--radius-xl); padding: 2rem; transition: all var(--transition-base); }
+.topicCard:hover { transform: translateY(-4px); box-shadow: var(--shadow-md); }
+.topicIcon { width: 3rem; height: 3rem; border-radius: var(--radius-md); background: var(--primary-fixed); display: flex; align-items: center; justify-content: center; color: var(--primary); margin-bottom: 1.25rem; }
+.topicCard h4 { margin-bottom: 0.625rem; font-size: 1rem; }
+.topicCard p { font-size: 0.8125rem; line-height: 1.6; }
+
+.twoCol { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; }
+.infoCard { background: var(--surface-container-lowest); border-radius: var(--radius-xl); padding: 2.5rem; }
+.infoCard h3 { margin-bottom: 0.75rem; }
+.infoCard p { font-size: 0.9375rem; line-height: 1.7; margin-bottom: 1.5rem; }
+
+.certsGrid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; }
+.certCard { background: var(--surface-container-lowest); border-radius: var(--radius-xl); padding: 2.5rem; text-align: center; transition: all var(--transition-base); }
+.certCard:hover { transform: translateY(-4px); box-shadow: var(--shadow-md); }
+.certIcon { width: 4rem; height: 4rem; border-radius: var(--radius-full); background: var(--tertiary-fixed); display: flex; align-items: center; justify-content: center; color: var(--tertiary); margin: 0 auto 1.25rem; }
+.certIcon .material-symbols-outlined { font-size: 1.75rem; }
+.certCard h4 { margin-bottom: 0.5rem; }
+.certCard p { font-size: 0.8125rem; color: var(--on-surface-variant); }
+
+.contactGrid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; }
+.contactCard { background: var(--surface-container-lowest); border-radius: var(--radius-xl); padding: 2.5rem; text-align: center; }
+.contactIcon { width: 3.5rem; height: 3.5rem; border-radius: var(--radius-full); background: var(--primary-fixed); display: flex; align-items: center; justify-content: center; color: var(--primary); margin: 0 auto 1.25rem; }
+.contactCard h4 { margin-bottom: 0.5rem; }
+.contactMeta { font-size: 0.8125rem; color: var(--on-surface-variant); margin-bottom: 1rem; }
+.phone { font-family: var(--font-headline); font-size: 1.125rem; font-weight: 700; color: var(--primary); }
+
+@media (max-width: 900px) { .topicsGrid, .certsGrid, .contactGrid { grid-template-columns: repeat(2, 1fr); } .twoCol { grid-template-columns: 1fr; } }
+@media (max-width: 600px) { .topicsGrid, .certsGrid, .contactGrid { grid-template-columns: 1fr; } }

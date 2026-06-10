@@ -1,0 +1,34 @@
+.adminPage { padding: 5rem 0 2rem; }
+.container { max-width: 1280px; margin: 0 auto; padding: 0 2rem; }
+.layout { display: grid; grid-template-columns: 220px 1fr; gap: 2.5rem; }
+
+.sidebar { position: sticky; top: 5.5rem; align-self: start; }
+.sideHeader { display: flex; align-items: center; gap: 0.625rem; padding: 1rem; background: var(--gradient-primary); color: white; border-radius: var(--radius-xl); margin-bottom: 1.5rem; font-weight: 600; font-size: 0.875rem; }
+.sideIcon { display: flex; }
+.sideNav { display: flex; flex-direction: column; gap: 0.25rem; }
+.sideLink { display: flex; align-items: center; gap: 0.625rem; padding: 0.625rem 0.875rem; border-radius: var(--radius-md); font-size: 0.8125rem; color: var(--on-surface-variant); text-decoration: none; transition: all var(--transition-fast); }
+.sideLink:hover { background: var(--surface-container-low); color: var(--on-surface); }
+.sideLink .material-symbols-outlined { font-size: 1.125rem; }
+.sideLinkActive { background: var(--primary-fixed); color: var(--primary); font-weight: 600; }
+
+.subtitle { font-size: 0.9375rem; color: var(--on-surface-variant); margin-bottom: 1.5rem; }
+
+.statsGrid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.25rem; margin-bottom: 1.5rem; }
+.statCard { background: var(--surface-container-lowest); border-radius: var(--radius-xl); padding: 1.75rem; }
+.statLabel { font-size: 0.75rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; color: var(--on-surface-variant); display: block; margin-bottom: 0.5rem; }
+.statValue { font-size: 2rem; font-weight: 800; margin-bottom: 0.375rem; color: var(--on-surface); }
+.statChange { font-size: 0.75rem; font-weight: 600; color: #166534; }
+.statHigh { color: var(--tertiary); }
+
+.midRow { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin-bottom: 1.5rem; }
+.panel { background: var(--surface-container-lowest); border-radius: var(--radius-xl); padding: 1.75rem; }
+.panel h4 { margin-bottom: 1.25rem; }
+
+.userList { display: flex; flex-direction: column; gap: 0.75rem; }
+.userRow { display: flex; align-items: center; gap: 0.875rem; padding: 0.875rem; background: var(--surface-container-low); border-radius: var(--radius-md); }
+.userAvatar { width: 2.25rem; height: 2.25rem; border-radius: var(--radius-full); background: var(--primary-fixed); display: flex; align-items: center; justify-content: center; color: var(--primary); flex-shrink: 0; }
+.userInfo { flex: 1; }
+.userInfo h5 { font-size: 0.875rem; margin-bottom: 0.125rem; }
+.userInfo p { font-size: 0.75rem; color: var(--outline); }
+
+@media (max-width: 900px) { .layout { grid-template-columns: 1fr; } .sidebar { position: static; } .midRow, .statsGrid { grid-template-columns: 1fr; } }

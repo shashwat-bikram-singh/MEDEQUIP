@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import { Phone, Mail, MapPin, Facebook, Twitter, Instagram, Youtube } from 'lucide-react';
+import { Mail, MapPin, Facebook, Twitter, Instagram, Youtube } from 'lucide-react';
 import { categories } from '../../data/categories';
 
 export default function Footer() {
@@ -9,14 +9,13 @@ export default function Footer() {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10">
           {/* Brand */}
           <div>
-            <div className="flex items-center gap-2 mb-4">
-              <div className="w-8 h-8 bg-primary-500 rounded-lg flex items-center justify-center">
-                <span className="text-white font-bold text-sm">M</span>
-              </div>
-              <span className="text-xl font-bold text-white">MED<span className="text-primary-400">EQUIP</span></span>
+            <div className="flex flex-col mb-4">
+              <span className="text-2xl font-extrabold text-white tracking-tight">AIDOXY</span>
+              <span className="text-xs font-semibold text-primary-400 tracking-widest uppercase">Healthcare Pvt. Ltd.</span>
             </div>
+            <p className="text-xs font-medium text-primary-300 italic mb-3">Your Partner in Better Health</p>
             <p className="text-sm leading-relaxed text-slate-400 mb-5">
-              India's trusted platform for premium medical supplies, surgical equipment, and healthcare products. Serving hospitals, clinics and individuals since 2018.
+              Quality Orthopedic &amp; Healthcare Products imported from India. Trusted Support. Better Life.
             </p>
             <div className="flex gap-3">
               {[Facebook, Twitter, Instagram, Youtube].map((Icon, i) => (
@@ -68,21 +67,18 @@ export default function Footer() {
             <ul className="space-y-3">
               <li className="flex items-start gap-3 text-sm text-slate-400">
                 <MapPin size={15} className="text-primary-400 mt-0.5 flex-shrink-0" />
-                <span>42, Medical Hub, Sector 18, Gurugram, Haryana 122015</span>
-              </li>
-              <li className="flex items-center gap-3 text-sm text-slate-400">
-                <Phone size={15} className="text-primary-400 flex-shrink-0" />
-                <span>1800-123-4567 (Toll Free)</span>
+                <span>Nayabazar - 17, Kathmandu, Nepal</span>
               </li>
               <li className="flex items-center gap-3 text-sm text-slate-400">
                 <Mail size={15} className="text-primary-400 flex-shrink-0" />
-                <span>support@medequip.in</span>
+                <span>aidoxyhealthcare@gmail.com</span>
               </li>
             </ul>
-            <div className="mt-5 p-3 bg-slate-800 rounded-xl">
-              <p className="text-xs font-semibold text-white mb-1">Business Hours</p>
-              <p className="text-xs text-slate-400">Mon – Sat: 9:00 AM – 8:00 PM</p>
-              <p className="text-xs text-slate-400">Sun: 10:00 AM – 5:00 PM</p>
+            <div className="mt-5 p-3 bg-slate-800 rounded-xl space-y-1">
+              <p className="text-xs font-semibold text-white">Company Info</p>
+              <p className="text-xs text-slate-400">PAN: 623593419</p>
+              <p className="text-xs text-slate-400">EXIM CODE: 6235934190126NP</p>
+              <p className="text-xs text-slate-400">Country of Origin: India</p>
             </div>
           </div>
         </div>
@@ -90,7 +86,7 @@ export default function Footer() {
 
       <div className="border-t border-slate-800">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-5 flex flex-col sm:flex-row items-center justify-between gap-3">
-          <p className="text-xs text-slate-500">© 2024 MEDEQUIP. All rights reserved.</p>
+          <p className="text-xs text-slate-500">© 2024 Aidoxy Healthcare Pvt. Ltd. All rights reserved.</p>
           <div className="flex gap-5">
             {['Privacy Policy', 'Terms of Service', 'Refund Policy'].map(l => (
               <a key={l} href="#" className="text-xs text-slate-500 hover:text-primary-400 transition-colors">{l}</a>

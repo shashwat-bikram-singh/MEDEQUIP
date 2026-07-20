@@ -37,6 +37,12 @@ export default function ProductDetail() {
         {/* Info */}
         <div>
           <p className="text-sm text-primary-600 font-medium mb-2">{product.categoryName}</p>
+          {(product.brand || product.model) && (
+            <div className="flex items-center gap-2 mb-2">
+              {product.brand && <span className="inline-flex items-center px-2.5 py-1 bg-amber-50 text-amber-700 border border-amber-200 rounded-lg text-xs font-bold uppercase tracking-wide">🏷️ {product.brand}</span>}
+              {product.model && <span className="inline-flex items-center px-2.5 py-1 bg-slate-100 text-slate-600 rounded-lg text-xs font-semibold">Model: {product.model}</span>}
+            </div>
+          )}
           <h1 className="text-2xl md:text-3xl font-bold text-slate-800 mb-3">{product.name}</h1>
 
           {/* Rating */}

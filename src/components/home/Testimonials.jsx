@@ -1,10 +1,10 @@
 import { Star } from 'lucide-react';
 
 const testimonials = [
-  { name: 'Dr. Priya Sharma', role: 'Cardiologist, AIIMS Delhi', rating: 5, text: 'MEDEQUIP has been our go-to supplier for cardiac monitoring equipment. Excellent quality, fast delivery, and responsive support team. Highly recommended!', avatar: 'PS' },
-  { name: 'Rajan Mehta', role: 'Hospital Procurement Manager', rating: 5, text: 'We source all our ICU equipment from MEDEQUIP. The pricing is competitive and all products come with proper certifications. Very reliable platform.', avatar: 'RM' },
-  { name: 'Dr. Anita Verma', role: 'General Physician, Pune', rating: 5, text: 'For my clinic, MEDEQUIP has been a lifesaver. Easy to find products, good descriptions, and products are exactly as described. 5 stars!', avatar: 'AV' },
-  { name: 'Suresh Nair', role: 'Nursing Home Owner, Kerala', rating: 4, text: 'Great selection of diagnostic devices. The bulk pricing for hospitals is very reasonable. Returns process was smooth when I needed to exchange a product.', avatar: 'SN' },
+  { name: 'Dr. Priya Sharma', role: 'Orthopedic Specialist, Kathmandu', rating: 5, text: 'Aidoxy Healthcare has been our go-to supplier for orthopedic equipment. Excellent quality, fast delivery, and responsive support team. Highly recommended!', avatar: 'PS' },
+  { name: 'Rajan Mehta', role: 'Hospital Procurement Manager', rating: 5, text: 'We source all our rehabilitation equipment from Aidoxy Healthcare. The pricing is competitive and all products come with proper certifications. Very reliable.', avatar: 'RM' },
+  { name: 'Dr. Anita Verma', role: 'General Physician, Pokhara', rating: 5, text: 'For my clinic, Aidoxy Healthcare has been a lifesaver. Easy to find products, good descriptions, and products are exactly as described. 5 stars!', avatar: 'AV' },
+  { name: 'Suresh Nair', role: 'Nursing Home Owner, Lalitpur', rating: 4, text: 'Great selection of orthopedic and healthcare devices. The bulk pricing for hospitals is very reasonable. Returns process was smooth when I needed to exchange a product.', avatar: 'SN' },
 ];
 
 export default function Testimonials() {

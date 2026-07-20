@@ -110,7 +110,7 @@ export default function Support() {
             </div>
             <h4 className="font-bold text-slate-800 text-sm mb-1">Direct Facility Line</h4>
             <p className="text-xs text-slate-400 mb-3">Priority for Surgical Departments</p>
-            <p className="font-semibold text-slate-700 text-sm">1-800-123-4567</p>
+            <p className="font-semibold text-slate-700 text-sm">aidoxyhealthcare@gmail.com</p>
           </div>
           <div className="text-center p-5 hover:bg-slate-50 rounded-2xl transition-colors">
             <div className="w-12 h-12 bg-purple-50 rounded-xl flex items-center justify-center text-purple-600 mx-auto mb-3">
@@ -118,7 +118,7 @@ export default function Support() {
             </div>
             <h4 className="font-bold text-slate-800 text-sm mb-1">Email Support</h4>
             <p className="text-xs text-slate-400 mb-3">Response within 4 hours</p>
-            <p className="font-semibold text-slate-700 text-sm">support@medequip.in</p>
+            <p className="font-semibold text-slate-700 text-sm">aidoxyhealthcare@gmail.com</p>
           </div>
         </div>
       </div>

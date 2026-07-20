@@ -2,7 +2,7 @@ import { Link } from 'react-router-dom';
 import { CheckCircle, Package, ArrowRight } from 'lucide-react';
 
 export default function OrderSuccess() {
-  const orderId = `MEQ-${Math.floor(100000 + Math.random() * 900000)}`;
+  const orderId = `AHC-${Math.floor(100000 + Math.random() * 900000)}`;
 
   return (
     <div className="min-h-[80vh] flex items-center justify-center px-4">

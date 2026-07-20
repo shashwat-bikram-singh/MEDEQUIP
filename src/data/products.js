@@ -343,12 +343,115 @@ const initialProducts = [
     stock: 'In Stock', badge: 'Popular', description: 'High-precision medical smart body scale. Measures weight, BMI, body fat ratio, muscle mass, bone density via bio-impedance. Auto-syncs to Android and iOS apps.',
     specs: ['Sensors: 4 G-sensors', 'Capacity: 180kg', 'Display: Backlit LED', 'App Sync: Bluetooth 5.0']
   },
+
+  // --- Orthopedic & Rehabilitation (orthopedic-rehab) — Aidoxy Brand ---
   {
-    id: 48, name: 'Orthopedic Cervical Neck Pillow', category: 'personal-care', categoryName: 'Personal Care',
-    price: 1499, originalPrice: 2100, rating: 4.7, reviews: 480,
-    image: 'https://images.unsplash.com/photo-1522335789203-aabd1fc54bc9?w=400&h=400&fit=crop',
-    stock: 'In Stock', badge: null, description: 'Contour ergonomic memory foam neck support pillow. Promotes optimal anatomical spine alignment, reducing morning neck and shoulder pain. Breathable bamboo fiber cover.',
-    specs: ['Material: Memory Foam', 'Cover: Bamboo fabric', 'Ergonomic: Yes', 'Washable cover: Yes']
+    id: 101, name: 'Aidoxy Bamboo Knee Cap (K-13)', category: 'orthopedic-rehab', categoryName: 'Orthopedic & Rehab',
+    price: 450, originalPrice: 600, rating: 4.8, reviews: 312,
+    image: 'https://images.unsplash.com/photo-1597452485669-2c7bb5fef90d?w=400&h=400&fit=crop',
+    stock: 'In Stock', badge: 'Best Seller',
+    description: 'Aidoxy K-13 Bamboo Knee Cap with 4-way stretch fabric for maximum comfort and flexibility. Made with premium bamboo fibre blend for natural antibacterial properties and breathability. Ideal for arthritis, sports injuries, and joint pain relief.',
+    brand: 'Aidoxy', model: 'K-13',
+    specs: ['Material: Bamboo Fibre Blend', 'Stretch: 4-Way', 'Pack: 1 Pair', 'Sizes: S / M / L / XL', 'Brand: Aidoxy Healthcare', 'Country of Origin: India']
+  },
+  {
+    id: 102, name: 'Aidoxy Knee Cap Pro (K-5)', category: 'orthopedic-rehab', categoryName: 'Orthopedic & Rehab',
+    price: 650, originalPrice: 850, rating: 4.9, reviews: 245,
+    image: 'https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=400&h=400&fit=crop',
+    stock: 'In Stock', badge: 'Top Rated',
+    description: 'Aidoxy K-5 Knee Cap Pro with advanced 4-way stretch compression technology and anti-slip silicone gel strips. Premium nylon-spandex blend for superior support during sports, workouts, and daily activities. Reduces knee pain, swelling, and fatigue.',
+    brand: 'Aidoxy', model: 'K-5',
+    specs: ['Material: Nylon-Spandex Blend', 'Stretch: 4-Way', 'Anti-slip: Silicone Gel Strips', 'Pack: 1 Piece', 'Sizes: S / M / L / XL / XXL', 'Brand: Aidoxy Healthcare']
+  },
+  {
+    id: 103, name: 'Aidoxy Elastic Knee Cap', category: 'orthopedic-rehab', categoryName: 'Orthopedic & Rehab',
+    price: 320, originalPrice: 450, rating: 4.6, reviews: 189,
+    image: 'https://images.unsplash.com/photo-1520813792240-56fc4a3765a7?w=400&h=400&fit=crop',
+    stock: 'In Stock', badge: null,
+    description: 'Aidoxy Elastic Knee Cap provides firm compression and stability to the knee joint. Suitable for post-surgery recovery, knee pain, ligament injuries, and general knee support during daily activities.',
+    brand: 'Aidoxy', model: 'K-Series',
+    specs: ['Material: Elastic Cotton Blend', 'Compression: Firm', 'Pack: 1 Pair', 'Sizes: S / M / L / XL', 'Brand: Aidoxy Healthcare', 'Country of Origin: India']
+  },
+  {
+    id: 104, name: 'Aidoxy Elastic Ankle Cap', category: 'orthopedic-rehab', categoryName: 'Orthopedic & Rehab',
+    price: 280, originalPrice: 380, rating: 4.7, reviews: 143,
+    image: 'https://images.unsplash.com/photo-1544966503-7cc5ac882d5f?w=400&h=400&fit=crop',
+    stock: 'In Stock', badge: null,
+    description: 'Aidoxy Elastic Ankle Cap offers therapeutic compression and support for sprained ankles, tendonitis, and chronic ankle instability. Seamless knitting reduces friction and irritation for all-day comfort.',
+    brand: 'Aidoxy', model: 'A-Series',
+    specs: ['Material: Elastic Knit Fabric', 'Compression: Moderate', 'Pack: 1 Pair', 'Sizes: S / M / L / XL', 'Brand: Aidoxy Healthcare', 'Country of Origin: India']
+  },
+  {
+    id: 105, name: 'Aidoxy Pouch Arm Sling (E-6)', category: 'orthopedic-rehab', categoryName: 'Orthopedic & Rehab',
+    price: 550, originalPrice: 750, rating: 4.8, reviews: 198,
+    image: 'https://images.unsplash.com/photo-1559757148-5c350d0d3c56?w=400&h=400&fit=crop',
+    stock: 'In Stock', badge: 'Doctor Recommended',
+    description: 'Aidoxy E-6 Pouch Arm Sling with smart sleek ventilated design for comfortable arm immobilization. Padded shoulder strap, adjustable buckle, and breathable mesh lining. Ideal for fractures, sprains, post-surgery recovery.',
+    brand: 'Aidoxy', model: 'E-6',
+    specs: ['Design: Ventilated Pouch', 'Strap: Padded Adjustable', 'Closure: Quick-Release Buckle', 'Size: Universal', 'Brand: Aidoxy Healthcare', 'Country of Origin: India']
+  },
+  {
+    id: 106, name: 'Aidoxy Elastic Lumbo Sacral Support (B-4)', category: 'orthopedic-rehab', categoryName: 'Orthopedic & Rehab',
+    price: 980, originalPrice: 1299, rating: 4.9, reviews: 276,
+    image: 'https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?w=400&h=400&fit=crop',
+    stock: 'In Stock', badge: 'Doctor Recommended',
+    description: 'Aidoxy B-4 Elastic Lumbo Sacral Support designed with flexible back splints to provide comfortable support and back pain relief. Double layered elastic belt with pull tabs for easy wearing. Ideal for lower back pain, post-op support, and lumbar disc herniation.',
+    brand: 'Aidoxy', model: 'B-4',
+    specs: ['Splints: Flexible Metal', 'Closure: Double Hook & Loop', 'Material: Breathable Elastic', 'Sizes: S / M / L / XL / XXL', 'Brand: Aidoxy Healthcare', 'Country of Origin: India']
+  },
+  {
+    id: 107, name: 'Aidoxy Cervical Collar (Soft)', category: 'orthopedic-rehab', categoryName: 'Orthopedic & Rehab',
+    price: 420, originalPrice: 580, rating: 4.7, reviews: 164,
+    image: 'https://images.unsplash.com/photo-1559757175-0eb30cd8c063?w=400&h=400&fit=crop',
+    stock: 'In Stock', badge: null,
+    description: 'Aidoxy Soft Cervical Collar for neck pain relief, cervical spondylosis, whiplash injuries, and post-surgery neck immobilization. Foam padded construction with soft terry cloth cover for day-long comfort.',
+    brand: 'Aidoxy', model: 'C-Series',
+    specs: ['Material: Polyurethane Foam', 'Cover: Terry Cloth', 'Sizes: S / M / L', 'Brand: Aidoxy Healthcare', 'Country of Origin: India']
+  },
+  {
+    id: 108, name: 'Aidoxy Wrist Support / Splint (Pro)', category: 'orthopedic-rehab', categoryName: 'Orthopedic & Rehab',
+    price: 490, originalPrice: 650, rating: 4.8, reviews: 112,
+    image: 'https://images.unsplash.com/photo-1559757175-0eb30cd8c063?w=400&h=400&fit=crop',
+    stock: 'In Stock', badge: 'New',
+    description: 'Aidoxy Professional Wrist Support Splint designed with a removable metal stay and strong compression straps. Provides rigid support and stabilization for carpal tunnel syndrome, severe wrist sprains, and arthritis pain.',
+    brand: 'Aidoxy', model: 'W-Pro',
+    specs: ['Support: Removable Metal Stay', 'Closure: Triple Hook & Loop', 'Material: Breathable Neoprene', 'Sizes: Left & Right (S / M / L)', 'Brand: Aidoxy Healthcare', 'Country of Origin: India']
+  },
+  {
+    id: 109, name: 'Aidoxy Sport Elbow Support', category: 'orthopedic-rehab', categoryName: 'Orthopedic & Rehab',
+    price: 380, originalPrice: 500, rating: 4.7, reviews: 96,
+    image: 'https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=400&h=400&fit=crop',
+    stock: 'In Stock', badge: 'Active Wear',
+    description: 'Aidoxy Premium Sport Elbow Support Sleeve featuring targeted compression zones and an orange-accented knit pattern. Provides muscle warmth, improves blood circulation, and reduces joint fatigue during athletic training.',
+    brand: 'Aidoxy', model: 'E-Sport',
+    specs: ['Material: High-Elastic Knit', 'Design: Ergonomic 3D Fit', 'Color: Black & Orange', 'Pack: 1 Piece', 'Sizes: M / L / XL', 'Brand: Aidoxy Healthcare']
+  },
+  {
+    id: 110, name: 'Aidoxy Sport Knee Support', category: 'orthopedic-rehab', categoryName: 'Orthopedic & Rehab',
+    price: 480, originalPrice: 650, rating: 4.9, reviews: 152,
+    image: 'https://images.unsplash.com/photo-1597452485669-2c7bb5fef90d?w=400&h=400&fit=crop',
+    stock: 'In Stock', badge: 'Best Seller',
+    description: 'Aidoxy Sport Knee Support Sleeve with advanced high-elasticity compression knit and double anti-slip silicone wave bands. Offers superior stability and knee cap protection for running, basketball, gym workouts, or recovery.',
+    brand: 'Aidoxy', model: 'K-Sport',
+    specs: ['Material: Nylon & Spandex Elastic', 'Anti-slip: Dual Silicone Bands', 'Color: Black & Orange', 'Pack: 1 Piece', 'Sizes: S / M / L / XL', 'Brand: Aidoxy Healthcare']
+  },
+  {
+    id: 111, name: 'Aidoxy Cervical Collar with Eyelets', category: 'orthopedic-rehab', categoryName: 'Orthopedic & Rehab',
+    price: 480, originalPrice: 650, rating: 4.8, reviews: 88,
+    image: 'https://images.unsplash.com/photo-1559757175-0eb30cd8c063?w=400&h=400&fit=crop',
+    stock: 'In Stock', badge: 'Ventilated',
+    description: 'Aidoxy Contoured Cervical Collar designed with ventilation eyelets (air vents) to prevent sweat and heat accumulation. Made of high-density foam padding that supports the neck while keeping the skin dry and cool.',
+    brand: 'Aidoxy', model: 'C-Eyelet',
+    specs: ['Ventilation: Integrated Eyelets', 'Material: Padded High-Density Foam', 'Cover: Breathable Cotton Fabric', 'Sizes: S / M / L', 'Brand: Aidoxy Healthcare', 'Country of Origin: India']
+  },
+  {
+    id: 112, name: 'Aidoxy Tennis Elbow Support', category: 'orthopedic-rehab', categoryName: 'Orthopedic & Rehab',
+    price: 260, originalPrice: 350, rating: 4.6, reviews: 74,
+    image: 'https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=400&h=400&fit=crop',
+    stock: 'In Stock', badge: 'Targeted Relief',
+    description: 'Aidoxy Tennis Elbow Support strap with a thick pressure pad, durable metal buckle loop, and adjustable compression strap. Relieves forearm strain and pain associated with tennis/golfer’s elbow, typing, and heavy lifting.',
+    brand: 'Aidoxy', model: 'E-Tennis',
+    specs: ['Support: Targeted Pressure Pad', 'Lock: Metal Buckle Loop & Velcro', 'Material: Neoprene & Mesh', 'Size: Universal Fit', 'Brand: Aidoxy Healthcare', 'Country of Origin: India']
   }
 ];
 

@@ -14,8 +14,8 @@ export default function WhyUs() {
     <section className="py-14 bg-slate-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-10">
-          <h2 className="section-title">Why Choose MEDEQUIP?</h2>
-          <p className="section-subtitle">Trusted by healthcare professionals across India</p>
+          <h2 className="section-title">Why Choose Aidoxy Healthcare?</h2>
+          <p className="section-subtitle">Trusted by healthcare professionals across Nepal &amp; beyond</p>
         </div>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
           {features.map(f => (

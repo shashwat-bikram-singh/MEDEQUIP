@@ -39,17 +39,17 @@ export default function Navbar() {
     <header className={`sticky top-0 z-50 bg-white transition-shadow duration-300 ${scrolled ? 'shadow-md' : 'shadow-sm'}`}>
       {/* Top bar */}
       <div className="bg-primary-600 text-white text-xs py-1.5 text-center font-medium">
-        🚚 Free shipping on orders above ₹999 &nbsp;|&nbsp; 📞 24/7 Support: 1800-123-4567
+        🌏 Imported &amp; Marketed By Aidoxy Healthcare Pvt. Ltd. &nbsp;|&nbsp; 📧 aidoxyhealthcare@gmail.com &nbsp;|&nbsp; 📍 Nayabazar-17, Kathmandu, Nepal
       </div>
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center gap-4 h-16">
           {/* Logo */}
           <Link to="/" className="flex items-center gap-2 flex-shrink-0">
-            <div className="w-8 h-8 bg-primary-600 rounded-lg flex items-center justify-center">
-              <span className="text-white font-bold text-sm">M</span>
+            <div className="flex flex-col leading-none">
+              <span className="text-xl font-extrabold text-slate-900 tracking-tight">AIDOXY</span>
+              <span className="text-[9px] font-semibold text-primary-600 tracking-widest uppercase">Healthcare</span>
             </div>
-            <span className="text-xl font-bold text-slate-800">MED<span className="text-primary-600">EQUIP</span></span>
           </Link>
 
           {/* Categories dropdown */}

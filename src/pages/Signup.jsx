@@ -26,11 +26,12 @@ export default function Signup() {
       <div className="w-full max-w-md">
         <div className="card p-8">
           <div className="text-center mb-8">
-            <div className="w-12 h-12 bg-primary-600 rounded-2xl flex items-center justify-center mx-auto mb-3">
-              <span className="text-white font-bold text-lg">M</span>
+            <div className="flex flex-col items-center mb-3">
+              <span className="text-2xl font-extrabold text-slate-900 tracking-tight">AIDOXY</span>
+              <span className="text-xs font-semibold text-primary-600 tracking-widest uppercase">Healthcare Pvt. Ltd.</span>
             </div>
             <h1 className="text-2xl font-bold text-slate-800">Create Account</h1>
-            <p className="text-slate-500 text-sm mt-1">Join 10,000+ healthcare professionals</p>
+            <p className="text-slate-500 text-sm mt-1">Join Aidoxy Healthcare — Your Partner in Better Health</p>
           </div>
 
           <form onSubmit={handleSubmit} className="space-y-4">

@@ -7,4 +7,6 @@ export const categories = [
   { id: 6, name: 'Lab Equipment', slug: 'lab-equipment', icon: '🧪', color: 'bg-cyan-50 text-cyan-600', count: 40, description: 'Laboratory testing and analysis equipment' },
   { id: 7, name: 'Wheelchairs', slug: 'wheelchairs', icon: '♿', color: 'bg-indigo-50 text-indigo-600', count: 18, description: 'Manual and powered mobility solutions' },
   { id: 8, name: 'Personal Care', slug: 'personal-care', icon: '🧴', color: 'bg-pink-50 text-pink-600', count: 75, description: 'Hygiene, wellness and personal care products' },
+  { id: 9, name: 'Orthopedic & Rehab', slug: 'orthopedic-rehab', icon: '🦴', color: 'bg-amber-50 text-amber-600', count: 12, description: 'Orthopedic supports, braces & rehabilitation products' },
 ];
+

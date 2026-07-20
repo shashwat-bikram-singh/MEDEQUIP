@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Phone, Mail, MapPin, Clock, Send, CheckCircle } from 'lucide-react';
+import { Mail, MapPin, Clock, Send, CheckCircle } from 'lucide-react';
 
 export default function Contact() {
   const [form, setForm] = useState({ name: '', email: '', subject: '', message: '' });
@@ -23,9 +23,8 @@ export default function Contact() {
         {/* Info */}
         <div className="space-y-5">
           {[
-            { icon: <Phone size={20} className="text-primary-600" />, title: 'Phone', lines: ['1800-123-4567 (Toll Free)', '+91 124-456-7890'], bg: 'bg-primary-50' },
-            { icon: <Mail size={20} className="text-green-600" />, title: 'Email', lines: ['support@medequip.in', 'bulk@medequip.in'], bg: 'bg-green-50' },
-            { icon: <MapPin size={20} className="text-purple-600" />, title: 'Address', lines: ['42, Medical Hub, Sector 18', 'Gurugram, Haryana 122015'], bg: 'bg-purple-50' },
+            { icon: <Mail size={20} className="text-green-600" />, title: 'Email', lines: ['aidoxyhealthcare@gmail.com'], bg: 'bg-green-50' },
+            { icon: <MapPin size={20} className="text-purple-600" />, title: 'Address', lines: ['Nayabazar - 17, Kathmandu, Nepal'], bg: 'bg-purple-50' },
             { icon: <Clock size={20} className="text-orange-600" />, title: 'Hours', lines: ['Mon–Sat: 9AM – 8PM', 'Sun: 10AM – 5PM'], bg: 'bg-orange-50' },
           ].map(c => (
             <div key={c.title} className="card p-5 flex gap-4">

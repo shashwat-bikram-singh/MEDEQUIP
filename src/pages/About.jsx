@@ -6,11 +6,11 @@ export default function About() {
       {/* Hero */}
       <div className="text-center mb-14">
         <span className="inline-flex items-center gap-2 px-4 py-1.5 bg-primary-100 text-primary-700 rounded-full text-xs font-semibold mb-4">
-          🏥 Est. 2018 · Gurugram, India
+          🏥 Nayabazar-17, Kathmandu, Nepal
         </span>
-        <h1 className="text-4xl font-bold text-slate-800 mb-4">About MEDEQUIP</h1>
+        <h1 className="text-4xl font-bold text-slate-800 mb-4">About Aidoxy Healthcare Pvt. Ltd.</h1>
         <p className="text-slate-500 text-lg max-w-2xl mx-auto leading-relaxed">
-          We are India's most trusted online platform for premium medical supplies, surgical equipment, and healthcare products — serving hospitals, clinics, and individuals.
+          Your Partner in Better Health — we are a leading importer and marketer of Quality Orthopedic &amp; Healthcare Products, bringing certified medical supplies from India to Nepal.
         </p>
       </div>
 
@@ -22,10 +22,10 @@ export default function About() {
         <div>
           <h2 className="text-2xl font-bold text-slate-800 mb-4">Our Mission</h2>
           <p className="text-slate-600 leading-relaxed mb-4">
-            To make high-quality, certified medical equipment accessible to every healthcare professional and patient across India — at fair, transparent prices with unmatched service.
+            To make high-quality, certified orthopedic and healthcare equipment accessible to every healthcare professional and patient in Nepal — with transparent pricing and unmatched service.
           </p>
           <p className="text-slate-600 leading-relaxed">
-            From a small startup in 2018 to serving over 500 hospitals and 10,000+ individual customers, MEDEQUIP has grown by prioritizing trust, quality, and fast delivery above everything else.
+            Imported and marketed by Aidoxy Healthcare Pvt. Ltd., Nayabazar-17, Kathmandu, Nepal. We source certified, quality-assured products from India (PAN: 623593419 | EXIM: 6235934190126NP).
           </p>
           <div className="grid grid-cols-2 gap-4 mt-6">
             {[['500+', 'Hospitals'], ['10K+', 'Customers'], ['8', 'Categories'], ['98%', 'Satisfaction']].map(([v, l]) => (
@@ -59,10 +59,10 @@ export default function About() {
 
       {/* Team */}
       <div className="bg-gradient-to-br from-primary-600 to-primary-800 rounded-3xl p-10 text-white text-center">
-        <h2 className="text-2xl font-bold mb-3">Join 10,000+ Healthcare Professionals</h2>
-        <p className="text-primary-100 mb-6 max-w-md mx-auto">Get access to certified medical supplies, exclusive bulk pricing, and dedicated account support.</p>
-        <a href="/signup" className="inline-flex items-center gap-2 bg-white text-primary-700 font-bold px-8 py-3 rounded-2xl hover:bg-primary-50 transition-colors">
-          Get Started Free
+        <h2 className="text-2xl font-bold mb-3">Trusted Support. Better Life.</h2>
+        <p className="text-primary-100 mb-6 max-w-md mx-auto">Get access to certified orthopedic &amp; healthcare products, exclusive bulk pricing, and dedicated account support from Aidoxy Healthcare.</p>
+        <a href="/contact" className="inline-flex items-center gap-2 bg-white text-primary-700 font-bold px-8 py-3 rounded-2xl hover:bg-primary-50 transition-colors">
+          Contact Us
         </a>
       </div>
     </div>

@@ -45,10 +45,16 @@ export default function Navbar() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center gap-4 h-16">
           {/* Logo */}
-          <Link to="/" className="flex items-center gap-2 flex-shrink-0">
+          <Link to="/" className="flex items-center gap-2.5 flex-shrink-0 group">
+            <img 
+              src="/images/logo.jpg" 
+              alt="Aidoxy Healthcare Logo" 
+              className="h-10 w-auto object-contain transition-transform group-hover:scale-105"
+              onError={(e) => { e.target.style.display = 'none'; }}
+            />
             <div className="flex flex-col leading-none">
-              <span className="text-xl font-extrabold text-slate-900 tracking-tight">AIDOXY</span>
-              <span className="text-[9px] font-semibold text-primary-600 tracking-widest uppercase">Healthcare</span>
+              <span className="text-xl font-black text-slate-900 tracking-tight group-hover:text-primary-600 transition-colors">AIDOXY</span>
+              <span className="text-[9.5px] font-bold text-primary-600 tracking-widest uppercase">Healthcare Pvt. Ltd.</span>
             </div>
           </Link>
 

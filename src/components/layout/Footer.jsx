@@ -9,9 +9,17 @@ export default function Footer() {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10">
           {/* Brand */}
           <div>
-            <div className="flex flex-col mb-4">
-              <span className="text-2xl font-extrabold text-white tracking-tight">AIDOXY</span>
-              <span className="text-xs font-semibold text-primary-400 tracking-widest uppercase">Healthcare Pvt. Ltd.</span>
+            <div className="flex items-center gap-3 mb-4">
+              <img 
+                src="/images/logo.jpg" 
+                alt="Aidoxy Healthcare Logo" 
+                className="h-12 w-auto object-contain bg-white p-1 rounded-lg"
+                onError={(e) => { e.target.style.display = 'none'; }}
+              />
+              <div className="flex flex-col">
+                <span className="text-2xl font-extrabold text-white tracking-tight">AIDOXY</span>
+                <span className="text-xs font-semibold text-primary-400 tracking-widest uppercase">Healthcare Pvt. Ltd.</span>
+              </div>
             </div>
             <p className="text-xs font-medium text-primary-300 italic mb-3">Your Partner in Better Health</p>
             <p className="text-sm leading-relaxed text-slate-400 mb-5">

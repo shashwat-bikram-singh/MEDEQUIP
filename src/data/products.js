@@ -383,21 +383,21 @@ const initialProducts = [
   },
   {
     id: 105, name: 'Aidoxy Pouch Arm Sling (E-6)', category: 'orthopedic-rehab', categoryName: 'Orthopedic & Rehab',
-    price: 550, originalPrice: 750, rating: 4.8, reviews: 198,
-    image: 'https://images.unsplash.com/photo-1559757148-5c350d0d3c56?w=400&h=400&fit=crop',
-    stock: 'In Stock', badge: 'Doctor Recommended',
-    description: 'Aidoxy E-6 Pouch Arm Sling with smart sleek ventilated design for comfortable arm immobilization. Padded shoulder strap, adjustable buckle, and breathable mesh lining. Ideal for fractures, sprains, post-surgery recovery.',
+    price: 550, originalPrice: 750, rating: 4.9, reviews: 198,
+    image: '/images/products/aidoxy_pouch_arm_sling_e6.jpg',
+    stock: 'In Stock', badge: 'Doctor #1 Recommended',
+    description: 'Aidoxy E-6 Pouch Arm Sling with smart sleek ventilated design for comfortable arm immobilization. Features padded shoulder strap, adjustable quick-release buckle, and breathable mesh lining. Ideal for fractures, sprains, and post-surgery arm recovery.',
     brand: 'Aidoxy', model: 'E-6',
-    specs: ['Design: Ventilated Pouch', 'Strap: Padded Adjustable', 'Closure: Quick-Release Buckle', 'Size: Universal', 'Brand: Aidoxy Healthcare', 'Country of Origin: India']
+    specs: ['Design: Smart Sleek Ventilated Pouch', 'Strap: Padded Ergonomic Adjustable', 'Closure: Quick-Release Buckle', 'Size: Universal Fit', 'Manufacturer: Jvs Surgicals (ISO 9001:2015 & CE Certified)', 'Brand: Aidoxy Healthcare', 'Country of Origin: India']
   },
   {
     id: 106, name: 'Aidoxy Elastic Lumbo Sacral Support (B-4)', category: 'orthopedic-rehab', categoryName: 'Orthopedic & Rehab',
     price: 980, originalPrice: 1299, rating: 4.9, reviews: 276,
-    image: 'https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?w=400&h=400&fit=crop',
-    stock: 'In Stock', badge: 'Doctor Recommended',
-    description: 'Aidoxy B-4 Elastic Lumbo Sacral Support designed with flexible back splints to provide comfortable support and back pain relief. Double layered elastic belt with pull tabs for easy wearing. Ideal for lower back pain, post-op support, and lumbar disc herniation.',
+    image: '/images/products/aidoxy_lumbo_sacral_support_b4.jpg',
+    stock: 'In Stock', badge: 'Doctor #1 Recommended',
+    description: 'Aidoxy B-4 Elastic Lumbo Sacral Support designed with flexible back splints to provide comfortable support and back pain relief. Double-layered elastic belt with pull tabs for easy wearing and customized compression. Ideal for lower back pain, post-op support, and lumbar disc herniation.',
     brand: 'Aidoxy', model: 'B-4',
-    specs: ['Splints: Flexible Metal', 'Closure: Double Hook & Loop', 'Material: Breathable Elastic', 'Sizes: S / M / L / XL / XXL', 'Brand: Aidoxy Healthcare', 'Country of Origin: India']
+    specs: ['Splints: Flexible Metal Back Splints', 'Closure: Double Hook & Loop Pull Tabs', 'Material: Breathable High-Tension Elastic', 'Sizes: S / M / L / XL / XXL', 'Manufacturer: Jvs Surgicals (ISO 9001:2015 & CE Certified)', 'Brand: Aidoxy Healthcare', 'Country of Origin: India']
   },
   {
     id: 107, name: 'Aidoxy Cervical Collar (Soft)', category: 'orthopedic-rehab', categoryName: 'Orthopedic & Rehab',
@@ -427,13 +427,13 @@ const initialProducts = [
     specs: ['Material: High-Elastic Knit', 'Design: Ergonomic 3D Fit', 'Color: Black & Orange', 'Pack: 1 Piece', 'Sizes: M / L / XL', 'Brand: Aidoxy Healthcare']
   },
   {
-    id: 110, name: 'Aidoxy Sport Knee Support', category: 'orthopedic-rehab', categoryName: 'Orthopedic & Rehab',
-    price: 480, originalPrice: 650, rating: 4.9, reviews: 152,
-    image: 'https://images.unsplash.com/photo-1597452485669-2c7bb5fef90d?w=400&h=400&fit=crop',
-    stock: 'In Stock', badge: 'Best Seller',
-    description: 'Aidoxy Sport Knee Support Sleeve with advanced high-elasticity compression knit and double anti-slip silicone wave bands. Offers superior stability and knee cap protection for running, basketball, gym workouts, or recovery.',
-    brand: 'Aidoxy', model: 'K-Sport',
-    specs: ['Material: Nylon & Spandex Elastic', 'Anti-slip: Dual Silicone Bands', 'Color: Black & Orange', 'Pack: 1 Piece', 'Sizes: S / M / L / XL', 'Brand: Aidoxy Healthcare']
+    id: 110, name: 'Aidoxy Knee Cap Pro (K-5)', category: 'orthopedic-rehab', categoryName: 'Orthopedic & Rehab',
+    price: 580, originalPrice: 750, rating: 4.9, reviews: 184,
+    image: '/images/products/aidoxy_knee_cap_pro_k5.jpg',
+    stock: 'In Stock', badge: 'Doctor #1 Recommended',
+    description: 'Aidoxy Knee Cap Pro (K-5) with 4-way stretch elastic knit and sport orange side accents. Provides firm compression, patellar stabilization, and joint protection for workouts, arthritis relief, and knee recovery.',
+    brand: 'Aidoxy', model: 'K-5',
+    specs: ['Stretch: 4-Way Elastic Compression', 'Design: Anatomical 3D Fit with Orange Accents', 'Pack: Pair Pack (2 Pcs)', 'Sizes: S / M / L / XL', 'Manufacturer: Jvs Surgicals (ISO 9001:2015 & CE Certified)', 'Brand: Aidoxy Healthcare', 'Country of Origin: India']
   },
   {
     id: 111, name: 'Aidoxy Cervical Collar with Eyelets', category: 'orthopedic-rehab', categoryName: 'Orthopedic & Rehab',
@@ -452,6 +452,24 @@ const initialProducts = [
     description: 'Aidoxy Tennis Elbow Support strap with a thick pressure pad, durable metal buckle loop, and adjustable compression strap. Relieves forearm strain and pain associated with tennis/golfer’s elbow, typing, and heavy lifting.',
     brand: 'Aidoxy', model: 'E-Tennis',
     specs: ['Support: Targeted Pressure Pad', 'Lock: Metal Buckle Loop & Velcro', 'Material: Neoprene & Mesh', 'Size: Universal Fit', 'Brand: Aidoxy Healthcare', 'Country of Origin: India']
+  },
+  {
+    id: 113, name: 'Aidoxy Bamboo Knee Cap (K-13)', category: 'orthopedic-rehab', categoryName: 'Orthopedic & Rehab',
+    price: 520, originalPrice: 700, rating: 4.9, reviews: 215,
+    image: '/images/products/aidoxy_bamboo_knee_cap_k13.jpg',
+    stock: 'In Stock', badge: 'Doctor #1 Recommended',
+    description: 'Aidoxy Bamboo Knee Cap (K-13) woven with organic bamboo fiber yarn offering hypoallergenic 4-way stretch compression. Naturally antibacterial, moisture-wicking, and thermal-regulating for sensitive skin and joint pain relief.',
+    brand: 'Aidoxy', model: 'K-13',
+    specs: ['Material: Natural Organic Bamboo Fiber', 'Stretch: 4-Way Therapeutic Compression', 'Pack: Pair Pack (2 Pcs)', 'Sizes: S / M / L / XL', 'Manufacturer: Jvs Surgicals (ISO 9001:2015 & CE Certified)', 'Brand: Aidoxy Healthcare', 'Country of Origin: India']
+  },
+  {
+    id: 114, name: 'Aidoxy Orthopedic Knee Immobilizer Brace', category: 'orthopedic-rehab', categoryName: 'Orthopedic & Rehab',
+    price: 1450, originalPrice: 1850, rating: 4.9, reviews: 92,
+    image: '/images/products/aidoxy_orthopedics_catalogue.jpg',
+    stock: 'In Stock', badge: 'Clinical Grade',
+    description: 'Aidoxy Post-Op Knee Immobilizer Brace with rigid anatomical aluminum splints and multi-strap velcro stabilization. Keeps knee leg immobilized at 0° for ligament injury, patellar dislocation, and post-surgical recovery.',
+    brand: 'Aidoxy', model: 'K-Immobilizer',
+    specs: ['Splints: 5 High-Strength Aluminum Bars', 'Angle: 0° Complete Immobilization', 'Straps: Multi-Loop Hook & Loop System', 'Sizes: Short / Medium / Long (Universal)', 'Manufacturer: Jvs Surgicals (ISO 9001:2015 & CE Certified)', 'Brand: Aidoxy Healthcare', 'Country of Origin: India']
   }
 ];
 

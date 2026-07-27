@@ -20,8 +20,21 @@ export default function Contact() {
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-        {/* Info */}
+        {/* Info & Company Credentials Card */}
         <div className="space-y-5">
+          {/* Logo Brand Header Box */}
+          <div className="card p-5 bg-gradient-to-br from-slate-900 via-slate-800 to-primary-950 text-white flex items-center gap-4">
+            <img 
+              src="/images/logo.jpg" 
+              alt="Aidoxy Healthcare Logo" 
+              className="h-12 w-auto object-contain bg-white rounded-xl p-1 shadow-md"
+            />
+            <div>
+              <h3 className="font-extrabold text-white text-base">AIDOXY HEALTHCARE</h3>
+              <p className="text-xs text-orange-400 font-semibold italic">Your Partner in Better Health</p>
+            </div>
+          </div>
+
           {[
             { icon: <Mail size={20} className="text-green-600" />, title: 'Email', lines: ['aidoxyhealthcare@gmail.com'], bg: 'bg-green-50' },
             { icon: <MapPin size={20} className="text-purple-600" />, title: 'Address', lines: ['Nayabazar - 17, Kathmandu, Nepal'], bg: 'bg-purple-50' },
@@ -35,6 +48,24 @@ export default function Contact() {
               </div>
             </div>
           ))}
+
+          {/* Registration Card */}
+          <div className="card p-5 bg-slate-50 border border-slate-200 space-y-2">
+            <h4 className="font-bold text-xs text-slate-800 uppercase tracking-wider">Official Registration Credentials</h4>
+            <div className="text-xs text-slate-600 font-mono space-y-1">
+              <p>PAN: <strong className="text-slate-800">623593419</strong></p>
+              <p>EXIM CODE: <strong className="text-slate-800">6235934190126NP</strong></p>
+              <p>Country of Origin: <strong className="text-emerald-700 font-bold">INDIA</strong></p>
+            </div>
+          </div>
+
+          {/* Official Label Thumbnail */}
+          <div className="card p-4 bg-slate-900 text-slate-300 space-y-2 text-center">
+            <p className="text-xs font-bold text-orange-400 uppercase tracking-wider">Verified Spec &amp; Tax Label</p>
+            <div className="rounded-xl overflow-hidden border border-slate-700 bg-white p-1">
+              <img src="/images/company-label.jpg" alt="Aidoxy Official Spec Label" className="w-full h-auto object-contain rounded-lg" />
+            </div>
+          </div>
         </div>
 
         {/* Form */}

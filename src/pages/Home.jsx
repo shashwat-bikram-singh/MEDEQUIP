@@ -1,5 +1,6 @@
 import Hero from '../components/home/Hero';
 import CategoriesSection from '../components/home/CategoriesSection';
+import AidoxyOrthopedicsSection from '../components/home/AidoxyOrthopedicsSection';
 import FeaturedProducts from '../components/home/FeaturedProducts';
 import Banners from '../components/home/Banners';
 import WhyUs from '../components/home/WhyUs';
@@ -10,6 +11,7 @@ export default function Home() {
     <>
       <Hero />
       <CategoriesSection />
+      <AidoxyOrthopedicsSection />
       <FeaturedProducts />
       <Banners />
       <WhyUs />

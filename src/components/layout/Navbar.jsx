@@ -5,6 +5,7 @@ import { useCart } from '../../context/CartContext';
 import { useWishlist } from '../../context/WishlistContext';
 import { useAuth } from '../../context/AuthContext';
 import { categories } from '../../data/categories';
+import CompanyBrandModal from '../common/CompanyBrandModal';
 
 export default function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false);
@@ -35,28 +36,52 @@ export default function Navbar() {
     if (searchVal.trim()) navigate(`/products?search=${encodeURIComponent(searchVal.trim())}`);
   };
 
-  return (
-    <header className={`sticky top-0 z-50 bg-white transition-shadow duration-300 ${scrolled ? 'shadow-md' : 'shadow-sm'}`}>
-      {/* Top bar */}
-      <div className="bg-primary-600 text-white text-xs py-1.5 text-center font-medium">
-        🌏 Imported &amp; Marketed By Aidoxy Healthcare Pvt. Ltd. &nbsp;|&nbsp; 📧 aidoxyhealthcare@gmail.com &nbsp;|&nbsp; 📍 Nayabazar-17, Kathmandu, Nepal
-      </div>
+  const [modalOpen, setModalOpen] = useState(false);
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center gap-4 h-16">
-          {/* Logo */}
-          <Link to="/" className="flex items-center gap-2.5 flex-shrink-0 group">
-            <img 
-              src="/images/logo.jpg" 
-              alt="Aidoxy Healthcare Logo" 
-              className="h-10 w-auto object-contain transition-transform group-hover:scale-105"
-              onError={(e) => { e.target.style.display = 'none'; }}
-            />
-            <div className="flex flex-col leading-none">
-              <span className="text-xl font-black text-slate-900 tracking-tight group-hover:text-primary-600 transition-colors">AIDOXY</span>
-              <span className="text-[9.5px] font-bold text-primary-600 tracking-widest uppercase">Healthcare Pvt. Ltd.</span>
+  return (
+    <>
+      <header className={`sticky top-0 z-50 bg-white transition-shadow duration-300 ${scrolled ? 'shadow-md' : 'shadow-sm'}`}>
+        {/* Top bar */}
+        <div className="bg-slate-900 text-slate-200 text-[11px] py-1.5 px-4 border-b border-slate-800">
+          <div className="max-w-7xl mx-auto flex flex-wrap items-center justify-between gap-2">
+            <div className="flex items-center gap-2.5 text-slate-300 font-medium">
+              <span className="bg-orange-500 text-white text-[9.5px] font-bold px-2 py-0.5 rounded uppercase tracking-wider">
+                Official Importer &amp; Marketer
+              </span>
+              <span className="font-semibold text-white">Aidoxy Healthcare Pvt. Ltd.</span>
+              <span className="hidden md:inline text-slate-600">•</span>
+              <span className="hidden md:inline text-slate-300">📍 Nayabazar-17, Kathmandu, Nepal</span>
             </div>
-          </Link>
+
+            <div className="flex items-center gap-4 text-slate-300 font-mono text-[11px]">
+              <span className="hidden sm:inline">PAN: <strong className="text-orange-400">623593419</strong></span>
+              <span className="hidden lg:inline">EXIM: <strong className="text-orange-400">6235934190126NP</strong></span>
+              <button
+                onClick={() => setModalOpen(true)}
+                className="inline-flex items-center gap-1 text-xs font-sans font-semibold text-orange-400 hover:text-orange-300 underline decoration-orange-400/50 hover:decoration-orange-300 transition-colors"
+              >
+                📜 Verified Credentials &amp; Label
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex items-center gap-4 h-16">
+            {/* Logo */}
+            <Link to="/" className="flex items-center gap-2.5 flex-shrink-0 group">
+              <img 
+                src="/images/logo.jpg" 
+                alt="Aidoxy Healthcare Stethoscope Logo" 
+                className="h-11 w-auto object-contain rounded bg-white p-0.5 border border-slate-100 shadow-sm transition-transform group-hover:scale-105"
+                onError={(e) => { e.target.style.display = 'none'; }}
+              />
+              <div className="flex flex-col leading-none">
+                <span className="text-xl font-black text-slate-900 tracking-tight group-hover:text-primary-600 transition-colors">AIDOXY</span>
+                <span className="text-[9.5px] font-bold text-primary-600 tracking-widest uppercase">Healthcare Pvt. Ltd.</span>
+                <span className="text-[8.5px] text-slate-400 font-medium italic mt-0.5">Your Partner in Better Health</span>
+              </div>
+            </Link>
 
           {/* Categories dropdown */}
           <div className="relative hidden md:block">
@@ -197,5 +222,8 @@ export default function Navbar() {
         </div>
       )}
     </header>
+
+    <CompanyBrandModal isOpen={modalOpen} onClose={() => setModalOpen(false)} />
+    </>
   );
 }

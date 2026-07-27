@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { Star, ShoppingCart, Heart, ArrowLeft, CheckCircle, Package, Truck, ShieldCheck } from 'lucide-react';
 import { products } from '../data/products';
@@ -5,8 +6,10 @@ import { useCart } from '../context/CartContext';
 import { useWishlist } from '../context/WishlistContext';
 import ProductCard from '../components/products/ProductCard';
 import ProductLocationMap from '../components/products/ProductLocationMap';
+import CompanyBrandModal from '../components/common/CompanyBrandModal';
 
 export default function ProductDetail() {
+  const [showLabelModal, setShowLabelModal] = useState(false);
   const { id } = useParams();
   const product = products.find(p => p.id === Number(id));
   const { addItem, isInCart } = useCart();
@@ -120,6 +123,40 @@ export default function ProductDetail() {
               </div>
             ))}
           </div>
+
+          {/* Official Aidoxy Healthcare Importer & Label Box */}
+          <div className="mt-6 p-4 rounded-2xl bg-gradient-to-br from-slate-900 via-slate-800 to-primary-950 text-white shadow-lg border border-slate-700/60">
+            <div className="flex items-center justify-between gap-3 mb-3 pb-3 border-b border-slate-700/60">
+              <div className="flex items-center gap-3">
+                <img 
+                  src="/images/logo.jpg" 
+                  alt="Aidoxy Stethoscope Logo" 
+                  className="h-10 w-auto object-contain bg-white rounded-lg p-0.5" 
+                />
+                <div>
+                  <span className="text-[10px] font-bold text-orange-400 uppercase tracking-widest block">IMPORTED &amp; MARKETED BY</span>
+                  <h4 className="text-sm font-bold text-white leading-tight">Aidoxy Healthcare Pvt. Ltd.</h4>
+                </div>
+              </div>
+              <span className="text-[11px] font-semibold bg-emerald-600 text-white px-2.5 py-1 rounded-full flex items-center gap-1">
+                <CheckCircle size={12} /> Verified
+              </span>
+            </div>
+
+            <div className="grid grid-cols-2 gap-2 text-xs text-slate-300 font-mono mb-3">
+              <div>📍 Nayabazar-17, Kathmandu</div>
+              <div>🇳🇵 PAN: <strong className="text-orange-400">623593419</strong></div>
+              <div>🌐 Origin: <strong className="text-green-400">INDIA</strong></div>
+              <div>📜 EXIM: <strong className="text-orange-400">6235934190126NP</strong></div>
+            </div>
+
+            <button
+              onClick={() => setShowLabelModal(true)}
+              className="w-full py-2 px-3 bg-white/10 hover:bg-white/20 text-orange-300 text-xs font-semibold rounded-xl transition-colors flex items-center justify-center gap-1.5"
+            >
+              🔍 View Official Product &amp; Compliance Label Image
+            </button>
+          </div>
         </div>
       </div>
 
@@ -135,6 +172,9 @@ export default function ProductDetail() {
           </div>
         </div>
       )}
+
+      {/* Company Brand & Spec Label Modal */}
+      <CompanyBrandModal isOpen={showLabelModal} onClose={() => setShowLabelModal(false)} />
     </div>
   );
 }

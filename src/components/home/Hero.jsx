@@ -17,16 +17,24 @@ export default function Hero() {
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.6 }}
           >
-            <span className="inline-flex items-center gap-2 px-4 py-1.5 bg-primary-100 text-primary-700 rounded-full text-xs font-semibold mb-5">
-              🏥 Trusted by 500+ Hospitals
-            </span>
+            <div className="inline-flex items-center gap-3 px-4 py-2 bg-white/90 backdrop-blur-md rounded-2xl border border-slate-200 shadow-sm mb-6">
+              <img 
+                src="/images/logo.jpg" 
+                alt="Aidoxy Stethoscope Logo" 
+                className="h-9 w-auto object-contain bg-white rounded-lg p-0.5 border border-slate-100" 
+              />
+              <div className="flex flex-col text-left">
+                <span className="text-xs font-black text-slate-900 tracking-tight">AIDOXY HEALTHCARE PVT. LTD.</span>
+                <span className="text-[10px] font-bold text-orange-600 tracking-wider">Your Partner in Better Health</span>
+              </div>
+            </div>
             <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-slate-800 leading-tight mb-5">
-              Premium Medical<br />
-              <span className="text-primary-600">Supplies &amp;</span><br />
-              Equipment
+              Quality Orthopedic &amp;<br />
+              <span className="text-primary-600">Healthcare Products</span><br />
+              &amp; Equipment
             </h1>
-            <p className="text-slate-500 text-lg mb-8 max-w-md leading-relaxed">
-              Shop surgical tools, diagnostic devices, ICU equipment and more. Certified products at the best prices, delivered fast.
+            <p className="text-slate-600 text-base md:text-lg mb-8 max-w-lg leading-relaxed">
+              Imported from India &amp; Marketed by Aidoxy Healthcare Pvt. Ltd. (Kathmandu, Nepal). Certified surgical tools, diagnostic devices, and hospital supplies.
             </p>
 
             <div className="flex flex-wrap gap-3 mb-10">

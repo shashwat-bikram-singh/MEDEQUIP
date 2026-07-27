@@ -22,17 +22,29 @@ export default function About() {
         <div className="absolute bottom-0 left-0 -mb-10 -ml-10 w-96 h-96 bg-orange-500/10 rounded-full blur-3xl pointer-events-none"></div>
 
         <div className="relative z-10 max-w-3xl space-y-6">
-          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/10 backdrop-blur-md border border-white/20 text-primary-300 text-xs font-semibold uppercase tracking-wider">
-            <Building2 size={14} className="text-orange-400" /> Official Company Profile
+          <div className="flex flex-wrap items-center gap-3">
+            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/10 backdrop-blur-md border border-white/20 text-primary-300 text-xs font-semibold uppercase tracking-wider">
+              <Building2 size={14} className="text-orange-400" /> Official Company Profile
+            </div>
+            <span className="text-xs text-emerald-400 font-semibold bg-emerald-950/80 px-3 py-1 rounded-full border border-emerald-800">
+              Verified Importer &amp; Marketer
+            </span>
           </div>
-          
-          <div className="space-y-2">
-            <h1 className="text-3xl md:text-5xl font-black tracking-tight text-white leading-tight">
-              AIDOXY HEALTHCARE PVT. LTD.
-            </h1>
-            <p className="text-lg md:text-xl font-medium text-orange-400 italic">
-              — Your Partner in Better Health —
-            </p>
+
+          <div className="flex flex-col sm:flex-row items-start sm:items-center gap-6 pt-2">
+            <img 
+              src="/images/logo.jpg" 
+              alt="Aidoxy Healthcare Stethoscope Logo" 
+              className="h-20 w-auto object-contain bg-white rounded-2xl p-2 shadow-xl border border-slate-700" 
+            />
+            <div className="space-y-1">
+              <h1 className="text-3xl md:text-5xl font-black tracking-tight text-white leading-tight">
+                AIDOXY HEALTHCARE PVT. LTD.
+              </h1>
+              <p className="text-lg md:text-xl font-medium text-orange-400 italic">
+                — Your Partner in Better Health —
+              </p>
+            </div>
           </div>
 
           <p className="text-slate-300 text-base md:text-lg leading-relaxed">

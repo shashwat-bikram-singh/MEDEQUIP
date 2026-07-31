@@ -1,0 +1,128 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 520" width="400" height="520">
+  <defs>
+    <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0f172a"/>
+      <stop offset="50%" stop-color="#0284c7"/>
+      <stop offset="100%" stop-color="#0f172a"/>
+    </linearGradient>
+    <linearGradient id="qrBorder" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0284c7"/>
+      <stop offset="100%" stop-color="#10b981"/>
+    </linearGradient>
+    <filter id="shadow" x="-10%" y="-10%" width="120%" height="120%">
+      <feDropShadow dx="0" dy="8" stdDeviation="6" flood-color="#000000" flood-opacity="0.3"/>
+    </filter>
+  </defs>
+
+  <!-- Background Container -->
+  <rect width="400" height="520" rx="24" fill="url(#bgGrad)"/>
+  
+  <!-- Outer Card Frame -->
+  <rect x="20" y="20" width="360" height="480" rx="20" fill="#ffffff" filter="url(#shadow)"/>
+
+  <!-- Header Banner -->
+  <rect x="20" y="20" width="360" height="85" rx="20" fill="#0284c7"/>
+  <rect x="20" y="85" width="360" height="20" fill="#0284c7"/>
+  <text x="200" y="55" font-family="Arial, sans-serif" font-size="20" font-weight="bold" fill="#ffffff" text-anchor="middle">Aidoxy Healthcare Pvt. Ltd.</text>
+  <text x="200" y="76" font-family="Arial, sans-serif" font-size="12" font-weight="600" fill="#e0f2fe" text-anchor="middle">OFFICIAL SCAN &amp; PAY QR CODE</text>
+
+  <!-- Merchant Info Pills -->
+  <rect x="40" y="115" width="320" height="32" rx="8" fill="#f8fafc" stroke="#e2e8f0" stroke-width="1"/>
+  <text x="50" y="136" font-family="Arial, sans-serif" font-size="11" font-weight="bold" fill="#334155">🇳🇵 PAN: 623593419</text>
+  <text x="350" y="136" font-family="Arial, sans-serif" font-size="11" font-weight="bold" fill="#0284c7" text-anchor="end">MEDEQUIP OFFICIAL</text>
+
+  <!-- QR Code Frame -->
+  <rect x="70" y="160" width="260" height="260" rx="16" fill="#ffffff" stroke="url(#qrBorder)" stroke-width="4" filter="url(#shadow)"/>
+
+  <!-- Standard QR Finder Outer Squares -->
+  <!-- Top Left Finder -->
+  <rect x="90" y="180" width="56" height="56" fill="#0f172a" rx="6"/>
+  <rect x="98" y="188" width="40" height="40" fill="#ffffff" rx="4"/>
+  <rect x="106" y="196" width="24" height="24" fill="#0284c7" rx="3"/>
+
+  <!-- Top Right Finder -->
+  <rect x="254" y="180" width="56" height="56" fill="#0f172a" rx="6"/>
+  <rect x="262" y="188" width="40" height="40" fill="#ffffff" rx="4"/>
+  <rect x="270" y="196" width="24" height="24" fill="#0284c7" rx="3"/>
+
+  <!-- Bottom Left Finder -->
+  <rect x="90" y="344" width="56" height="56" fill="#0f172a" rx="6"/>
+  <rect x="98" y="352" width="40" height="40" fill="#ffffff" rx="4"/>
+  <rect x="106" y="360" width="24" height="24" fill="#0284c7" rx="3"/>
+
+  <!-- QR Code Data Pattern Blocks -->
+  <!-- Row 1 -->
+  <rect x="160" y="180" width="12" height="12" fill="#0f172a"/>
+  <rect x="180" y="180" width="12" height="12" fill="#0f172a"/>
+  <rect x="200" y="180" width="24" height="12" fill="#0f172a"/>
+  <rect x="232" y="180" width="12" height="12" fill="#0f172a"/>
+
+  <!-- Row 2 -->
+  <rect x="150" y="198" width="24" height="12" fill="#0f172a"/>
+  <rect x="186" y="198" width="12" height="24" fill="#0f172a"/>
+  <rect x="210" y="198" width="12" height="12" fill="#0f172a"/>
+  <rect x="230" y="198" width="16" height="12" fill="#0f172a"/>
+
+  <!-- Row 3 -->
+  <rect x="160" y="218" width="12" height="20" fill="#0f172a"/>
+  <rect x="204" y="218" width="20" height="12" fill="#0f172a"/>
+  <rect x="232" y="218" width="12" height="24" fill="#0f172a"/>
+
+  <!-- Row 4 -->
+  <rect x="90" y="248" width="12" height="24" fill="#0f172a"/>
+  <rect x="110" y="248" width="24" height="12" fill="#0f172a"/>
+  <rect x="142" y="248" width="12" height="12" fill="#0f172a"/>
+  <rect x="160" y="248" width="30" height="12" fill="#0f172a"/>
+  <rect x="200" y="248" width="12" height="24" fill="#0f172a"/>
+  <rect x="220" y="248" width="24" height="12" fill="#0f172a"/>
+  <rect x="254" y="248" width="12" height="24" fill="#0f172a"/>
+  <rect x="274" y="248" width="36" height="12" fill="#0f172a"/>
+
+  <!-- Row 5 -->
+  <rect x="90" y="280" width="24" height="12" fill="#0f172a"/>
+  <rect x="122" y="278" width="12" height="24" fill="#0f172a"/>
+  <rect x="140" y="280" width="18" height="12" fill="#0f172a"/>
+  <rect x="220" y="280" width="16" height="24" fill="#0f172a"/>
+  <rect x="244" y="280" width="24" height="12" fill="#0f172a"/>
+  <rect x="276" y="280" width="34" height="12" fill="#0f172a"/>
+
+  <!-- Center Logo Badge -->
+  <rect x="175" y="265" width="50" height="50" rx="10" fill="#ffffff" stroke="#0284c7" stroke-width="2.5"/>
+  <rect x="183" y="273" width="34" height="34" rx="6" fill="#0284c7"/>
+  <text x="200" y="295" font-family="Arial, sans-serif" font-size="16" font-weight="900" fill="#ffffff" text-anchor="middle">⚡</text>
+
+  <!-- Row 6 -->
+  <rect x="90" y="300" width="12" height="30" fill="#0f172a"/>
+  <rect x="110" y="310" width="24" height="12" fill="#0f172a"/>
+  <rect x="140" y="304" width="24" height="12" fill="#0f172a"/>
+  <rect x="236" y="310" width="12" height="24" fill="#0f172a"/>
+  <rect x="256" y="304" width="24" height="12" fill="#0f172a"/>
+  <rect x="288" y="304" width="22" height="24" fill="#0f172a"/>
+
+  <!-- Row 7 -->
+  <rect x="156" y="344" width="24" height="12" fill="#0f172a"/>
+  <rect x="188" y="344" width="12" height="24" fill="#0f172a"/>
+  <rect x="208" y="344" width="24" height="12" fill="#0f172a"/>
+  <rect x="240" y="344" width="12" height="12" fill="#0f172a"/>
+  <rect x="260" y="344" width="40" height="12" fill="#0f172a"/>
+
+  <!-- Row 8 -->
+  <rect x="156" y="364" width="12" height="24" fill="#0f172a"/>
+  <rect x="176" y="374" width="30" height="12" fill="#0f172a"/>
+  <rect x="214" y="364" width="18" height="24" fill="#0f172a"/>
+  <rect x="240" y="370" width="24" height="12" fill="#0f172a"/>
+  <rect x="272" y="364" width="30" height="24" fill="#0f172a"/>
+
+  <!-- Row 9 -->
+  <rect x="156" y="394" width="40" height="12" fill="#0f172a"/>
+  <rect x="204" y="394" width="12" height="12" fill="#0f172a"/>
+  <rect x="224" y="394" width="30" height="12" fill="#0f172a"/>
+  <rect x="262" y="394" width="40" height="12" fill="#0f172a"/>
+
+  <!-- Supported Payment Logotypes Footer -->
+  <rect x="35" y="435" width="330" height="50" rx="12" fill="#f1f5f9"/>
+  <text x="60" y="465" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="#60bb46">eSewa</text>
+  <text x="135" y="465" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="#5c2d91">Khalti</text>
+  <text x="210" y="465" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="#d97706">Fonepay</text>
+  <text x="290" y="465" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="#0284c7">UPI / Card</text>
+</svg>

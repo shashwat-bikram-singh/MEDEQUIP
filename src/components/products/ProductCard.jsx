@@ -2,6 +2,7 @@ import { Link } from 'react-router-dom';
 import { Heart, ShoppingCart, Star } from 'lucide-react';
 import { useCart } from '../../context/CartContext';
 import { useWishlist } from '../../context/WishlistContext';
+import { formatMoney } from '../../utils/currency';
 
 export default function ProductCard({ product }) {
   const { addItem, isInCart } = useCart();
@@ -9,6 +10,7 @@ export default function ProductCard({ product }) {
   const inCart = isInCart(product.id);
   const wishlisted = isWishlisted(product.id);
   const discount = Math.round(((product.originalPrice - product.price) / product.originalPrice) * 100);
+  const productCurrency = product.currency || 'NPR';
 
   return (
     <div className="card group hover:shadow-card-hover transition-all duration-300 hover:-translate-y-1">
@@ -53,7 +55,13 @@ export default function ProductCard({ product }) {
 
       {/* Info */}
       <div className="p-4">
-        <p className="text-xs text-primary-600 font-medium mb-1">{product.categoryName}</p>
+        <div className="flex justify-between items-center mb-1">
+          <p className="text-xs text-primary-600 font-medium">{product.categoryName}</p>
+          <span className="text-[10px] font-bold px-1.5 py-0.5 rounded bg-slate-100 text-slate-600 uppercase">
+            {productCurrency}
+          </span>
+        </div>
+
         <Link to={`/products/${product.id}`}>
           <h3 className="text-sm font-semibold text-slate-800 leading-snug mb-2 line-clamp-2 hover:text-primary-600 transition-colors">
             {product.name}
@@ -76,9 +84,13 @@ export default function ProductCard({ product }) {
 
         {/* Price */}
         <div className="flex items-center gap-2 mb-3">
-          <span className="text-lg font-bold text-slate-800">₹{product.price.toLocaleString()}</span>
+          <span className="text-lg font-bold text-slate-800">
+            {formatMoney(product.price, productCurrency)}
+          </span>
           {product.originalPrice > product.price && (
-            <span className="text-xs text-slate-400 line-through">₹{product.originalPrice.toLocaleString()}</span>
+            <span className="text-xs text-slate-400 line-through">
+              {formatMoney(product.originalPrice, productCurrency)}
+            </span>
           )}
         </div>
 

@@ -464,12 +464,13 @@ const warehouses = [
   }
 ];
 
-// Enrich each product with a stable location based on its ID
+// Enrich each product with currency and a stable location based on its ID
 export const products = initialProducts.map(p => {
   const warehouse = warehouses[p.id % warehouses.length];
   // Calculate a dynamic stock available at this warehouse
   const stockAvailable = ((p.id * 7) % 35) + 5;
   return {
+    currency: p.currency || 'NPR',
     ...p,
     location: {
       ...warehouse,
@@ -477,3 +478,4 @@ export const products = initialProducts.map(p => {
     }
   };
 });
+

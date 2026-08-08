@@ -1,9 +1,10 @@
 import { useState, useEffect } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
-import { ShoppingCart, Heart, Search, Menu, X, User, LogOut, ChevronDown, QrCode } from 'lucide-react';
+import { ShoppingCart, Heart, Search, Menu, X, User, LogOut, ChevronDown, QrCode, Moon, Sun } from 'lucide-react';
 import { useCart } from '../../context/CartContext';
 import { useWishlist } from '../../context/WishlistContext';
 import { useAuth } from '../../context/AuthContext';
+import { useTheme } from '../../context/ThemeContext';
 import { categories } from '../../data/categories';
 import CompanyBrandModal from '../common/CompanyBrandModal';
 import CurrencySelector from '../common/CurrencySelector';
@@ -17,6 +18,7 @@ export default function Navbar() {
   const { count } = useCart();
   const { count: wCount } = useWishlist();
   const { user, logout } = useAuth();
+  const { theme, toggleTheme } = useTheme();
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -145,6 +147,16 @@ export default function Navbar() {
                   <span className="absolute -top-0.5 -right-0.5 w-4 h-4 bg-primary-600 text-white text-[10px] font-bold rounded-full flex items-center justify-center">{count}</span>
                 )}
               </Link>
+
+              <button
+                type="button"
+                onClick={toggleTheme}
+                className="p-2 rounded-xl hover:bg-slate-100 transition-colors text-slate-600"
+                aria-label={`Switch to ${theme === 'dark' ? 'light' : 'dark'} mode`}
+                title={`Switch to ${theme === 'dark' ? 'light' : 'dark'} mode`}
+              >
+                {theme === 'dark' ? <Sun size={20} /> : <Moon size={20} />}
+              </button>
 
               {user ? (
                 <div className="relative hidden md:block">

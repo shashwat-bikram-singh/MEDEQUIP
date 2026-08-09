@@ -1,10 +1,59 @@
+import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { ArrowRight } from 'lucide-react';
-import { categories } from '../../data/categories';
-import { products } from '../../data/products';
+import { categories as staticCategories } from '../../data/categories';
+import api from '../../api/client';
+
+const CATEGORY_ICONS = {
+  'surgical equipment': '🔬',
+  'diagnostic devices': '🩺',
+  'hospital furniture': '🏥',
+  'patient care': '🩹',
+  'lab equipment': '🧪',
+  'emergency equipment': '🚑',
+  'rehabilitation': '♿',
+  'ppe & safety': '🧴',
+  'icu equipment': '🏥',
+  'first aid': '🩹',
+  'medicines': '💊',
+  'wheelchairs': '♿',
+  'personal care': '🧴',
+  'orthopedic & rehab': '🦴',
+};
+
+const CATEGORY_COLORS = [
+  'bg-blue-50 text-blue-600',
+  'bg-green-50 text-green-600',
+  'bg-red-50 text-red-600',
+  'bg-orange-50 text-orange-600',
+  'bg-purple-50 text-purple-600',
+  'bg-cyan-50 text-cyan-600',
+  'bg-indigo-50 text-indigo-600',
+  'bg-pink-50 text-pink-600',
+  'bg-amber-50 text-amber-600',
+];
 
 export default function Categories() {
-  const getCount = (slug) => products.filter(p => p.category === slug).length;
+  const [categories, setCategories] = useState(staticCategories);
+
+  useEffect(() => {
+    api.get('/api/categories')
+      .then(res => {
+        const data = res.data || [];
+        if (data.length > 0) {
+          const mapped = data.map((cat, idx) => ({
+            id: cat.id,
+            name: cat.name,
+            slug: cat.name?.toLowerCase().replace(/[^a-z0-9]+/g, '-') || '',
+            icon: CATEGORY_ICONS[cat.name?.toLowerCase()] || '🏥',
+            color: CATEGORY_COLORS[idx % CATEGORY_COLORS.length],
+            description: cat.description || '',
+          }));
+          setCategories(mapped);
+        }
+      })
+      .catch(() => { /* Keep static data */ });
+  }, []);
 
   return (
     <section className="py-14 bg-white">
@@ -29,7 +78,7 @@ export default function Categories() {
                 {cat.icon}
               </div>
               <h3 className="text-sm font-semibold text-slate-800 mb-1">{cat.name}</h3>
-              <p className="text-xs text-slate-400">{getCount(cat.slug)} products</p>
+              {cat.description && <p className="text-xs text-slate-400 line-clamp-1">{cat.description}</p>}
             </Link>
           ))}
         </div>

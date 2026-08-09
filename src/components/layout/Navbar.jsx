@@ -152,16 +152,26 @@ export default function Navbar() {
                     <div className="w-7 h-7 bg-primary-100 rounded-full flex items-center justify-center">
                       <User size={14} className="text-primary-600" />
                     </div>
-                    {user.name.split(' ')[0]}
+                    {user.firstName || user.name?.split(' ')[0] || 'User'}
                   </button>
                   {userOpen && (
-                    <div className="absolute right-0 top-full mt-2 w-44 bg-white rounded-2xl shadow-card-hover border border-slate-100 py-2 z-50">
+                    <div className="absolute right-0 top-full mt-2 w-48 bg-white rounded-2xl shadow-card-hover border border-slate-100 py-2 z-50">
                       <Link to="/profile" className="flex items-center gap-2 px-4 py-2.5 text-sm text-slate-700 hover:bg-slate-50">
                         <User size={14} /> My Profile
                       </Link>
-                      <button onClick={logout} className="w-full flex items-center gap-2 px-4 py-2.5 text-sm text-red-500 hover:bg-red-50">
-                        <LogOut size={14} /> Logout
-                      </button>
+                      <Link to="/orders" className="flex items-center gap-2 px-4 py-2.5 text-sm text-slate-700 hover:bg-slate-50">
+                        📦 My Orders
+                      </Link>
+                      {user.role === 'ADMIN' && (
+                        <Link to="/admin" className="flex items-center gap-2 px-4 py-2.5 text-sm text-primary-600 font-semibold hover:bg-primary-50">
+                          ⚙️ Admin Panel
+                        </Link>
+                      )}
+                      <div className="border-t border-slate-100 mt-1 pt-1">
+                        <button onClick={logout} className="w-full flex items-center gap-2 px-4 py-2.5 text-sm text-red-500 hover:bg-red-50">
+                          <LogOut size={14} /> Logout
+                        </button>
+                      </div>
                     </div>
                   )}
                 </div>

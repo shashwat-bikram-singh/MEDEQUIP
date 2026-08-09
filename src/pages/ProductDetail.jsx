@@ -1,32 +1,112 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
-import { Star, ShoppingCart, Heart, ArrowLeft, CheckCircle, Package, Truck, ShieldCheck, QrCode } from 'lucide-react';
-import { products } from '../data/products';
+import { Star, ShoppingCart, Heart, ArrowLeft, CheckCircle, Package, Truck, ShieldCheck, QrCode, Loader2 } from 'lucide-react';
 import { useCart } from '../context/CartContext';
 import { useWishlist } from '../context/WishlistContext';
 import ProductCard from '../components/products/ProductCard';
 import ProductLocationMap from '../components/products/ProductLocationMap';
 import CompanyBrandModal from '../components/common/CompanyBrandModal';
 import { formatMoney } from '../utils/currency';
+import api from '../api/client';
 
 export default function ProductDetail() {
   const [showLabelModal, setShowLabelModal] = useState(false);
   const { id } = useParams();
   const navigate = useNavigate();
-  const product = products.find(p => p.id === Number(id));
   const { addItem, isInCart } = useCart();
   const { toggle, isWishlisted } = useWishlist();
 
-  if (!product) return (
+  const [product, setProduct] = useState(null);
+  const [related, setRelated] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    setLoading(true);
+    setError(null);
+
+    api.get(`/api/products/${id}`)
+      .then(res => {
+        const p = res.data;
+        const mapped = {
+          id: p.id,
+          name: p.name,
+          description: p.description,
+          brand: p.brand,
+          category: p.categoryName?.toLowerCase().replace(/[^a-z0-9]+/g, '-') || '',
+          categoryName: p.categoryName || '',
+          price: p.discountPrice || p.price,
+          originalPrice: p.price,
+          rating: p.rating || 0,
+          reviews: p.reviewCount || 0,
+          image: p.image?.startsWith('http') ? p.image : (p.image ? `http://localhost:8080/api/images/${p.image}` : 'https://images.unsplash.com/photo-1559757175-0eb30cd8c063?w=400&h=400&fit=crop'),
+          stock: p.stock > 0 ? 'In Stock' : 'Out of Stock',
+          badge: p.isFeatured ? 'Featured' : null,
+          specs: p.specs || [],
+          currency: 'NPR',
+        };
+        setProduct(mapped);
+
+        // Fetch related products from same category
+        if (p.categoryId) {
+          api.get(`/api/products?categoryId=${p.categoryId}&size=5`)
+            .then(relRes => {
+              const content = relRes.data.content || relRes.data || [];
+              const relMapped = content
+                .filter(r => r.id !== p.id)
+                .slice(0, 4)
+                .map(r => ({
+                  id: r.id,
+                  name: r.name,
+                  price: r.discountPrice || r.price,
+                  originalPrice: r.price,
+                  rating: r.rating || 0,
+                  reviews: r.reviewCount || 0,
+                  image: r.image?.startsWith('http') ? r.image : (r.image ? `http://localhost:8080/api/images/${r.image}` : 'https://images.unsplash.com/photo-1559757175-0eb30cd8c063?w=400&h=400&fit=crop'),
+                  stock: r.stock > 0 ? 'In Stock' : 'Out of Stock',
+                  category: r.categoryName?.toLowerCase().replace(/[^a-z0-9]+/g, '-') || '',
+                  categoryName: r.categoryName || '',
+                  currency: 'NPR',
+                }));
+              setRelated(relMapped);
+            })
+            .catch(() => setRelated([]));
+        }
+      })
+      .catch(err => {
+        console.error('Failed to fetch product:', err);
+        // Fallback to local data
+        import('../data/products').then(m => {
+          const p = (m.products || []).find(p => p.id === Number(id));
+          if (p) {
+            setProduct(p);
+            setRelated((m.products || []).filter(r => r.category === p.category && r.id !== p.id).slice(0, 4));
+          } else {
+            setError('Product not found');
+          }
+        }).catch(() => setError('Product not found'));
+      })
+      .finally(() => setLoading(false));
+  }, [id]);
+
+  if (loading) return (
+    <div className="min-h-[60vh] flex items-center justify-center">
+      <Loader2 size={32} className="animate-spin text-primary-600" />
+      <span className="ml-3 text-slate-500">Loading product...</span>
+    </div>
+  );
+
+  if (error || !product) return (
     <div className="text-center py-32">
-      <h2 className="text-xl font-bold text-slate-600">Product not found</h2>
+      <h2 className="text-xl font-bold text-slate-600">{error || 'Product not found'}</h2>
       <Link to="/products" className="btn-primary mt-4 inline-flex">Back to Products</Link>
     </div>
   );
 
   const productCurrency = product.currency || 'NPR';
-  const related = products.filter(p => p.category === product.category && p.id !== product.id).slice(0, 4);
-  const discount = Math.round(((product.originalPrice - product.price) / product.originalPrice) * 100);
+  const discount = product.originalPrice > product.price
+    ? Math.round(((product.originalPrice - product.price) / product.originalPrice) * 100)
+    : 0;
 
   const buyNowWithQR = () => {
     addItem(product);
@@ -70,7 +150,7 @@ export default function ProductDetail() {
               ))}
             </div>
             <span className="text-sm font-semibold text-slate-700">{product.rating}</span>
-            <span className="text-sm text-slate-400">({product.reviews.toLocaleString()} reviews)</span>
+            <span className="text-sm text-slate-400">({(product.reviews || 0).toLocaleString()} reviews)</span>
           </div>
 
           {/* Price */}
@@ -78,7 +158,7 @@ export default function ProductDetail() {
             <span className="text-3xl font-extrabold text-slate-900">
               {formatMoney(product.price, productCurrency)}
             </span>
-            {product.originalPrice > product.price && (
+            {discount > 0 && (
               <>
                 <span className="text-lg text-slate-400 line-through">
                   {formatMoney(product.originalPrice, productCurrency)}
@@ -100,13 +180,15 @@ export default function ProductDetail() {
           <p className="text-slate-600 text-sm leading-relaxed mb-6">{product.description}</p>
 
           {/* Specs */}
-          <div className="grid grid-cols-2 gap-2 mb-6">
-            {product.specs.map(s => (
-              <div key={s} className="flex items-center gap-2 text-sm text-slate-600 bg-slate-50 px-3 py-2 rounded-xl">
-                <CheckCircle size={13} className="text-primary-500 flex-shrink-0" /> {s}
-              </div>
-            ))}
-          </div>
+          {product.specs?.length > 0 && (
+            <div className="grid grid-cols-2 gap-2 mb-6">
+              {product.specs.map(s => (
+                <div key={s} className="flex items-center gap-2 text-sm text-slate-600 bg-slate-50 px-3 py-2 rounded-xl">
+                  <CheckCircle size={13} className="text-primary-500 flex-shrink-0" /> {s}
+                </div>
+              ))}
+            </div>
+          )}
 
           {/* CTA */}
           <div className="flex flex-col sm:flex-row gap-3">
@@ -124,7 +206,7 @@ export default function ProductDetail() {
               className="flex-1 flex items-center justify-center gap-2 py-3.5 rounded-2xl font-semibold bg-emerald-600 hover:bg-emerald-700 text-white shadow-md transition-all active:scale-95"
             >
               <QrCode size={18} />
-              Scan &amp; Pay QR Buy Now
+              Buy Now
             </button>
 
             <button
@@ -155,10 +237,10 @@ export default function ProductDetail() {
           <div className="mt-6 p-4 rounded-2xl bg-gradient-to-br from-slate-900 via-slate-800 to-primary-950 text-white shadow-lg border border-slate-700/60">
             <div className="flex items-center justify-between gap-3 mb-3 pb-3 border-b border-slate-700/60">
               <div className="flex items-center gap-3">
-                <img 
-                  src="/images/logo.jpg" 
-                  alt="Aidoxy Stethoscope Logo" 
-                  className="h-10 w-auto object-contain bg-white rounded-lg p-0.5" 
+                <img
+                  src="/images/logo.jpg"
+                  alt="Aidoxy Stethoscope Logo"
+                  className="h-10 w-auto object-contain bg-white rounded-lg p-0.5"
                 />
                 <div>
                   <span className="text-[10px] font-bold text-orange-400 uppercase tracking-widest block">IMPORTED &amp; MARKETED BY</span>

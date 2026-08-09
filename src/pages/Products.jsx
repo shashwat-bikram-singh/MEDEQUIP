@@ -1,9 +1,8 @@
-import { useState, useMemo } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import { useSearchParams } from 'react-router-dom';
-import { SlidersHorizontal, X, Search } from 'lucide-react';
-import { products } from '../data/products';
-import { categories } from '../data/categories';
+import { SlidersHorizontal, X, Search, Loader2 } from 'lucide-react';
 import ProductCard from '../components/products/ProductCard';
+import api from '../api/client';
 
 export default function Products() {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -11,22 +10,86 @@ export default function Products() {
   const [sort, setSort] = useState('popular');
   const [priceRange, setPriceRange] = useState([0, 200000]);
 
+  // Data from API
+  const [products, setProducts] = useState([]);
+  const [categories, setCategories] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
   const activeCategory = searchParams.get('category') || '';
   const searchQuery = searchParams.get('search') || '';
 
+  // Fetch categories
+  useEffect(() => {
+    api.get('/api/categories')
+      .then(res => setCategories(res.data || []))
+      .catch(() => setCategories([]));
+  }, []);
+
+  // Fetch products
+  useEffect(() => {
+    setLoading(true);
+    setError(null);
+
+    const params = new URLSearchParams();
+    if (searchQuery) params.set('keyword', searchQuery);
+    if (activeCategory) {
+      // Find category ID from slug/name
+      const cat = categories.find(c =>
+        c.name?.toLowerCase().replace(/[^a-z0-9]+/g, '-') === activeCategory ||
+        c.slug === activeCategory ||
+        c.id?.toString() === activeCategory
+      );
+      if (cat) params.set('categoryId', cat.id);
+    }
+    params.set('size', '100');
+
+    api.get(`/api/products?${params.toString()}`)
+      .then(res => {
+        const data = res.data;
+        const content = data.content || data || [];
+        const mapped = content.map(p => ({
+          id: p.id,
+          name: p.name,
+          description: p.description,
+          brand: p.brand,
+          category: p.categoryName?.toLowerCase().replace(/[^a-z0-9]+/g, '-') || '',
+          categoryName: p.categoryName || '',
+          price: p.discountPrice || p.price,
+          originalPrice: p.price,
+          rating: p.rating || 0,
+          reviews: p.reviewCount || 0,
+          image: p.image?.startsWith('http') ? p.image : (p.image ? `http://localhost:8080/api/images/${p.image}` : 'https://images.unsplash.com/photo-1559757175-0eb30cd8c063?w=400&h=400&fit=crop'),
+          stock: p.stock > 0 ? 'In Stock' : 'Out of Stock',
+          badge: p.isFeatured ? 'Featured' : null,
+          specs: [],
+          currency: 'NPR',
+        }));
+        setProducts(mapped);
+      })
+      .catch(err => {
+        console.error('Failed to fetch products:', err);
+        setError('Failed to load products. Please try again.');
+        // Fallback to local data
+        import('../data/products').then(m => {
+          setProducts(m.products || []);
+        }).catch(() => setProducts([]));
+      })
+      .finally(() => setLoading(false));
+  }, [searchQuery, activeCategory, categories]);
+
   const filtered = useMemo(() => {
     let list = [...products];
-    if (activeCategory) list = list.filter(p => p.category === activeCategory);
-    if (searchQuery) list = list.filter(p =>
-      p.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      p.categoryName.toLowerCase().includes(searchQuery.toLowerCase())
-    );
+    if (activeCategory && categories.length === 0) {
+      // Fallback filtering for local data
+      list = list.filter(p => p.category === activeCategory);
+    }
     list = list.filter(p => p.price >= priceRange[0] && p.price <= priceRange[1]);
     if (sort === 'price-asc') list.sort((a, b) => a.price - b.price);
     else if (sort === 'price-desc') list.sort((a, b) => b.price - a.price);
     else if (sort === 'rating') list.sort((a, b) => b.rating - a.rating);
     return list;
-  }, [activeCategory, searchQuery, priceRange, sort]);
+  }, [products, priceRange, sort, activeCategory, categories]);
 
   const setCategory = (slug) => {
     const p = new URLSearchParams(searchParams);
@@ -35,13 +98,24 @@ export default function Products() {
     setSearchParams(p);
   };
 
+  const categoryItems = categories.length > 0
+    ? categories.map(c => ({
+        id: c.id,
+        name: c.name,
+        slug: c.name?.toLowerCase().replace(/[^a-z0-9]+/g, '-') || '',
+        icon: '🏥',
+      }))
+    : [];
+
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
         <div>
           <h1 className="text-2xl font-bold text-slate-800">
-            {activeCategory ? categories.find(c => c.slug === activeCategory)?.name : searchQuery ? `Search: "${searchQuery}"` : 'All Products'}
+            {activeCategory
+              ? categoryItems.find(c => c.slug === activeCategory)?.name || 'Products'
+              : searchQuery ? `Search: "${searchQuery}"` : 'All Products'}
           </h1>
           <p className="text-sm text-slate-500 mt-1">{filtered.length} products found</p>
         </div>
@@ -82,7 +156,7 @@ export default function Products() {
             >
               All Products
             </button>
-            {categories.map(cat => (
+            {categoryItems.map(cat => (
               <button
                 key={cat.id}
                 onClick={() => setCategory(cat.slug)}
@@ -114,7 +188,17 @@ export default function Products() {
 
         {/* Products grid */}
         <div className="flex-1 min-w-0">
-          {filtered.length === 0 ? (
+          {loading ? (
+            <div className="flex items-center justify-center py-20">
+              <Loader2 size={32} className="animate-spin text-primary-600" />
+              <span className="ml-3 text-slate-500">Loading products...</span>
+            </div>
+          ) : error && products.length === 0 ? (
+            <div className="text-center py-20">
+              <p className="text-red-500 text-sm mb-4">{error}</p>
+              <button onClick={() => window.location.reload()} className="btn-primary">Retry</button>
+            </div>
+          ) : filtered.length === 0 ? (
             <div className="text-center py-20">
               <Search size={48} className="text-slate-200 mx-auto mb-4" />
               <h3 className="text-lg font-semibold text-slate-600">No products found</h3>

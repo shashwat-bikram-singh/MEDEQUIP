@@ -1,20 +1,39 @@
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { Eye, EyeOff, Mail, Lock } from 'lucide-react';
+import { Eye, EyeOff, Mail, Lock, Loader2 } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 
 export default function Login() {
   const [form, setForm] = useState({ email: '', password: '' });
   const [show, setShow] = useState(false);
   const [error, setError] = useState('');
+  const [loading, setLoading] = useState(false);
   const { login } = useAuth();
   const navigate = useNavigate();
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!form.email || !form.password) { setError('Please fill all fields'); return; }
-    login(form.email, form.password);
-    navigate('/');
+    setError('');
+
+    if (!form.email || !form.password) {
+      setError('Please fill all fields');
+      return;
+    }
+
+    setLoading(true);
+    try {
+      await login(form.email, form.password);
+      navigate('/');
+    } catch (err) {
+      if (!err.response) {
+        setError('Cannot connect to server. Please make sure the backend is running on port 8080.');
+      } else {
+        const msg = err.response?.data?.message || err.response?.data?.errors || 'Invalid email or password.';
+        setError(typeof msg === 'string' ? msg : 'Invalid email or password');
+      }
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -41,6 +60,7 @@ export default function Login() {
                   onChange={e => setForm({ ...form, email: e.target.value })}
                   placeholder="doctor@hospital.com"
                   className="input-field pl-9"
+                  disabled={loading}
                 />
               </div>
             </div>
@@ -53,6 +73,7 @@ export default function Login() {
                   onChange={e => setForm({ ...form, password: e.target.value })}
                   placeholder="••••••••"
                   className="input-field pl-9 pr-10"
+                  disabled={loading}
                 />
                 <button type="button" onClick={() => setShow(!show)} className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600">
                   {show ? <EyeOff size={16} /> : <Eye size={16} />}
@@ -66,27 +87,20 @@ export default function Login() {
               <label className="flex items-center gap-2 text-slate-600 cursor-pointer">
                 <input type="checkbox" className="accent-primary-600 rounded" /> Remember me
               </label>
-              <a href="#" className="text-primary-600 hover:underline">Forgot password?</a>
             </div>
 
-            <button type="submit" className="btn-primary w-full py-3 text-base rounded-2xl justify-center">
-              Sign In
+            <button
+              type="submit"
+              disabled={loading}
+              className="btn-primary w-full py-3 text-base rounded-2xl justify-center disabled:opacity-60"
+            >
+              {loading ? (
+                <span className="flex items-center gap-2"><Loader2 className="animate-spin" size={18} /> Signing in...</span>
+              ) : (
+                'Sign In'
+              )}
             </button>
           </form>
-
-          <div className="relative my-6">
-            <div className="absolute inset-0 flex items-center"><div className="w-full border-t border-slate-100" /></div>
-            <div className="relative text-center"><span className="bg-white px-3 text-xs text-slate-400">or continue with</span></div>
-          </div>
-
-          <div className="grid grid-cols-2 gap-3">
-            <button className="flex items-center justify-center gap-2 border border-slate-200 rounded-xl py-2.5 text-sm font-medium text-slate-700 hover:bg-slate-50 transition-colors">
-              <img src="https://www.google.com/favicon.ico" className="w-4 h-4" alt="Google" /> Google
-            </button>
-            <button className="flex items-center justify-center gap-2 border border-slate-200 rounded-xl py-2.5 text-sm font-medium text-slate-700 hover:bg-slate-50 transition-colors">
-              📱 OTP Login
-            </button>
-          </div>
 
           <p className="text-center text-sm text-slate-500 mt-6">
             Don't have an account?{' '}

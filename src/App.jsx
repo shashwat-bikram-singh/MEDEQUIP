@@ -43,54 +43,56 @@ import { Toaster } from 'react-hot-toast';
 export default function App() {
   return (
     <AuthProvider>
-      <CurrencyProvider>
-        <CartProvider>
-          <WishlistProvider>
-            <Router>
-              <Toaster position="top-right" toastOptions={{ duration: 3000 }} />
-              <Routes>
-                {/* Public routes with main layout */}
-                <Route element={<Layout />}>
-                  <Route path="/" element={<Home />} />
-                  <Route path="/products" element={<Products />} />
-                  <Route path="/products/:id" element={<ProductDetail />} />
-                  <Route path="/categories" element={<Categories />} />
-                  <Route path="/cart" element={<Cart />} />
-                  <Route path="/wishlist" element={<Wishlist />} />
-                  <Route path="/about" element={<About />} />
-                  <Route path="/contact" element={<Contact />} />
-                  <Route path="/login" element={<Login />} />
-                  <Route path="/signup" element={<Signup />} />
-                  <Route path="/b2b" element={<B2B />} />
-                  <Route path="/emergency" element={<Emergency />} />
-                  <Route path="/support" element={<Support />} />
+      <ThemeProvider>
+        <CurrencyProvider>
+          <CartProvider>
+            <WishlistProvider>
+              <Router>
+                <Toaster position="top-right" toastOptions={{ duration: 3000 }} />
+                <Routes>
+                  {/* Public routes with main layout */}
+                  <Route element={<Layout />}>
+                    <Route path="/" element={<Home />} />
+                    <Route path="/products" element={<Products />} />
+                    <Route path="/products/:id" element={<ProductDetail />} />
+                    <Route path="/categories" element={<Categories />} />
+                    <Route path="/cart" element={<Cart />} />
+                    <Route path="/wishlist" element={<Wishlist />} />
+                    <Route path="/about" element={<About />} />
+                    <Route path="/contact" element={<Contact />} />
+                    <Route path="/login" element={<Login />} />
+                    <Route path="/signup" element={<Signup />} />
+                    <Route path="/b2b" element={<B2B />} />
+                    <Route path="/emergency" element={<Emergency />} />
+                    <Route path="/support" element={<Support />} />
 
-                  {/* Protected user routes */}
-                  <Route element={<ProtectedRoute />}>
-                    <Route path="/checkout" element={<Checkout />} />
-                    <Route path="/order-success" element={<OrderSuccess />} />
-                    <Route path="/profile" element={<Profile />} />
-                    <Route path="/orders" element={<Orders />} />
-                    <Route path="/orders/:id" element={<OrderDetail />} />
+                    {/* Protected user routes */}
+                    <Route element={<ProtectedRoute />}>
+                      <Route path="/checkout" element={<Checkout />} />
+                      <Route path="/order-success" element={<OrderSuccess />} />
+                      <Route path="/profile" element={<Profile />} />
+                      <Route path="/orders" element={<Orders />} />
+                      <Route path="/orders/:id" element={<OrderDetail />} />
+                    </Route>
+
+                    <Route path="*" element={<NotFound />} />
                   </Route>
 
-                  <Route path="*" element={<NotFound />} />
-                </Route>
-
-                {/* Admin routes with admin layout */}
-                <Route element={<ProtectedRoute requireAdmin />}>
-                  <Route element={<AdminLayout />}>
-                    <Route path="/admin" element={<AdminDashboard />} />
-                    <Route path="/admin/products" element={<AdminProducts />} />
-                    <Route path="/admin/orders" element={<AdminOrders />} />
-                    <Route path="/admin/categories" element={<AdminCategories />} />
+                  {/* Admin routes with admin layout */}
+                  <Route element={<ProtectedRoute requireAdmin />}>
+                    <Route element={<AdminLayout />}>
+                      <Route path="/admin" element={<AdminDashboard />} />
+                      <Route path="/admin/products" element={<AdminProducts />} />
+                      <Route path="/admin/orders" element={<AdminOrders />} />
+                      <Route path="/admin/categories" element={<AdminCategories />} />
+                    </Route>
                   </Route>
-                </Route>
-              </Routes>
-            </Router>
-          </WishlistProvider>
-        </CartProvider>
-      </CurrencyProvider>
+                </Routes>
+              </Router>
+            </WishlistProvider>
+          </CartProvider>
+        </CurrencyProvider>
+      </ThemeProvider>
     </AuthProvider>
   );
 }

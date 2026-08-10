@@ -17,6 +17,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 @Service
@@ -63,7 +64,7 @@ public class ReviewServiceImpl implements ReviewService {
 
         // Recalculate product average rating
         Double avgRating = reviewRepository.calculateAverageRating(productId);
-        product.setRating(avgRating != null ? avgRating : 0.0);
+        product.setRating(avgRating != null ? BigDecimal.valueOf(avgRating) : BigDecimal.ZERO);
         productRepository.save(product);
 
         return reviewMapper.toResponse(saved);
@@ -86,7 +87,7 @@ public class ReviewServiceImpl implements ReviewService {
         Double avgRating = reviewRepository.calculateAverageRating(productId);
         Product product = productRepository.findById(productId).orElse(null);
         if (product != null) {
-            product.setRating(avgRating != null ? avgRating : 0.0);
+            product.setRating(avgRating != null ? BigDecimal.valueOf(avgRating) : BigDecimal.ZERO);
             productRepository.save(product);
         }
     }

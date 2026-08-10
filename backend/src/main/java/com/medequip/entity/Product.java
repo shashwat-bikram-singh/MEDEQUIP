@@ -57,7 +57,7 @@ public class Product {
     /** Computed/cached average rating (0.0 – 5.0). Updated on every review save. */
     @Column(nullable = false, precision = 3, scale = 2)
     @Builder.Default
-    private Double rating = 0.0;
+    private BigDecimal rating = BigDecimal.ZERO;
 
     /** Whether to feature this product on the homepage carousel. */
     @Column(nullable = false)

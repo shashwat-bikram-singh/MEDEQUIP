@@ -22,7 +22,7 @@ public class ProductResponse {
     /** Full URL to the product image (base-url + filename). */
     private final String           imageUrl;
 
-    private final Double           rating;
+    private final BigDecimal       rating;
     private final Boolean          isFeatured;
     private final LocalDateTime    createdAt;
 }

@@ -170,7 +170,7 @@ export default function Products() {
 
           {/* Price filter */}
           <div>
-            <h4 className="text-sm font-semibold text-slate-700 mb-3">Max Price: ₹{priceRange[1].toLocaleString()}</h4>
+            <h4 className="text-sm font-semibold text-slate-700 mb-3">Max Price: रू{priceRange[1].toLocaleString()}</h4>
             <input
               type="range" min={0} max={200000} step={500}
               value={priceRange[1]}
@@ -178,7 +178,7 @@ export default function Products() {
               className="w-full accent-primary-600"
             />
             <div className="flex justify-between text-xs text-slate-400 mt-1">
-              <span>₹0</span><span>₹2,00,000</span>
+              <span>रू0</span><span>रू2,00,000</span>
             </div>
           </div>
         </aside>

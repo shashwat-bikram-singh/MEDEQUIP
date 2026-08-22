@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import api from '../../api/client';
 import { Plus, Edit2, Trash2, X, Activity } from 'lucide-react';
 import toast from 'react-hot-toast';
+import { formatMoney } from '../../utils/currency';
 
 const AdminProducts = () => {
   const [products, setProducts] = useState([]);
@@ -52,7 +53,7 @@ const AdminProducts = () => {
         name: product.name || '',
         description: product.description || '',
         brand: product.brand || '',
-        categoryId: product.category?.id || '',
+        categoryId: product.categoryId || product.category?.id || '',
         price: product.price || '',
         discountPrice: product.discountPrice || '',
         stock: product.stock || '',
@@ -172,11 +173,11 @@ const AdminProducts = () => {
                       <div className="font-medium text-gray-900">{product.name}</div>
                       <div className="text-xs text-gray-500">{product.brand}</div>
                     </td>
-                    <td className="px-6 py-4">{product.category?.name || '-'}</td>
+                    <td className="px-6 py-4">{product.categoryName || product.category?.name || '-'}</td>
                     <td className="px-6 py-4">
-                      ${product.price}
+                      {formatMoney(product.price, 'NPR')}
                       {product.discountPrice && (
-                        <span className="text-xs text-green-600 block">Sale: ${product.discountPrice}</span>
+                        <span className="text-xs text-green-600 block">Sale: {formatMoney(product.discountPrice, 'NPR')}</span>
                       )}
                     </td>
                     <td className="px-6 py-4">
@@ -292,7 +293,7 @@ const AdminProducts = () => {
                   </div>
                   
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">Regular Price ($) *</label>
+                    <label className="block text-sm font-medium text-gray-700 mb-1">Regular Price (रू) *</label>
                     <input
                       type="number"
                       name="price"
@@ -306,7 +307,7 @@ const AdminProducts = () => {
                   </div>
                   
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">Discount Price ($)</label>
+                    <label className="block text-sm font-medium text-gray-700 mb-1">Discount Price (रू)</label>
                     <input
                       type="number"
                       name="discountPrice"

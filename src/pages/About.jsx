@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { Link } from 'react-router-dom';
 import { 
   Building2, ShieldCheck, FileText, Globe, Mail, MapPin, 
   Award, CheckCircle2, PackageCheck, Copy, QrCode, Truck, Barcode
@@ -266,12 +267,12 @@ export default function About() {
           Need bulk hospital procurement or orthopedic product inquiries? Connect with Aidoxy Healthcare Pvt. Ltd. today.
         </p>
         <div className="flex flex-wrap justify-center gap-4">
-          <a href="/contact" className="btn-primary text-sm px-7 py-3">
+          <Link to="/contact" className="btn-primary text-sm px-7 py-3">
             Contact Company
-          </a>
-          <a href="/products" className="px-7 py-3 bg-white/10 text-white font-semibold rounded-2xl hover:bg-white/20 transition-colors text-sm border border-white/20">
+          </Link>
+          <Link to="/products" className="px-7 py-3 bg-white/10 text-white font-semibold rounded-2xl hover:bg-white/20 transition-colors text-sm border border-white/20">
             Browse Catalogue
-          </a>
+          </Link>
         </div>
       </div>
 

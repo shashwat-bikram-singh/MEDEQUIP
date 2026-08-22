@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { Package, Clock, CheckCircle, XCircle, AlertCircle } from 'lucide-react';
 import api from '../api/client';
+import { formatMoney } from '../utils/currency';
 
 const Orders = () => {
   const [orders, setOrders] = useState([]);
@@ -87,7 +88,7 @@ const Orders = () => {
               </div>
               
               <div className="text-left md:text-right w-full md:w-auto">
-                <p className="font-bold text-xl text-blue-600 mb-3">${(order.totalAmount || 0).toFixed(2)}</p>
+                <p className="font-bold text-xl text-blue-600 mb-3">{formatMoney(order.totalAmount || 0, 'NPR')}</p>
                 <Link to={`/orders/${order.id}`} className="btn-primary inline-block w-full md:w-auto text-center px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors">
                   View Details
                 </Link>

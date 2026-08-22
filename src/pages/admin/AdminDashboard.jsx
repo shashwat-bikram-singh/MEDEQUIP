@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import api from '../../api/client';
 import { Users, Package, ShoppingCart, DollarSign, Activity } from 'lucide-react';
 import toast from 'react-hot-toast';
+import { formatMoney } from '../../utils/currency';
 
 const AdminDashboard = () => {
   const [stats, setStats] = useState({
@@ -30,7 +31,7 @@ const AdminDashboard = () => {
   };
 
   const statCards = [
-    { title: 'Total Revenue', value: `$${stats.totalRevenue?.toFixed(2) || '0.00'}`, icon: <DollarSign size={24} />, color: 'bg-green-100 text-green-600' },
+    { title: 'Total Revenue', value: formatMoney(stats.totalRevenue || 0, 'NPR'), icon: <DollarSign size={24} />, color: 'bg-green-100 text-green-600' },
     { title: 'Total Orders', value: stats.totalOrders || 0, icon: <ShoppingCart size={24} />, color: 'bg-blue-100 text-blue-600' },
     { title: 'Total Products', value: stats.totalProducts || 0, icon: <Package size={24} />, color: 'bg-purple-100 text-purple-600' },
     { title: 'Total Users', value: stats.totalUsers || 0, icon: <Users size={24} />, color: 'bg-orange-100 text-orange-600' },
@@ -83,14 +84,14 @@ const AdminDashboard = () => {
                     <td className="px-6 py-4 font-medium text-gray-900">#{order.id}</td>
                     <td className="px-6 py-4">{order.user?.firstName} {order.user?.lastName}</td>
                     <td className="px-6 py-4">{new Date(order.createdAt).toLocaleDateString()}</td>
-                    <td className="px-6 py-4">${order.totalAmount?.toFixed(2)}</td>
+                    <td className="px-6 py-4">{formatMoney(order.totalAmount || 0, 'NPR')}</td>
                     <td className="px-6 py-4">
                       <span className={`px-2 py-1 rounded-full text-xs font-medium ${
-                        order.orderStatus === 'DELIVERED' ? 'bg-green-100 text-green-800' : 
-                        order.orderStatus === 'CANCELLED' ? 'bg-red-100 text-red-800' : 
+                        (order.orderStatus || order.status) === 'DELIVERED' ? 'bg-green-100 text-green-800' : 
+                        (order.orderStatus || order.status) === 'CANCELLED' ? 'bg-red-100 text-red-800' : 
                         'bg-blue-100 text-blue-800'
                       }`}>
-                        {order.orderStatus}
+                        {order.orderStatus || order.status}
                       </span>
                     </td>
                   </tr>

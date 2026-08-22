@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import api from '../../api/client';
 import { Activity, Edit2, X, CheckCircle, Clock, Truck, PackageCheck, Ban } from 'lucide-react';
 import toast from 'react-hot-toast';
+import { formatMoney } from '../../utils/currency';
 
 const AdminOrders = () => {
   const [orders, setOrders] = useState([]);
@@ -38,7 +39,7 @@ const AdminOrders = () => {
 
   const openStatusModal = (order) => {
     setSelectedOrder(order);
-    setNewStatus(order.orderStatus);
+    setNewStatus(order.orderStatus || order.status);
     setStatusModalOpen(true);
   };
 
@@ -105,7 +106,7 @@ const AdminOrders = () => {
                       <div className="text-xs text-gray-400">{order.user?.email}</div>
                     </td>
                     <td className="px-6 py-4">{new Date(order.createdAt).toLocaleDateString()}</td>
-                    <td className="px-6 py-4 font-medium">${order.totalAmount?.toFixed(2)}</td>
+                    <td className="px-6 py-4 font-medium">{formatMoney(order.totalAmount || 0, 'NPR')}</td>
                     <td className="px-6 py-4">
                       <span className={`text-xs font-medium px-2.5 py-1 rounded-full ${
                         order.paymentStatus === 'COMPLETED' ? 'bg-green-100 text-green-800' : 'bg-yellow-100 text-yellow-800'
@@ -114,7 +115,7 @@ const AdminOrders = () => {
                       </span>
                     </td>
                     <td className="px-6 py-4">
-                      {getStatusBadge(order.orderStatus)}
+                      {getStatusBadge(order.orderStatus || order.status)}
                     </td>
                     <td className="px-6 py-4 text-right">
                       <button 
@@ -186,7 +187,7 @@ const AdminOrders = () => {
               <button
                 onClick={handleStatusUpdate}
                 className="px-4 py-2 text-sm font-medium text-white bg-blue-600 rounded-lg hover:bg-blue-700 disabled:opacity-50"
-                disabled={isSubmitting || newStatus === selectedOrder?.orderStatus}
+                disabled={isSubmitting || newStatus === (selectedOrder?.orderStatus || selectedOrder?.status)}
               >
                 {isSubmitting ? 'Updating...' : 'Update Status'}
               </button>

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { User, MapPin, Shield, Edit2, Trash2, Plus, Star } from 'lucide-react';
-import toast, { Toaster } from 'react-hot-toast';
+import toast from 'react-hot-toast';
 import api from '../api/client';
 
 const Profile = () => {
@@ -174,7 +174,7 @@ const Profile = () => {
 
   return (
     <div className="container mx-auto px-4 py-8 max-w-5xl">
-      <Toaster position="top-right" />
+      
       <h1 className="text-3xl font-bold mb-8">My Account</h1>
       
       <div className="flex flex-col md:flex-row gap-8">

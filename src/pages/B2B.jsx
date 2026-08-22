@@ -3,9 +3,9 @@ import { ShieldCheck, Clock, Award, Send, CheckCircle, ArrowRight } from 'lucide
 import { Link } from 'react-router-dom';
 
 const tiers = [
-  { name: "Clinic Advantage", desc: "Ideal for private practices and regional clinics seeking reliable weekly restock.", perks: ["10% Discount on Consumables", "Min Order: ₹1,50,000"], highlight: false },
-  { name: "Regional Hospital", desc: "Comprehensive pricing for multi-department facilities with monthly procurement cycles.", perks: ["18% Tiered Reduction", "Net-30 Invoicing Options", "Min Order: ₹10,00,000"], highlight: true },
-  { name: "Enterprise Network", desc: "Direct manufacturer-level pricing for national healthcare networks and government entities.", perks: ["Custom Negotiated Rates", "Dedicated Logistic Channels", "Min Order: ₹50,00,000+"], highlight: false },
+  { name: "Clinic Advantage", desc: "Ideal for private practices and regional clinics seeking reliable weekly restock.", perks: ["10% Discount on Consumables", "Min Order: रू1,50,000"], highlight: false },
+  { name: "Regional Hospital", desc: "Comprehensive pricing for multi-department facilities with monthly procurement cycles.", perks: ["18% Tiered Reduction", "Net-30 Invoicing Options", "Min Order: रू10,00,000"], highlight: true },
+  { name: "Enterprise Network", desc: "Direct manufacturer-level pricing for national healthcare networks and government entities.", perks: ["Custom Negotiated Rates", "Dedicated Logistic Channels", "Min Order: रू50,00,000+"], highlight: false },
 ];
 
 export default function B2B() {

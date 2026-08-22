@@ -97,6 +97,9 @@ export default function Checkout() {
 
       const order = response.data;
 
+      // Clear the cart after successful order
+      await clearCart();
+
       // Navigate to order success with real order data
       navigate('/order-success', {
         state: {

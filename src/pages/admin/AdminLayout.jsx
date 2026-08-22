@@ -1,17 +1,15 @@
 import React from 'react';
 import { Outlet, NavLink, useNavigate } from 'react-router-dom';
 import { LayoutDashboard, Package, ShoppingCart, Tags, LogOut, Menu, X } from 'lucide-react';
+import { useAuth } from '../../context/AuthContext';
 
 const AdminLayout = () => {
   const [isSidebarOpen, setIsSidebarOpen] = React.useState(false);
   const navigate = useNavigate();
-  
-  const userStr = localStorage.getItem('medequip_user');
-  const user = userStr ? JSON.parse(userStr) : null;
+  const { logout, user } = useAuth();
 
   const handleLogout = () => {
-    localStorage.removeItem('medequip_token');
-    localStorage.removeItem('medequip_user');
+    logout();
     navigate('/login');
   };
 

@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { ArrowLeft, Package, MapPin, CreditCard, Clock, CheckCircle, XCircle, AlertCircle } from 'lucide-react';
 import api from '../api/client';
+import { formatMoney } from '../utils/currency';
 
 const OrderDetail = () => {
   const { id } = useParams();
@@ -134,14 +135,14 @@ const OrderDetail = () => {
             </thead>
             <tbody className="divide-y divide-gray-100">
               {order.orderItems?.map((item, index) => (
-                <tr key={index} className="hover:bg-gray-50 transition-colors">
+                <tr key={item.id || index} className="hover:bg-gray-50 transition-colors">
                   <td className="px-6 py-4">
                     <div className="font-medium text-gray-800">{item.product?.name || item.productName || 'Unknown Product'}</div>
                   </td>
-                  <td className="px-6 py-4 text-gray-600">${(item.price || 0).toFixed(2)}</td>
+                  <td className="px-6 py-4 text-gray-600">{formatMoney(item.price || 0, 'NPR')}</td>
                   <td className="px-6 py-4 text-center text-gray-600">{item.quantity}</td>
                   <td className="px-6 py-4 text-right font-medium text-gray-800">
-                    ${((item.price || 0) * (item.quantity || 1)).toFixed(2)}
+                    {formatMoney((item.price || 0) * (item.quantity || 1), 'NPR')}
                   </td>
                 </tr>
               ))}
@@ -160,15 +161,15 @@ const OrderDetail = () => {
           <div className="w-full md:w-1/3 space-y-3">
             <div className="flex justify-between text-gray-600">
               <span>Subtotal</span>
-              <span>${(order.totalAmount || 0).toFixed(2)}</span>
+              <span>{formatMoney(order.totalAmount || 0, 'NPR')}</span>
             </div>
             <div className="flex justify-between text-gray-600">
               <span>Shipping</span>
-              <span>$0.00</span>
+              <span>{formatMoney(0, 'NPR')}</span>
             </div>
             <div className="pt-3 border-t border-gray-200 flex justify-between items-center">
               <span className="font-bold text-lg text-gray-800">Total</span>
-              <span className="font-bold text-2xl text-blue-600">${(order.totalAmount || 0).toFixed(2)}</span>
+              <span className="font-bold text-2xl text-blue-600">{formatMoney(order.totalAmount || 0, 'NPR')}</span>
             </div>
           </div>
         </div>

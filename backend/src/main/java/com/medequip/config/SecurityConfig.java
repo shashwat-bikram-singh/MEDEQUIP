@@ -45,6 +45,9 @@ public class SecurityConfig {
                 .requestMatchers(HttpMethod.GET, "/api/products/**").permitAll()
                 .requestMatchers(HttpMethod.GET, "/api/categories/**").permitAll()
                 .requestMatchers(HttpMethod.GET, "/api/products/*/reviews").permitAll()
+                // Public contact/B2B form submissions
+                .requestMatchers(HttpMethod.POST, "/api/inquiries/contact").permitAll()
+                .requestMatchers(HttpMethod.POST, "/api/inquiries/b2b").permitAll()
                 // Swagger / OpenAPI UI
                 .requestMatchers(
                     "/v3/api-docs/**",
@@ -64,7 +67,8 @@ public class SecurityConfig {
 
     @Bean
     public DaoAuthenticationProvider authenticationProvider() {
-        DaoAuthenticationProvider provider = new DaoAuthenticationProvider(userDetailsService);
+        DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
+        provider.setUserDetailsService(userDetailsService);
         provider.setPasswordEncoder(passwordEncoder());
         return provider;
     }

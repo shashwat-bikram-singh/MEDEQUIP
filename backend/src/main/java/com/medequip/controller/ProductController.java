@@ -1,7 +1,12 @@
 package com.medequip.controller;
 
 import com.medequip.dto.request.ProductRequest;
+import com.medequip.dto.response.ApiResponse;
 import com.medequip.dto.response.ProductResponse;
+import com.medequip.entity.Product;
+import com.medequip.exception.ResourceNotFoundException;
+import com.medequip.repository.ProductRepository;
+import com.medequip.service.FileStorageService;
 import com.medequip.service.ProductService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -14,6 +19,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 @RestController
 @RequestMapping("/api/products")
@@ -22,6 +28,8 @@ import org.springframework.web.bind.annotation.*;
 public class ProductController {
 
     private final ProductService productService;
+    private final FileStorageService fileStorageService;
+    private final ProductRepository productRepository;
 
     @GetMapping
     @Operation(summary = "List all products (paginated, with optional filters)")
@@ -61,5 +69,29 @@ public class ProductController {
     public ResponseEntity<Void> deleteProduct(@PathVariable Long id) {
         productService.deleteProduct(id);
         return ResponseEntity.noContent().build();
+    }
+
+    @PostMapping("/{id}/image")
+    @PreAuthorize("hasRole('ADMIN')")
+    @Operation(summary = "Upload a product image (ADMIN only)")
+    public ResponseEntity<ApiResponse<ProductResponse>> uploadProductImage(
+            @PathVariable Long id,
+            @RequestParam("file") MultipartFile file) {
+
+        Product product = productRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Product", id));
+
+        // Delete old image if exists
+        if (product.getImage() != null) {
+            fileStorageService.deleteProductImage(product.getImage());
+        }
+
+        String filename = fileStorageService.storeProductImage(file);
+        product.setImage(filename);
+        productRepository.save(product);
+
+        return ResponseEntity.ok(ApiResponse.success(
+                "Image uploaded successfully",
+                productService.getProductById(id)));
     }
 }

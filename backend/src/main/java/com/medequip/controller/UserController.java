@@ -4,8 +4,11 @@ import com.medequip.dto.request.AddressRequest;
 import com.medequip.dto.request.ChangePasswordRequest;
 import com.medequip.dto.request.UpdateProfileRequest;
 import com.medequip.dto.response.AddressResponse;
+import com.medequip.dto.response.ApiResponse;
 import com.medequip.dto.response.UserResponse;
 import com.medequip.entity.User;
+import com.medequip.repository.UserRepository;
+import com.medequip.service.FileStorageService;
 import com.medequip.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -15,6 +18,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -25,6 +29,8 @@ import java.util.List;
 public class UserController {
 
     private final UserService userService;
+    private final FileStorageService fileStorageService;
+    private final UserRepository userRepository;
 
     // ── Profile ───────────────────────────────────────────────────────────────
 
@@ -84,5 +90,28 @@ public class UserController {
             @PathVariable Long addressId) {
         userService.deleteAddress(user.getId(), addressId);
         return ResponseEntity.noContent().build();
+    }
+
+    // ── Profile Image ─────────────────────────────────────────────────────────
+
+    @PostMapping("/me/profile-image")
+    @Operation(summary = "Upload a profile picture")
+    public ResponseEntity<ApiResponse<UserResponse>> uploadProfileImage(
+            @AuthenticationPrincipal User user,
+            @RequestParam("file") MultipartFile file) {
+
+        // Delete old profile image if exists
+        if (user.getProfileImage() != null) {
+            fileStorageService.deleteProfileImage(user.getProfileImage());
+        }
+
+        String filename = fileStorageService.storeProfileImage(file);
+        user.setProfileImage(filename);
+        userRepository.save(user);
+
+        // Return updated profile
+        return ResponseEntity.ok(ApiResponse.success(
+                "Profile image uploaded successfully",
+                userService.getProfile(user.getId())));
     }
 }

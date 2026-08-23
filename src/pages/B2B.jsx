@@ -1,6 +1,8 @@
 import { useState } from 'react';
-import { ShieldCheck, Clock, Award, Send, CheckCircle, ArrowRight } from 'lucide-react';
+import { ShieldCheck, Clock, Award, Send, CheckCircle, ArrowRight, Loader2 } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import api from '../api/client';
+import toast from 'react-hot-toast';
 
 const tiers = [
   { name: "Clinic Advantage", desc: "Ideal for private practices and regional clinics seeking reliable weekly restock.", perks: ["10% Discount on Consumables", "Min Order: रू1,50,000"], highlight: false },
@@ -11,12 +13,23 @@ const tiers = [
 export default function B2B() {
   const [form, setForm] = useState({ name: '', email: '', requirements: '' });
   const [sent, setSent] = useState(false);
+  const [loading, setLoading] = useState(false);
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    setSent(true);
-    setForm({ name: '', email: '', requirements: '' });
-    setTimeout(() => setSent(false), 5000);
+    setLoading(true);
+    try {
+      await api.post('/api/inquiries/b2b', form);
+      setSent(true);
+      setForm({ name: '', email: '', requirements: '' });
+      toast.success('Quote request submitted successfully!');
+      setTimeout(() => setSent(false), 5000);
+    } catch (err) {
+      const msg = err.response?.data?.message || 'Failed to submit request. Please try again.';
+      toast.error(msg);
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -125,8 +138,8 @@ export default function B2B() {
             <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wider mb-1.5">Requirements Details</label>
             <textarea required value={form.requirements} onChange={e => setForm({ ...form, requirements: e.target.value })} rows={5} placeholder="Describe the medical equipment, quantities, contract duration, and shipping timelines needed..." className="input-field resize-none" />
           </div>
-          <button type="submit" className="btn-primary w-full py-3 text-base rounded-2xl justify-center">
-            <Send size={16} /> Submit Request
+          <button type="submit" disabled={loading} className="btn-primary w-full py-3 text-base rounded-2xl justify-center disabled:opacity-50">
+            {loading ? <Loader2 size={16} className="animate-spin" /> : <Send size={16} />} {loading ? 'Submitting...' : 'Submit Request'}
           </button>
         </form>
       </div>

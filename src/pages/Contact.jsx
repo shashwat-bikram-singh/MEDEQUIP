@@ -1,15 +1,28 @@
 import { useState } from 'react';
-import { Mail, MapPin, Clock, Send, CheckCircle } from 'lucide-react';
+import { Mail, MapPin, Clock, Send, CheckCircle, Loader2 } from 'lucide-react';
+import api from '../api/client';
+import toast from 'react-hot-toast';
 
 export default function Contact() {
   const [form, setForm] = useState({ name: '', email: '', subject: '', message: '' });
   const [sent, setSent] = useState(false);
+  const [loading, setLoading] = useState(false);
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    setSent(true);
-    setForm({ name: '', email: '', subject: '', message: '' });
-    setTimeout(() => setSent(false), 5000);
+    setLoading(true);
+    try {
+      await api.post('/api/inquiries/contact', form);
+      setSent(true);
+      setForm({ name: '', email: '', subject: '', message: '' });
+      toast.success('Message sent successfully!');
+      setTimeout(() => setSent(false), 5000);
+    } catch (err) {
+      const msg = err.response?.data?.message || 'Failed to send message. Please try again.';
+      toast.error(msg);
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -102,8 +115,8 @@ export default function Contact() {
               <label className="block text-sm font-medium text-slate-700 mb-1.5">Message</label>
               <textarea value={form.message} onChange={e => setForm({ ...form, message: e.target.value })} rows={5} placeholder="How can we help you?" className="input-field resize-none" required />
             </div>
-            <button type="submit" className="btn-primary py-3 px-8 text-base rounded-2xl">
-              <Send size={16} /> Send Message
+            <button type="submit" disabled={loading} className="btn-primary py-3 px-8 text-base rounded-2xl disabled:opacity-50">
+              {loading ? <Loader2 size={16} className="animate-spin" /> : <Send size={16} />} {loading ? 'Sending...' : 'Send Message'}
             </button>
           </form>
         </div>

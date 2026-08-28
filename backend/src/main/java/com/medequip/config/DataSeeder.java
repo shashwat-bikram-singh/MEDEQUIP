@@ -20,9 +20,12 @@ public class DataSeeder implements CommandLineRunner {
     private final CartRepository cartRepository;
     private final PasswordEncoder passwordEncoder;
 
+    @org.springframework.beans.factory.annotation.Value("${app.seed.enabled:true}")
+    private boolean seedEnabled;
+
     @Override
     public void run(String... args) throws Exception {
-        if (categoryRepository.count() == 0) {
+        if (seedEnabled && categoryRepository.count() == 0) {
             seedData();
         }
     }

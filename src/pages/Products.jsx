@@ -2,7 +2,8 @@ import { useState, useEffect, useMemo } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { SlidersHorizontal, X, Search, Loader2 } from 'lucide-react';
 import ProductCard from '../components/products/ProductCard';
-import api from '../api/client';
+import { products as localProducts } from '../data/products';
+import api, { getProductImageUrl } from '../api/client';
 
 export default function Products() {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -48,32 +49,33 @@ export default function Products() {
       .then(res => {
         const data = res.data;
         const content = data.content || data || [];
-        const mapped = content.map(p => ({
-          id: p.id,
-          name: p.name,
-          description: p.description,
-          brand: p.brand,
-          category: p.categoryName?.toLowerCase().replace(/[^a-z0-9]+/g, '-') || '',
-          categoryName: p.categoryName || '',
-          price: p.discountPrice || p.price,
-          originalPrice: p.price,
-          rating: p.rating || 0,
-          reviews: p.reviewCount || 0,
-          image: p.image?.startsWith('http') ? p.image : (p.image ? `http://localhost:8080/api/images/${p.image}` : 'https://images.unsplash.com/photo-1559757175-0eb30cd8c063?w=400&h=400&fit=crop'),
-          stock: p.stock > 0 ? 'In Stock' : 'Out of Stock',
-          badge: p.isFeatured ? 'Featured' : null,
-          specs: [],
-          currency: 'NPR',
-        }));
+        const mapped = content.map(p => {
+          const catName = p.categoryName || p.category?.name || '';
+          return {
+            id: p.id,
+            name: p.name,
+            description: p.description,
+            brand: p.brand,
+            category: catName.toLowerCase().replace(/[^a-z0-9]+/g, '-'),
+            categoryName: catName,
+            price: p.discountPrice || p.price,
+            originalPrice: p.price,
+            rating: p.rating || 0,
+            reviews: p.reviewCount || 0,
+            image: getProductImageUrl(p.imageUrl, p.image),
+            stock: p.stock > 0 ? 'In Stock' : 'Out of Stock',
+            badge: p.isFeatured ? 'Featured' : null,
+            specs: [],
+            currency: 'NPR',
+          };
+        });
         setProducts(mapped);
       })
       .catch(err => {
         console.error('Failed to fetch products:', err);
         setError('Failed to load products. Please try again.');
         // Fallback to local data
-        import('../data/products').then(m => {
-          setProducts(m.products || []);
-        }).catch(() => setProducts([]));
+        setProducts(localProducts);
       })
       .finally(() => setLoading(false));
   }, [searchQuery, activeCategory, categories]);
@@ -176,6 +178,7 @@ export default function Products() {
               value={priceRange[1]}
               onChange={e => setPriceRange([0, Number(e.target.value)])}
               className="w-full accent-primary-600"
+              aria-label="Filter by maximum price"
             />
             <div className="flex justify-between text-xs text-slate-400 mt-1">
               <span>रू0</span><span>रू2,00,000</span>

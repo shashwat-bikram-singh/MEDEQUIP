@@ -1,6 +1,6 @@
 import { createContext, useContext, useReducer, useEffect, useCallback } from 'react';
 import { useAuth } from './AuthContext';
-import api from '../api/client';
+import api, { getProductImageUrl } from '../api/client';
 
 const CartContext = createContext();
 
@@ -38,19 +38,22 @@ export function CartProvider({ children }) {
     dispatch({ type: 'SET_LOADING', payload: true });
     try {
       const response = await api.get('/api/cart');
-      const backendItems = (response.data.items || []).map(item => ({
-        id: item.product?.id || item.productId,
-        cartItemId: item.id,
-        name: item.product?.name || item.productName || 'Product',
-        price: item.product?.discountPrice || item.product?.price || item.price || 0,
-        originalPrice: item.product?.price || item.price || 0,
-        image: item.product?.image || item.productImage || '',
-        category: item.product?.categoryName || '',
-        categoryName: item.product?.categoryName || '',
-        qty: item.quantity,
-        stock: item.product?.stock,
-        currency: 'NPR',
-      }));
+      const backendItems = (response.data.items || []).map(item => {
+        const catName = item.product?.category?.name || item.product?.categoryName || '';
+        return {
+          id: item.productId || item.product?.id || item.id,
+          cartItemId: item.cartItemId || item.id,
+          name: item.productName || item.product?.name || 'Product',
+          price: item.discountPrice || item.product?.discountPrice || item.price || item.product?.price || 0,
+          originalPrice: item.price || item.product?.price || 0,
+          image: getProductImageUrl(item.imageUrl, item.product?.image || item.productImage),
+          category: catName.toLowerCase().replace(/[^a-z0-9]+/g, '-'),
+          categoryName: catName,
+          qty: item.quantity,
+          stock: item.product?.stock,
+          currency: 'NPR',
+        };
+      });
       dispatch({ type: 'SET_ITEMS', payload: backendItems });
     } catch (err) {
       console.error('Failed to fetch cart:', err);

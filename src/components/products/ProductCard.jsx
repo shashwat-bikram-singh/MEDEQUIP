@@ -79,7 +79,7 @@ export default function ProductCard({ product }) {
               />
             ))}
           </div>
-          <span className="text-xs text-slate-500">({product.reviews.toLocaleString()})</span>
+          <span className="text-xs text-slate-500">({(product.reviews || 0).toLocaleString()})</span>
         </div>
 
         {/* Price */}

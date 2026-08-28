@@ -6,8 +6,9 @@ import { useWishlist } from '../context/WishlistContext';
 import ProductCard from '../components/products/ProductCard';
 import ProductLocationMap from '../components/products/ProductLocationMap';
 import CompanyBrandModal from '../components/common/CompanyBrandModal';
+import { products as localProducts } from '../data/products';
 import { formatMoney } from '../utils/currency';
-import api from '../api/client';
+import api, { getProductImageUrl } from '../api/client';
 
 export default function ProductDetail() {
   const [showLabelModal, setShowLabelModal] = useState(false);
@@ -28,18 +29,20 @@ export default function ProductDetail() {
     api.get(`/api/products/${id}`)
       .then(res => {
         const p = res.data;
+        const catName = p.categoryName || p.category?.name || '';
+        const catId = p.categoryId || p.category?.id;
         const mapped = {
           id: p.id,
           name: p.name,
           description: p.description,
           brand: p.brand,
-          category: p.categoryName?.toLowerCase().replace(/[^a-z0-9]+/g, '-') || '',
-          categoryName: p.categoryName || '',
+          category: catName.toLowerCase().replace(/[^a-z0-9]+/g, '-'),
+          categoryName: catName,
           price: p.discountPrice || p.price,
           originalPrice: p.price,
           rating: p.rating || 0,
           reviews: p.reviewCount || 0,
-          image: p.image?.startsWith('http') ? p.image : (p.image ? `http://localhost:8080/api/images/${p.image}` : 'https://images.unsplash.com/photo-1559757175-0eb30cd8c063?w=400&h=400&fit=crop'),
+          image: getProductImageUrl(p.imageUrl, p.image),
           stock: p.stock > 0 ? 'In Stock' : 'Out of Stock',
           badge: p.isFeatured ? 'Featured' : null,
           specs: p.specs || [],
@@ -48,26 +51,29 @@ export default function ProductDetail() {
         setProduct(mapped);
 
         // Fetch related products from same category
-        if (p.categoryId) {
-          api.get(`/api/products?categoryId=${p.categoryId}&size=5`)
+        if (catId) {
+          api.get(`/api/products?categoryId=${catId}&size=5`)
             .then(relRes => {
               const content = relRes.data.content || relRes.data || [];
               const relMapped = content
                 .filter(r => r.id !== p.id)
                 .slice(0, 4)
-                .map(r => ({
-                  id: r.id,
-                  name: r.name,
-                  price: r.discountPrice || r.price,
-                  originalPrice: r.price,
-                  rating: r.rating || 0,
-                  reviews: r.reviewCount || 0,
-                  image: r.image?.startsWith('http') ? r.image : (r.image ? `http://localhost:8080/api/images/${r.image}` : 'https://images.unsplash.com/photo-1559757175-0eb30cd8c063?w=400&h=400&fit=crop'),
-                  stock: r.stock > 0 ? 'In Stock' : 'Out of Stock',
-                  category: r.categoryName?.toLowerCase().replace(/[^a-z0-9]+/g, '-') || '',
-                  categoryName: r.categoryName || '',
-                  currency: 'NPR',
-                }));
+                .map(r => {
+                  const rCatName = r.categoryName || r.category?.name || '';
+                  return {
+                    id: r.id,
+                    name: r.name,
+                    price: r.discountPrice || r.price,
+                    originalPrice: r.price,
+                    rating: r.rating || 0,
+                    reviews: r.reviewCount || 0,
+                    image: getProductImageUrl(r.imageUrl, r.image),
+                    stock: r.stock > 0 ? 'In Stock' : 'Out of Stock',
+                    category: rCatName.toLowerCase().replace(/[^a-z0-9]+/g, '-'),
+                    categoryName: rCatName,
+                    currency: 'NPR',
+                  };
+                });
               setRelated(relMapped);
             })
             .catch(() => setRelated([]));
@@ -76,15 +82,13 @@ export default function ProductDetail() {
       .catch(err => {
         console.error('Failed to fetch product:', err);
         // Fallback to local data
-        import('../data/products').then(m => {
-          const p = (m.products || []).find(p => p.id === Number(id));
-          if (p) {
-            setProduct(p);
-            setRelated((m.products || []).filter(r => r.category === p.category && r.id !== p.id).slice(0, 4));
-          } else {
-            setError('Product not found');
-          }
-        }).catch(() => setError('Product not found'));
+        const p = localProducts.find(p => p.id === Number(id));
+        if (p) {
+          setProduct(p);
+          setRelated(localProducts.filter(r => r.category === p.category && r.id !== p.id).slice(0, 4));
+        } else {
+          setError('Product not found');
+        }
       })
       .finally(() => setLoading(false));
   }, [id]);

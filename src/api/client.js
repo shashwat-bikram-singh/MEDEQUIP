@@ -1,6 +1,24 @@
 import axios from 'axios';
 
-export const API_BASE_URL = 'http://localhost:8080';
+export const API_BASE_URL = (import.meta.env.VITE_API_URL || 'http://localhost:8080').replace(/\/$/, '');
+
+/**
+ * Resolves a product image into a displayable URL, prioritizing:
+ * 1. Full image URL from backend (imageUrl)
+ * 2. Absolute URL (http/https)
+ * 3. Relative backend uploads path (/api/images/products/)
+ * 4. Safe fallback placeholder
+ */
+export const getProductImageUrl = (imageUrl, image) => {
+  if (imageUrl && imageUrl.trim()) return imageUrl;
+  if (image && typeof image === 'string') {
+    if (image.startsWith('http://') || image.startsWith('https://') || image.startsWith('/')) {
+      return image;
+    }
+    return `${API_BASE_URL}/api/images/products/${image}`;
+  }
+  return 'https://images.unsplash.com/photo-1559757175-0eb30cd8c063?w=400&h=400&fit=crop';
+};
 
 /**
  * Axios instance pre-configured with:

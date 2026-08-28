@@ -50,7 +50,7 @@ export default function Hero() {
             <div className="flex flex-wrap gap-6">
               {[
                 { icon: <ShieldCheck size={16} className="text-green-600" />, label: 'ISO Certified Products' },
-                { icon: <Truck size={16} className="text-primary-600" />, label: 'Free Delivery ₹999+' },
+                { icon: <Truck size={16} className="text-primary-600" />, label: 'Free Delivery रू999+' },
                 { icon: <span className="text-sm">⭐</span>, label: '4.8/5 Customer Rating' },
               ].map(({ icon, label }) => (
                 <div key={label} className="flex items-center gap-2 text-sm text-slate-600 font-medium">

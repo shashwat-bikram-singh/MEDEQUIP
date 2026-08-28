@@ -102,10 +102,10 @@ const AdminOrders = () => {
                   <tr key={order.id} className="border-b hover:bg-gray-50">
                     <td className="px-6 py-4 font-medium text-gray-900">#{order.id}</td>
                     <td className="px-6 py-4">
-                      {order.user?.firstName} {order.user?.lastName}
-                      <div className="text-xs text-gray-400">{order.user?.email}</div>
+                      {order.user?.firstName ? `${order.user.firstName} ${order.user.lastName}` : (order.userEmail || `Customer #${order.userId}`)}
+                      {order.user?.email && <div className="text-xs text-gray-400">{order.user.email}</div>}
                     </td>
-                    <td className="px-6 py-4">{new Date(order.createdAt).toLocaleDateString()}</td>
+                    <td className="px-6 py-4">{new Date(order.orderDate || order.createdAt).toLocaleDateString()}</td>
                     <td className="px-6 py-4 font-medium">{formatMoney(order.totalAmount || 0, 'NPR')}</td>
                     <td className="px-6 py-4">
                       <span className={`text-xs font-medium px-2.5 py-1 rounded-full ${

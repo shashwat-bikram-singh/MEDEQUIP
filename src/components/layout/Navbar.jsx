@@ -43,7 +43,7 @@ export default function Navbar() {
 
   return (
     <>
-      <header className={`sticky top-0 z-50 bg-white transition-shadow duration-300 ${scrolled ? 'shadow-md' : 'shadow-sm'}`}>
+      <header className={`sticky top-0 z-50 bg-white dark:bg-slate-900 transition-shadow duration-300 ${scrolled ? 'shadow-md' : 'shadow-sm'}`}>
         {/* Top bar */}
         <div className="bg-slate-900 text-slate-200 text-[11px] py-1.5 px-4 border-b border-slate-800">
           <div className="max-w-7xl mx-auto flex flex-wrap items-center justify-between gap-2">
@@ -95,7 +95,7 @@ export default function Navbar() {
                 Categories <ChevronDown size={14} className={`transition-transform ${catOpen ? 'rotate-180' : ''}`} />
               </button>
               {catOpen && (
-                <div className="absolute top-full left-0 mt-2 w-56 bg-white rounded-2xl shadow-card-hover border border-slate-100 py-2 z-50">
+                <div className="absolute top-full left-0 mt-2 w-56 bg-white dark:bg-slate-800 rounded-2xl shadow-card-hover border border-slate-100 dark:border-slate-700 py-2 z-50">
                   {categories.map(cat => (
                     <Link
                       key={cat.id}
@@ -167,7 +167,7 @@ export default function Navbar() {
                     {user.firstName || user.name?.split(' ')[0] || 'User'}
                   </button>
                   {userOpen && (
-                    <div className="absolute right-0 top-full mt-2 w-48 bg-white rounded-2xl shadow-card-hover border border-slate-100 py-2 z-50">
+                    <div className="absolute right-0 top-full mt-2 w-48 bg-white dark:bg-slate-800 rounded-2xl shadow-card-hover border border-slate-100 dark:border-slate-700 py-2 z-50">
                       <Link to="/profile" className="flex items-center gap-2 px-4 py-2.5 text-sm text-slate-700 hover:bg-slate-50">
                         <User size={14} /> My Profile
                       </Link>
@@ -219,7 +219,7 @@ export default function Navbar() {
 
         {/* Mobile menu */}
         {menuOpen && (
-          <div className="md:hidden border-t border-slate-100 bg-white px-4 py-4 space-y-1">
+          <div className="md:hidden border-t border-slate-100 dark:border-slate-700 bg-white dark:bg-slate-900 px-4 py-4 space-y-1">
             <p className="text-xs font-semibold text-slate-400 uppercase tracking-wider mb-2 px-2">Categories</p>
             {categories.map(cat => (
               <Link key={cat.id} to={`/products?category=${cat.slug}`} className="flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm text-slate-700 hover:bg-primary-50 hover:text-primary-600 transition-colors">

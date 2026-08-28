@@ -82,8 +82,8 @@ const AdminDashboard = () => {
                 stats.recentOrders.map((order) => (
                   <tr key={order.id} className="border-b hover:bg-gray-50">
                     <td className="px-6 py-4 font-medium text-gray-900">#{order.id}</td>
-                    <td className="px-6 py-4">{order.user?.firstName} {order.user?.lastName}</td>
-                    <td className="px-6 py-4">{new Date(order.createdAt).toLocaleDateString()}</td>
+                    <td className="px-6 py-4">{order.user?.firstName ? `${order.user.firstName} ${order.user.lastName}` : (order.userEmail || `Customer #${order.userId}`)}</td>
+                    <td className="px-6 py-4">{new Date(order.orderDate || order.createdAt).toLocaleDateString()}</td>
                     <td className="px-6 py-4">{formatMoney(order.totalAmount || 0, 'NPR')}</td>
                     <td className="px-6 py-4">
                       <span className={`px-2 py-1 rounded-full text-xs font-medium ${

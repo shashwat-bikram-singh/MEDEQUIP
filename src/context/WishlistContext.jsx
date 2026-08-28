@@ -1,6 +1,6 @@
 import { createContext, useContext, useState, useEffect, useCallback } from 'react';
 import { useAuth } from './AuthContext';
-import api from '../api/client';
+import api, { getProductImageUrl } from '../api/client';
 
 const WishlistContext = createContext();
 
@@ -13,19 +13,22 @@ export function WishlistProvider({ children }) {
     if (!isLoggedIn) return;
     try {
       const response = await api.get('/api/wishlist');
-      const backendItems = (response.data || []).map(item => ({
-        id: item.product?.id || item.productId,
-        name: item.product?.name || '',
-        price: item.product?.discountPrice || item.product?.price || 0,
-        originalPrice: item.product?.price || 0,
-        image: item.product?.image || '',
-        category: item.product?.categoryName || '',
-        categoryName: item.product?.categoryName || '',
-        rating: item.product?.rating || 0,
-        reviews: item.product?.reviewCount || 0,
-        stock: item.product?.stock > 0 ? 'In Stock' : 'Out of Stock',
-        currency: 'NPR',
-      }));
+      const backendItems = (response.data || []).map(item => {
+        const catName = item.product?.category?.name || item.product?.categoryName || '';
+        return {
+          id: item.product?.id || item.productId,
+          name: item.product?.name || '',
+          price: item.product?.discountPrice || item.product?.price || 0,
+          originalPrice: item.product?.price || 0,
+          image: getProductImageUrl(item.product?.imageUrl, item.product?.image),
+          category: catName.toLowerCase().replace(/[^a-z0-9]+/g, '-'),
+          categoryName: catName,
+          rating: item.product?.rating || 0,
+          reviews: item.product?.reviewCount || 0,
+          stock: item.product?.stock > 0 ? 'In Stock' : 'Out of Stock',
+          currency: 'NPR',
+        };
+      });
       setItems(backendItems);
     } catch (err) {
       console.error('Failed to fetch wishlist:', err);

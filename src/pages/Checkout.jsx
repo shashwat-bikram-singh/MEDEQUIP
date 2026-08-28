@@ -6,6 +6,7 @@ import { ShieldCheck, ArrowLeft, CreditCard, Loader2, AlertTriangle, CheckCircle
 import { formatMoney } from '../utils/currency';
 import api from '../api/client';
 import toast from 'react-hot-toast';
+import QRPaymentSection from '../components/common/QRPaymentSection';
 
 export default function Checkout() {
   const { items, total, clearCart } = useCart();
@@ -13,6 +14,11 @@ export default function Checkout() {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
   const [paymentMethod, setPaymentMethod] = useState('cod');
+
+  // QR Payment verification state
+  const [paymentCurrency, setPaymentCurrency] = useState('NPR');
+  const [paymentAmount, setPaymentAmount] = useState('');
+  const [transactionId, setTransactionId] = useState('');
 
   // Addresses
   const [addresses, setAddresses] = useState([]);
@@ -86,6 +92,13 @@ export default function Checkout() {
     if (!selectedAddressId) {
       setOrderError('Please select or add a delivery address');
       return;
+    }
+
+    if (paymentMethod === 'qr') {
+      if (paymentCurrency !== 'NPR' || Number(paymentAmount) !== Number(finalTotal) || transactionId.trim().length < 6) {
+        setOrderError('Please complete the QR payment transaction details (matching amount and valid Transaction ID)');
+        return;
+      }
     }
 
     setLoading(true);
@@ -236,9 +249,10 @@ export default function Checkout() {
               Payment Method
             </h3>
 
-            <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
               {[
                 { key: 'cod', label: 'Cash on Delivery', icon: '💵' },
+                { key: 'qr', label: 'Scan & Pay QR', icon: '📷' },
                 { key: 'esewa', label: 'eSewa', icon: '📱' },
                 { key: 'khalti', label: 'Khalti', icon: '📱' },
               ].map(method => (
@@ -258,7 +272,22 @@ export default function Checkout() {
               ))}
             </div>
 
-            {paymentMethod !== 'cod' && (
+            {paymentMethod === 'qr' && (
+              <div className="mt-5">
+                <QRPaymentSection
+                  requiredAmount={finalTotal}
+                  requiredCurrency="NPR"
+                  paymentCurrency={paymentCurrency}
+                  setPaymentCurrency={setPaymentCurrency}
+                  paymentAmount={paymentAmount}
+                  setPaymentAmount={setPaymentAmount}
+                  transactionId={transactionId}
+                  setTransactionId={setTransactionId}
+                />
+              </div>
+            )}
+
+            {paymentMethod !== 'cod' && paymentMethod !== 'qr' && (
               <div className="mt-4 p-3 bg-amber-50 border border-amber-200 text-amber-700 rounded-xl text-xs flex items-start gap-2">
                 <AlertTriangle size={16} className="flex-shrink-0 mt-0.5" />
                 <div>
